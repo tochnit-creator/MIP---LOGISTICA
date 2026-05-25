@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organograma Executivo — Logística</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-0: #0d1117;
+    --bg-1: #161b22;
+    --bg-2: #1c2230;
+    --paper: rgba(28, 34, 48, 0.65);
+    --paper-solid: #1c2230;
+    --ink: #f1f5f9;
+    --ink-2: #cbd5e1;
+    --muted: #94a3b8;
+    --muted-2: #64748b;
+    --line: rgba(148, 163, 184, 0.14);
+    --line-2: rgba(148, 163, 184, 0.28);
+    --gold: #d4af37;
+    --gold-soft: rgba(212, 175, 55, 0.12);
+    --accent: #c0a45c;
+  }
+  body {
+    font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(212, 175, 55, 0.08), transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(59, 89, 152, 0.10), transparent 55%),
+      linear-gradient(180deg, #0d1117 0%, #0a0e16 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    padding: 40px 32px 60px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+
+  /* ===== Cabeçalho executivo ===== */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 36px;
+  }
+  .header-left h1 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #fff 0%, #d4af37 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+  }
+  .header-left .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+  .header-right {
+    display: flex;
+    gap: 8px;
+  }
+  .btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line-2);
+    color: var(--ink-2);
+    padding: 9px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 0.3px;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+  }
+  .btn:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--gold);
+    color: #fff;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    color: #0d1117;
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #e6c453, #d4af37);
+    color: #0d1117;
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+  }
+
+  /* ===== KPIs ===== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+  }
+  .kpi {
+    background: var(--paper);
+    padding: 18px 20px;
+    backdrop-filter: blur(20px);
+  }
+  .kpi-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--muted-2);
+    margin-top: 4px;
+  }
+
+  /* ===== Árvore hierárquica ===== */
+  .tree {
+    position: relative;
+  }
+  .tree-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .tree-row.row-supervisors {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .tree-line {
+    height: 28px;
+    position: relative;
+  }
+  .tree-line::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--line-2), transparent);
+  }
+
+  /* ===== Card executivo ===== */
+  .exec-card {
+    background: var(--paper);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    padding: 16px 18px;
+    min-width: 220px;
+    max-width: 280px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    text-align: left;
+  }
+  .exec-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .exec-card:hover {
+    border-color: var(--gold);
+    background: rgba(28, 34, 48, 0.85);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(212, 175, 55, 0.08);
+    transform: translateY(-2px);
+  }
+  .exec-card:hover::before { opacity: 1; }
+  .exec-card .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c0a45c, #8a7332);
+    color: #0d1117;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+  }
+  .exec-card .nome {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+  .exec-card .cargo {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.2px;
+  }
+  .exec-card .team-info {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--ink-2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .exec-card .team-info .count {
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .exec-card.expandable .team-info::after {
+    content: '▾';
+    font-size: 10px;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+  .exec-card.expanded {
+    border-color: var(--gold);
+    background: rgba(212, 175, 55, 0.08);
+  }
+  .exec-card.expanded .team-info::after {
+    transform: rotate(180deg);
+    color: var(--gold);
+  }
+
+  /* Tamanhos / cores por nível */
+  .exec-card.level-diretor {
+    min-width: 260px;
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.10), rgba(28, 34, 48, 0.7));
+  }
+  .exec-card.level-diretor .avatar {
+    background: linear-gradient(135deg, #f4d574, #d4af37);
+    width: 48px;
+    height: 48px;
+    font-size: 15px;
+    color: #0d1117;
+  }
+  .exec-card.level-diretor .nome { font-size: 15px; }
+
+  .exec-card.level-gerente {
+    min-width: 240px;
+    border-color: rgba(168, 142, 76, 0.4);
+  }
+  .exec-card.level-gerente .avatar {
+    background: linear-gradient(135deg, #a88e4c, #6e5a2a);
+  }
+
+  .exec-card.level-supervisor .avatar { background: linear-gradient(135deg, #9ca3af, #6b7280); color: #fff; }
+  .exec-card.level-lider .avatar { background: linear-gradient(135deg, #7dd3c0, #4a9080); color: #0d1117; }
+  .exec-card.level-analista .avatar { background: linear-gradient(135deg, #8db5d8, #4b7fa8); color: #0d1117; }
+  .exec-card.level-assistente .avatar { background: linear-gradient(135deg, #c1d870, #8fa844); color: #0d1117; }
+  .exec-card.level-conferente .avatar { background: linear-gradient(135deg, #e8c068, #b8941f); color: #0d1117; }
+  .exec-card.level-aux .avatar { background: linear-gradient(135deg, #8b95a3, #525a67); color: #fff; }
+  .exec-card.level-motorista .avatar { background: linear-gradient(135deg, #d68aa8, #a04b6e); color: #fff; }
+  .exec-card.level-servicos .avatar { background: linear-gradient(135deg, #b794d4, #7a5099); color: #fff; }
+
+  /* Card sutil — para áreas independentes (sem expansão, menos destaque) */
+  .exec-card.subtle {
+    min-width: 180px;
+    max-width: 220px;
+    padding: 12px 14px;
+    background: rgba(28, 34, 48, 0.4);
+    border: 1px dashed var(--line-2);
+  }
+  .exec-card.subtle .avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+  .exec-card.subtle .nome { font-size: 12px; }
+  .exec-card.subtle .cargo { font-size: 10px; }
+  .exec-card.subtle:hover {
+    border-style: solid;
+    border-color: var(--gold);
+  }
+
+  /* ===== Equipe expandida ===== */
+  .team-panel {
+    display: none;
+    background: var(--paper);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+    margin-top: 16px;
+    padding: 20px 24px;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: slideDown 0.3s ease;
+    position: relative;
+  }
+  .team-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.5;
+  }
+  .team-panel.show { display: block; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .team-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .team-panel-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.2px;
+  }
+  .team-panel-title span {
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 6px;
+  }
+  .team-panel-section {
+    margin-bottom: 14px;
+  }
+  .team-panel-section:last-child { margin-bottom: 0; }
+
+  /* Seção destacada (Inventário, etc) */
+  .team-panel-section.highlighted {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02));
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 16px;
+    position: relative;
+  }
+  .team-panel-section.highlighted::before {
+    content: '★';
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    color: var(--gold);
+    font-size: 11px;
+    opacity: 0.7;
+  }
+  .team-panel-section.highlighted .team-panel-section-title {
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .team-panel-section.highlighted .team-panel-section-title::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+  .team-panel-section.highlighted .team-member .mini-avatar {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold);
+    border-color: rgba(212, 175, 55, 0.4);
+  }
+  .team-panel-section-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .team-panel-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 6px;
+  }
+  .team-member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .team-member:hover { background: var(--gold-soft); }
+  .team-member .mini-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(148, 163, 184, 0.15);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+  }
+  .team-member .member-info { min-width: 0; }
+  .team-member .member-name {
+    font-size: 12px;
+    color: var(--ink);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .team-member .member-role {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* ===== Seção de turnos ===== */
+  .shift-section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-align: center;
+    margin-top: 36px;
+  }
+
+  /* ===== Rodapé ===== */
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted-2);
+    letter-spacing: 0.3px;
+  }
+  .footer .footer-brand {
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg-1); }
+  ::-webkit-scrollbar-thumb { background: var(--bg-2); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2a3447; }
+
+  /* ===== Mobile ===== */
+  @media (max-width: 768px) {
+    body { padding: 20px 14px 40px; background-attachment: scroll; }
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .header-right { width: 100%; }
+    .btn { flex: 1; }
+    .tree-row { flex-direction: column; align-items: center; gap: 10px; }
+    .tree-line { height: 18px; }
+    .exec-card { width: 100%; max-width: 100%; }
+    .team-panel-list { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ===== Impressão (PDF) — usa light mesmo em dark mode ===== */
+  @media print {
+    @page { size: A3 landscape; margin: 1.5cm; }
+    body {
+      padding: 0;
+      background: white !important;
+      color: #111827 !important;
+    }
+    .header-left h1 {
+      background: none;
+      -webkit-text-fill-color: #111827;
+      color: #111827 !important;
+    }
+    .header-left .subtitle, .footer { color: #6b7280 !important; }
+    .header-right, .footer .footer-brand { display: none; }
+    .kpi { background: white !important; }
+    .kpi-label, .kpi-sub { color: #6b7280 !important; }
+    .kpi-value { color: #111827 !important; }
+    .exec-card {
+      background: white !important;
+      border: 1px solid #d1d5db !important;
+      box-shadow: none !important;
+      color: #111827 !important;
+    }
+    .exec-card .nome { color: #111827 !important; }
+    .exec-card .cargo, .exec-card .team-info { color: #6b7280 !important; }
+    .exec-card .team-info .count { color: #b8941f !important; }
+    .exec-card .avatar { box-shadow: none !important; }
+    .team-panel {
+      background: white !important;
+      border-color: #e5e7eb !important;
+    }
+    .team-panel-title { color: #111827 !important; }
+    .team-panel-section-title { color: #b8941f !important; }
+    .team-member .member-name { color: #111827 !important; }
+    .team-member .member-role, .team-member .mini-avatar { color: #6b7280 !important; }
+    .shift-section-title { color: #6b7280 !important; }
+    .exec-card { break-inside: avoid; }
+    .team-panel { display: block !important; break-inside: avoid; }
+    .exec-card.expandable .team-info::after { display: none; }
+    .tree-row { flex-wrap: wrap; }
+    .kpi-grid { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Cabeçalho -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Estrutura Organizacional — Logística</h1>
+      <div class="subtitle" id="reportDate"></div>
+    </div>
+    <div class="header-right">
+      <button class="btn" onclick="exportarExcel()">Exportar Excel</button>
+      <button class="btn btn-primary" onclick="window.print()">Exportar PDF</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Total de colaboradores</div>
+      <div class="kpi-value" id="kpiTotal">—</div>
+      <div class="kpi-sub">Quadro ativo</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Lideranças</div>
+      <div class="kpi-value" id="kpiLideres">—</div>
+      <div class="kpi-sub">Sup., líderes e analistas</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Turnos operacionais</div>
+      <div class="kpi-value">3</div>
+      <div class="kpi-sub">Manhã · Tarde · Noite</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Frota de motoristas</div>
+      <div class="kpi-value" id="kpiMotoristas">—</div>
+      <div class="kpi-sub">Entregadores ativos</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Span of control</div>
+      <div class="kpi-value" id="kpiSpan">—</div>
+      <div class="kpi-sub">Média por liderança</div>
+    </div>
+  </div>
+
+  <!-- Árvore -->
+  <div class="tree" id="tree"></div>
+
+  <!-- Rodapé -->
+  <div class="footer">
+    <div>Logística · Estrutura vigente em <span id="footerDate"></span></div>
+    <div class="footer-brand">Confidencial — uso interno</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DADOS - estrutura organizacional completa
+// ============================================================
+const ESTRUTURA = {
+  diretor: {
+    nome: "Eduardo Martins",
+    cargo: "Diretor",
+    nivel: "diretor"
+  },
+  gerente: {
+    nome: "Gabriel Barbosa M. Silva",
+    cargo: "Gerente Logístico",
+    nivel: "gerente"
+  },
+  supervisores: [
+    {
+      id: "a-sup1",
+      nome: "Carlos Henrique Bailhão",
+      cargo: "Supervisor — Carregamento (Turno A)",
+      nivel: "supervisor",
+      turno: "A",
+      equipe: {
+        "Liderança e Operação": [
+          { nome: "Lucas Ferreira", cargo: "Líder de Carregamento", nivel: "lider" },
+          { nome: "Eduardo Toledo Santana", cargo: "Assistente Logística Faturamento", nivel: "assistente" }
+        ],
+        "Operacional": [
+          { nome: "Guilherme S. Nascimento", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Jefferson Alves S. Miranda", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Laudiceia de Souza", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Carlos Eduardo Pedrette", cargo: "Aux. Logística", nivel: "aux" }
+        ]
+      }
+    },
+    {
+      id: "a-sup2",
+      nome: "Vanessa Ribeiro",
+      cargo: "Supervisor — Armazenagem (Turno A)",
+      nivel: "supervisor",
+      turno: "A",
+      equipe: {
+        "Liderança": [
+          { nome: "Rosicleude Silva", cargo: "Líder de Estoque", nivel: "lider" }
+        ],
+        "Conferência": [
+          { nome: "Vinicius dos Santos", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Geneilda da Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Jose Luiz Jr.", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Leila Cristina Souza", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Marta Leandro", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Valcides da Silva Novaes", cargo: "Op. de Empilhadeira", nivel: "conferente" }
+        ],
+        "Auxiliares": [
+          { nome: "Devanir Barbosa Souza", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Cleiton Henrique Lopes", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Paulo Eduardo da Silva", cargo: "Aux. Estoque", nivel: "aux" },
+          { nome: "Luis Diego Costa Mendonça", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Marcelo Lopes", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Gustavo Gomes Araujo", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Valdir Gomes da Silva", cargo: "Aux. Estoque", nivel: "aux" },
+          { nome: "Jean", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "William Vieira Miranda", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Iury", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Iury Carvalho", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Thalita", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Matheus Souza", cargo: "Aux. Endereçamento", nivel: "aux" },
+          { nome: "Adilson", cargo: "Aux. Logística", nivel: "aux" }
+        ],
+        "Inventário": [
+          { nome: "Renato Alves", cargo: "Aux. Inventário", nivel: "aux", destaque: true },
+          { nome: "Douglas Faccio", cargo: "Aux. Inventário", nivel: "aux", destaque: true }
+        ]
+      }
+    },
+    {
+      id: "b-sup",
+      nome: "Claudio Barcelos Jr",
+      cargo: "Supervisor (Turno B)",
+      nivel: "supervisor",
+      turno: "B",
+      equipe: {
+        "Liderança": [
+          { nome: "Mauricio Novaes Nascimento", cargo: "Líder", nivel: "lider" }
+        ],
+        "Conferência": [
+          { nome: "Lucas", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Jessica de Souza", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Marcos Fernande", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Maria Debora Alves", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Vanessa Gomes", cargo: "Conf. Expedição Jr.", nivel: "conferente" }
+        ],
+        "Auxiliares": [
+          { nome: "Beatriz dos Santos", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Lourival Ribeiro Freire", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Fabiane dos Santos Cruz", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Gabriel Figueredo", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Luciano Pereira", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Allan Soares", cargo: "Aux. Logística", nivel: "aux" }
+        ]
+      }
+    },
+    {
+      id: "c-sup1",
+      nome: "Jefferson Virissimo de Lima",
+      cargo: "Supervisor (Turno C)",
+      nivel: "supervisor",
+      turno: "C",
+      equipe: {
+        "Conferência": [
+          { nome: "Cassio Luis", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Michel Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Danilo Heleno", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Osvaldo Junior", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Everaldo da Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Laerte Antonio", cargo: "Conf. Expedição Jr.", nivel: "conferente" }
+        ],
+        "Auxiliares": [
+          { nome: "Matheus Coelho", cargo: "Aux. Logística - G1", nivel: "aux" },
+          { nome: "Carlos Alberto Arruda", cargo: "Op. de Empilhadeira", nivel: "aux" },
+          { nome: "Leonidas", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Josemar", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Wesley Fioravan", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "John Mike Rodrigues da Silva", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Silvio Gomes", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Mauricio", cargo: "Aux. Logística - Pesado", nivel: "aux" },
+          { nome: "Peterson Martins", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Rodrigo Sousa Santos", cargo: "Aux. Logística", nivel: "aux" }
+        ]
+      }
+    },
+    {
+      id: "c-sup-edgar",
+      nome: "Edgar Claro",
+      cargo: "Supervisor (Turno C)",
+      nivel: "supervisor",
+      turno: "C",
+      equipe: {}
+    },
+    {
+      id: "c-sup-carr",
+      nome: "Cleiton Aparecido",
+      cargo: "Supervisor de Carregamento (Turno C)",
+      nivel: "supervisor",
+      turno: "C",
+      equipe: {
+        "Auxiliares": [
+          { nome: "Rubenildo Silva Cerqueira", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Vinicius Inacio da Silva", cargo: "Aux. Logística - Pesado", nivel: "aux" },
+          { nome: "Josue Vitor Manzi da Silva", cargo: "Aux. Logística - Pesado", nivel: "aux" },
+          { nome: "Junior Luiz de Oliveira", cargo: "Aux. Logística - Pesado", nivel: "aux" }
+        ]
+      }
+    },
+    {
+      id: "sup-mot",
+      nome: "Rogério de Ana Machado",
+      cargo: "Supervisor de Motoristas",
+      nivel: "supervisor",
+      turno: "M",
+      equipe: {
+        "Frota": [
+          { nome: "Eduardo Araujo", cargo: "M. Entregador Pleno", nivel: "motorista" },
+          { nome: "George Barbosa", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Jose Aparecido", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Reginaldo Firmino", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Alessandro de Ana Machado", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Guilherme Augusto Firmino", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Mayllon dos Santos Oliveira", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Isaias Justino Bulhoes", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Jefferson Luis Torres", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Marcelo Severiano Ramos", cargo: "M. Entregador Master (afastado)", nivel: "motorista" },
+          { nome: "Jose Luis Mantovani", cargo: "M. Entregador Master", nivel: "motorista" },
+          { nome: "Alexandre Lopes", cargo: "M. Entregador Master - Novo", nivel: "motorista" }
+        ]
+      }
+    }
+  ],
+  // Área que reporta direto à diretoria (E-commerce → Eduardo via Baby)
+  areasDir: [
+    {
+      id: "ecom",
+      nome: "Baby",
+      cargo: "Diretora — E-commerce",
+      nivel: "diretor",
+      reportaA: "Eduardo Martins",
+      equipe: {
+        "E-commerce": [
+          { nome: "Gabriel Ribeiro Marins", cargo: "Coordenador E-commerce", nivel: "assistente" }
+        ]
+      }
+    }
+  ],
+  // Áreas independentes/sutis que reportam à gerência (sem hierarquia de equipe)
+  areasIndep: [
+    {
+      nome: "Erivancleide da Silva",
+      cargo: "Setor de Retira",
+      nivel: "analista"
+    },
+    {
+      nome: "Lucas Souza",
+      cargo: "Analista de Faturamento",
+      nivel: "analista"
+    }
+  ],
+  // Áreas no mesmo nível do Gerente Logístico (reportam ao Diretor)
+  areasGerencia: [
+    {
+      id: "facilities",
+      nome: "Robson",
+      cargo: "Facilities",
+      nivel: "gerente",
+      reportaA: "Eduardo Martins",
+      equipe: {
+        "Equipe": [
+          { nome: "Tiago Duarte", cargo: "Aux. de Serviços Gerais", nivel: "servicos" }
+        ]
+      }
+    }
+  ]
+};
+
+// ============================================================
+// HELPERS
+// ============================================================
+function iniciais(nome) {
+  return nome.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
+}
+
+function contarEquipe(sup) {
+  let total = 0;
+  for (const grupo in sup.equipe) total += sup.equipe[grupo].length;
+  return total;
+}
+
+function totalGeral() {
+  let n = 1; // Eduardo
+  ESTRUTURA.areasDir.forEach(a => { n += 1 + contarEquipe(a); });
+  n += 1; // Gerente
+  ESTRUTURA.areasGerencia.forEach(a => { n += 1 + contarEquipe(a); });
+  if (ESTRUTURA.areasIndep) n += ESTRUTURA.areasIndep.length;
+  ESTRUTURA.supervisores.forEach(s => { n += 1 + contarEquipe(s); });
+  return n;
+}
+
+function totalLiderancas() {
+  let n = 1; // Eduardo
+  n += ESTRUTURA.areasDir.length;
+  n += 1; // Gerente
+  n += ESTRUTURA.areasGerencia.length;
+  if (ESTRUTURA.areasIndep) {
+    n += ESTRUTURA.areasIndep.filter(a => ['lider','analista','supervisor'].includes(a.nivel)).length;
+  }
+  ESTRUTURA.supervisores.forEach(s => {
+    n += 1;
+    for (const grupo in s.equipe) {
+      s.equipe[grupo].forEach(p => {
+        if (['lider', 'analista', 'supervisor'].includes(p.nivel)) n++;
+      });
+    }
+  });
+  return n;
+}
+
+function totalMotoristas() {
+  const motSup = ESTRUTURA.supervisores.find(s => s.turno === 'M');
+  return motSup ? contarEquipe(motSup) : 0;
+}
+
+// ============================================================
+// RENDERIZAÇÃO
+// ============================================================
+function renderCard(pessoa, expandable = false, count = 0, subtle = false) {
+  const div = document.createElement('div');
+  div.className = `exec-card level-${pessoa.nivel}` + (expandable ? ' expandable' : '') + (subtle ? ' subtle' : '');
+  div.innerHTML = `
+    <div class="avatar">${iniciais(pessoa.nome)}</div>
+    <div class="nome">${pessoa.nome}</div>
+    <div class="cargo">${pessoa.cargo}</div>
+    ${expandable ? `<div class="team-info"><span>Equipe direta</span><span class="count">${count}</span></div>` : ''}
+  `;
+  return div;
+}
+
+function renderTeamPanel(sup) {
+  const panel = document.createElement('div');
+  panel.className = 'team-panel';
+  panel.id = `panel-${sup.id}`;
+
+  let html = `
+    <div class="team-panel-header">
+      <div class="team-panel-title">
+        ${sup.nome}
+        <span>· ${contarEquipe(sup)} ${contarEquipe(sup) === 1 ? 'pessoa' : 'pessoas'} sob responsabilidade direta</span>
+      </div>
+    </div>
+  `;
+
+  for (const grupo in sup.equipe) {
+    const membros = sup.equipe[grupo];
+    if (!membros.length) continue;
+    // Seções que devem ser destacadas (subáreas dentro da equipe)
+    const SECOES_DESTACADAS = ['Inventário', 'Setor de Retira', 'E-commerce'];
+    const destaque = SECOES_DESTACADAS.includes(grupo);
+    html += `<div class="team-panel-section${destaque ? ' highlighted' : ''}">`;
+    html += `<div class="team-panel-section-title">${grupo} · ${membros.length}</div>`;
+    html += `<div class="team-panel-list">`;
+    membros.forEach(m => {
+      html += `
+        <div class="team-member">
+          <div class="mini-avatar">${iniciais(m.nome)}</div>
+          <div class="member-info">
+            <div class="member-name">${m.nome}</div>
+            <div class="member-role">${m.cargo}</div>
+          </div>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+  }
+
+  panel.innerHTML = html;
+  return panel;
+}
+
+function montarArvore() {
+  const tree = document.getElementById('tree');
+  tree.innerHTML = '';
+
+  // Linha 1: Diretoria — Eduardo + Baby + Robson lado a lado
+  const rowDir = document.createElement('div');
+  rowDir.className = 'tree-row row-supervisors';
+  rowDir.appendChild(renderCard(ESTRUTURA.diretor, false));
+
+  // Áreas que reportam à diretoria (Baby e Robson — expansíveis)
+  ESTRUTURA.areasDir.forEach(area => {
+    const card = renderCard(area, true, contarEquipe(area));
+    card.dataset.supId = area.id;
+    card.onclick = () => toggleEquipe(area.id);
+    rowDir.appendChild(card);
+  });
+
+  tree.appendChild(rowDir);
+
+  // Painéis das áreas de diretoria (logo abaixo)
+  ESTRUTURA.areasDir.forEach(area => {
+    tree.appendChild(renderTeamPanel(area));
+  });
+
+  // Conector
+  const line1 = document.createElement('div');
+  line1.className = 'tree-line';
+  tree.appendChild(line1);
+
+  // Linha 2: Gerentes (Gabriel Logístico + Robson Facilities lado a lado)
+  const rowGer = document.createElement('div');
+  rowGer.className = 'tree-row';
+  rowGer.appendChild(renderCard(ESTRUTURA.gerente, false));
+  ESTRUTURA.areasGerencia.forEach(area => {
+    const card = renderCard(area, true, contarEquipe(area));
+    card.dataset.supId = area.id;
+    card.onclick = () => toggleEquipe(area.id);
+    rowGer.appendChild(card);
+  });
+  tree.appendChild(rowGer);
+
+  // Painéis das áreas de gerência
+  ESTRUTURA.areasGerencia.forEach(area => {
+    tree.appendChild(renderTeamPanel(area));
+  });
+
+  // Áreas independentes (sutis) — Erivancleide (Retira) + Lucas Souza (Faturamento)
+  if (ESTRUTURA.areasIndep && ESTRUTURA.areasIndep.length) {
+    const indepTitle = document.createElement('div');
+    indepTitle.className = 'shift-section-title';
+    indepTitle.textContent = 'Áreas vinculadas à Gerência';
+    tree.appendChild(indepTitle);
+
+    const rowIndep = document.createElement('div');
+    rowIndep.className = 'tree-row row-supervisors';
+    ESTRUTURA.areasIndep.forEach(area => {
+      rowIndep.appendChild(renderCard(area, false, 0, true));
+    });
+    tree.appendChild(rowIndep);
+  }
+
+  // Conector
+  const line2 = document.createElement('div');
+  line2.className = 'tree-line';
+  tree.appendChild(line2);
+
+  // Linha 3: Supervisores
+  const supTitle = document.createElement('div');
+  supTitle.className = 'shift-section-title';
+  supTitle.textContent = 'Lideranças operacionais';
+  tree.appendChild(supTitle);
+
+  const rowSup = document.createElement('div');
+  rowSup.className = 'tree-row row-supervisors';
+  ESTRUTURA.supervisores.forEach(sup => {
+    const count = contarEquipe(sup);
+    const card = renderCard(sup, count > 0, count);
+    if (count > 0) {
+      card.dataset.supId = sup.id;
+      card.onclick = () => toggleEquipe(sup.id);
+    }
+    rowSup.appendChild(card);
+  });
+  tree.appendChild(rowSup);
+
+  // Painéis dos supervisores (só os que têm equipe)
+  ESTRUTURA.supervisores.forEach(sup => {
+    if (contarEquipe(sup) > 0) tree.appendChild(renderTeamPanel(sup));
+  });
+}
+
+function toggleEquipe(supId) {
+  const panel = document.getElementById(`panel-${supId}`);
+  const card = document.querySelector(`.exec-card[data-sup-id="${supId}"]`);
+  const isOpen = panel.classList.contains('show');
+
+  // Fecha todos
+  document.querySelectorAll('.team-panel.show').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.exec-card.expanded').forEach(c => c.classList.remove('expanded'));
+
+  if (!isOpen) {
+    panel.classList.add('show');
+    card.classList.add('expanded');
+    // Move o painel logo após a linha do card clicado
+    const rowDoCard = card.closest('.tree-row');
+    rowDoCard.parentElement.insertBefore(panel, rowDoCard.nextSibling);
+    setTimeout(() => {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
+}
+
+// ============================================================
+// KPIs
+// ============================================================
+function atualizarKPIs() {
+  const total = totalGeral();
+  const lider = totalLiderancas();
+  const mot = totalMotoristas();
+  const span = ((total - lider) / lider).toFixed(1);
+
+  document.getElementById('kpiTotal').textContent = total;
+  document.getElementById('kpiLideres').textContent = lider;
+  document.getElementById('kpiMotoristas').textContent = mot;
+  document.getElementById('kpiSpan').textContent = span;
+}
+
+// ============================================================
+// DATA
+// ============================================================
+function setarData() {
+  const hoje = new Date();
+  const opts = { day: '2-digit', month: 'long', year: 'numeric' };
+  const str = hoje.toLocaleDateString('pt-BR', opts);
+  document.getElementById('reportDate').textContent = `Documento gerado em ${str}`;
+  document.getElementById('footerDate').textContent = str;
+}
+
+// ============================================================
+// EXPORT EXCEL
+// ============================================================
+function exportarExcel() {
+  const rows = [];
+  rows.push(['Nível', 'Nome', 'Cargo', 'Reporta a', 'Área / Turno']);
+
+  rows.push(['Diretoria', ESTRUTURA.diretor.nome, ESTRUTURA.diretor.cargo, '—', 'Direção']);
+
+  // Áreas que reportam direto à diretoria (E-commerce via Baby)
+  ESTRUTURA.areasDir.forEach(area => {
+    const areaName = area.cargo.split('—')[1]?.trim() || area.cargo;
+    rows.push(['Liderança de Área', area.nome, area.cargo, ESTRUTURA.diretor.nome, areaName]);
+    for (const grupo in area.equipe) {
+      area.equipe[grupo].forEach(p => {
+        rows.push([grupo, p.nome, p.cargo, area.nome, areaName]);
+      });
+    }
+  });
+
+  // Gerência Logística
+  rows.push(['Gerência', ESTRUTURA.gerente.nome, ESTRUTURA.gerente.cargo, ESTRUTURA.diretor.nome, 'Logística']);
+
+  // Áreas no nível de gerência (Facilities)
+  ESTRUTURA.areasGerencia.forEach(area => {
+    rows.push(['Gerência', area.nome, area.cargo, ESTRUTURA.diretor.nome, area.cargo]);
+    for (const grupo in area.equipe) {
+      area.equipe[grupo].forEach(p => {
+        rows.push([grupo, p.nome, p.cargo, area.nome, area.cargo]);
+      });
+    }
+  });
+
+  // Áreas independentes vinculadas à gerência (Retira, Analista Faturamento)
+  if (ESTRUTURA.areasIndep) {
+    ESTRUTURA.areasIndep.forEach(area => {
+      rows.push(['Área vinculada', area.nome, area.cargo, ESTRUTURA.gerente.nome, area.cargo]);
+    });
+  }
+
+  ESTRUTURA.supervisores.forEach(sup => {
+    const area = sup.turno === 'M' ? 'Motoristas' : `Turno ${sup.turno}`;
+    rows.push(['Supervisão', sup.nome, sup.cargo, ESTRUTURA.gerente.nome, area]);
+    for (const grupo in sup.equipe) {
+      sup.equipe[grupo].forEach(p => {
+        rows.push([grupo, p.nome, p.cargo, sup.nome, area]);
+      });
+    }
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  // larguras
+  ws['!cols'] = [{ wch: 18 }, { wch: 32 }, { wch: 32 }, { wch: 28 }, { wch: 16 }];
+  // estilo do cabeçalho (negrito) — SheetJS Community não estiliza, mas a coluna fica legível
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Organograma');
+
+  // Aba 2: KPIs
+  const kpis = [
+    ['Indicador', 'Valor'],
+    ['Total de colaboradores', totalGeral()],
+    ['Lideranças', totalLiderancas()],
+    ['Motoristas', totalMotoristas()],
+    ['Turnos operacionais', 3],
+    ['Span of control médio', ((totalGeral() - totalLiderancas()) / totalLiderancas()).toFixed(1)],
+    ['Data do documento', new Date().toLocaleDateString('pt-BR')]
+  ];
+  const wsKpi = XLSX.utils.aoa_to_sheet(kpis);
+  wsKpi['!cols'] = [{ wch: 30 }, { wch: 20 }];
+  XLSX.utils.book_append_sheet(wb, wsKpi, 'KPIs');
+
+  XLSX.writeFile(wb, 'organograma_logistica.xlsx');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+montarArvore();
+atualizarKPIs();
+setarData();
+</script>
+
+</body>
+</html>
