@@ -452,6 +452,46 @@
     font-size: 10px;
     color: var(--muted);
   }
+  .team-member .member-atrib-btn {
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--gold);
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+  }
+  .team-member .member-atrib-btn:hover {
+    background: var(--gold);
+    color: #0d1117;
+    border-color: var(--gold);
+    transform: scale(1.05);
+  }
+  .team-member .member-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #4ade80, #16a34a);
+    color: #052e16;
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: 6px;
+    vertical-align: middle;
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+    animation: pulseTag 2s ease-in-out infinite;
+  }
+  @keyframes pulseTag {
+    0%, 100% { box-shadow: 0 0 8px rgba(74, 222, 128, 0.4); }
+    50% { box-shadow: 0 0 14px rgba(74, 222, 128, 0.8); }
+  }
 
   /* ===== Seção de turnos ===== */
   .shift-section-title {
@@ -482,6 +522,194 @@
     color: var(--muted);
   }
 
+  /* ===== Botão atribuições no card ===== */
+  .btn-atribuicoes {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--gold);
+    border-radius: 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .btn-atribuicoes + .btn-atribuicoes { margin-top: 6px; }
+  .btn-atribuicoes:hover {
+    background: var(--gold);
+    color: #0d1117;
+    border-color: var(--gold);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  }
+
+  /* ===== Modal de atribuições ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-overlay.show { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-content {
+    background: linear-gradient(135deg, rgba(28, 34, 48, 0.98), rgba(13, 17, 23, 0.98));
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 760px;
+    max-height: 88vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-header {
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: linear-gradient(180deg, rgba(212, 175, 55, 0.06), transparent);
+  }
+  .modal-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .modal-header .modal-sub {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .modal-close {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line-2);
+    color: var(--muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .modal-close:hover {
+    background: rgba(248, 113, 113, 0.15);
+    border-color: rgba(248, 113, 113, 0.4);
+    color: #fca5a5;
+  }
+  .modal-body {
+    padding: 20px 28px 24px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .atrib-categoria {
+    margin-bottom: 22px;
+  }
+  .atrib-categoria:last-child { margin-bottom: 0; }
+  .atrib-cat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .atrib-cat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+  .atrib-cat-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .atrib-cat-count {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .atrib-cat-count strong { color: var(--gold); }
+  .atrib-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .atrib-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .atrib-item:hover {
+    background: rgba(212, 175, 55, 0.06);
+    border-color: rgba(212, 175, 55, 0.25);
+  }
+  .atrib-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .atrib-text {
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.4;
+  }
+  .modal-footer {
+    padding: 16px 28px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: rgba(0,0,0,0.2);
+  }
+  .modal-footer-info {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+  .modal-footer-actions { display: flex; gap: 8px; }
+
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--bg-1); }
   ::-webkit-scrollbar-thumb { background: var(--bg-2); border-radius: 5px; }
@@ -502,6 +730,24 @@
     .exec-card { width: 100%; max-width: 100%; }
     .team-panel-list { grid-template-columns: 1fr; }
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Modal full-screen no mobile */
+    .modal-overlay { padding: 0; align-items: flex-end; }
+    .modal-content {
+      max-width: 100%;
+      max-height: 95vh;
+      border-radius: 16px 16px 0 0;
+      width: 100%;
+    }
+    .modal-header { padding: 18px 20px; }
+    .modal-header h2 { font-size: 16px; }
+    .modal-body { padding: 16px 20px 20px; }
+    .modal-footer { padding: 14px 20px; }
+    .atrib-list { grid-template-columns: 1fr; }
+    .atrib-cat-header { gap: 8px; }
+    .atrib-cat-title { font-size: 12px; }
+    .atrib-item { padding: 12px 14px; }
+    .atrib-text { font-size: 13px; }
   }
 
   /* ===== Impressão (PDF) — usa light mesmo em dark mode ===== */
@@ -519,6 +765,7 @@
     }
     .header-left .subtitle, .footer { color: #6b7280 !important; }
     .header-right, .footer .footer-brand { display: none; }
+    .btn-atribuicoes, .modal-overlay { display: none !important; }
     .kpi { background: white !important; }
     .kpi-label, .kpi-sub { color: #6b7280 !important; }
     .kpi-value { color: #111827 !important; }
@@ -604,6 +851,28 @@
   </div>
 </div>
 
+<!-- Modal de Atribuições -->
+<div class="modal-overlay" id="modalAtribuicoes" onclick="if(event.target===this)fecharModal()">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div>
+        <h2 id="modalTitulo">Atribuições e Atividades</h2>
+        <div class="modal-sub" id="modalSubtitulo">Setor de Motoristas</div>
+      </div>
+      <button class="modal-close" onclick="fecharModal()" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="atribContent"></div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-info"></div>
+      <div class="modal-footer-actions">
+        <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ============================================================
 // DADOS - estrutura organizacional completa
@@ -617,7 +886,8 @@ const ESTRUTURA = {
   gerente: {
     nome: "Gabriel Barbosa M. Silva",
     cargo: "Gerente Logístico",
-    nivel: "gerente"
+    nivel: "gerente",
+    atribuicoesKey: "gabriel"
   },
   supervisores: [
     {
@@ -626,9 +896,13 @@ const ESTRUTURA = {
       cargo: "Supervisor — Carregamento (Turno A)",
       nivel: "supervisor",
       turno: "A",
+      atribuicoes: [
+        { key: "supervisoresPadrao", label: "📋 Minhas atribuições" },
+        { key: "laudiceia", label: "↩️ Devoluções (Laudiceia)" }
+      ],
       equipe: {
         "Liderança e Operação": [
-          { nome: "Lucas Ferreira", cargo: "Líder de Carregamento", nivel: "lider" },
+          { nome: "Lucas Ferreira", cargo: "Líder de Carregamento", nivel: "lider", atribuicoesKey: "lideresPadrao" },
           { nome: "Eduardo Toledo Santana", cargo: "Assistente Logística Faturamento", nivel: "assistente" }
         ],
         "Operacional": [
@@ -645,9 +919,15 @@ const ESTRUTURA = {
       cargo: "Supervisor — Armazenagem (Turno A)",
       nivel: "supervisor",
       turno: "A",
+      atribuicoes: [
+        { key: "supervisoresPadrao", label: "📋 Minhas atribuições" },
+        { key: "conferentesVanessa", label: "📦 Atribuições conferentes" },
+        { key: "auxiliaresVanessa", label: "🗂️ Atribuições auxiliares" },
+        { key: "empilhadeira", label: "🏗️ Op. de empilhadeira" }
+      ],
       equipe: {
         "Liderança": [
-          { nome: "Rosicleude Silva", cargo: "Líder de Estoque", nivel: "lider" }
+          { nome: "Rosicleude Silva", cargo: "Líder de Estoque", nivel: "lider", atribuicoesKey: "lideresPadrao" }
         ],
         "Conferência": [
           { nome: "Vinicius dos Santos", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
@@ -685,9 +965,14 @@ const ESTRUTURA = {
       cargo: "Supervisor (Turno B)",
       nivel: "supervisor",
       turno: "B",
+      atribuicoes: [
+        { key: "supervisoresPadrao", label: "📋 Minhas atribuições" },
+        { key: "conferentesTurnoBC", label: "📋 Atribuições conferentes" },
+        { key: "auxiliaresTurnoBC", label: "📦 Atribuições auxiliares" }
+      ],
       equipe: {
         "Liderança": [
-          { nome: "Mauricio Novaes Nascimento", cargo: "Líder", nivel: "lider" }
+          { nome: "Mauricio Novaes Nascimento", cargo: "Líder", nivel: "lider", atribuicoesKey: "lideresPadrao" }
         ],
         "Conferência": [
           { nome: "Lucas", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
@@ -708,11 +993,21 @@ const ESTRUTURA = {
     },
     {
       id: "c-sup1",
-      nome: "Jefferson Virissimo de Lima",
-      cargo: "Supervisor (Turno C)",
+      nome: "Jefferson Virissimo & Edgar Claro",
+      cargo: "Supervisão (Turno C)",
       nivel: "supervisor",
       turno: "C",
+      atribuicoes: [
+        { key: "supervisoresPadrao", label: "📋 Minhas atribuições" },
+        { key: "conferentesTurnoBC", label: "📋 Atribuições conferentes" },
+        { key: "auxiliaresTurnoBC", label: "📦 Atribuições auxiliares" },
+        { key: "empilhadeira", label: "🏗️ Op. de empilhadeira" }
+      ],
       equipe: {
+        "Supervisão": [
+          { nome: "Jefferson Virissimo de Lima", cargo: "Supervisor", nivel: "supervisor" },
+          { nome: "Edgar Claro", cargo: "Supervisor", nivel: "supervisor" }
+        ],
         "Conferência": [
           { nome: "Cassio Luis", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Michel Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
@@ -736,19 +1031,16 @@ const ESTRUTURA = {
       }
     },
     {
-      id: "c-sup-edgar",
-      nome: "Edgar Claro",
-      cargo: "Supervisor (Turno C)",
-      nivel: "supervisor",
-      turno: "C",
-      equipe: {}
-    },
-    {
       id: "c-sup-carr",
       nome: "Cleiton Aparecido",
       cargo: "Supervisor de Carregamento (Turno C)",
       nivel: "supervisor",
       turno: "C",
+      atribuicoes: [
+        { key: "supervisoresPadrao", label: "📋 Atribuições padrão" },
+        { key: "cleiton", label: "👔 Minhas atribuições" },
+        { key: "equipeCleiton", label: "📦 Atribuições da equipe" }
+      ],
       equipe: {
         "Auxiliares": [
           { nome: "Rubenildo Silva Cerqueira", cargo: "Aux. Logística", nivel: "aux" },
@@ -764,6 +1056,11 @@ const ESTRUTURA = {
       cargo: "Supervisor de Motoristas",
       nivel: "supervisor",
       turno: "M",
+      atribuicoes: [
+        { key: "supervisoresPadrao", label: "📋 Atribuições padrão" },
+        { key: "rogerio", label: "👔 Minhas atribuições" },
+        { key: "motoristas", label: "🚚 Atribuições da equipe" }
+      ],
       equipe: {
         "Frota": [
           { nome: "Eduardo Araujo", cargo: "M. Entregador Pleno", nivel: "motorista" },
@@ -777,7 +1074,7 @@ const ESTRUTURA = {
           { nome: "Jefferson Luis Torres", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Marcelo Severiano Ramos", cargo: "M. Entregador Master (afastado)", nivel: "motorista" },
           { nome: "Jose Luis Mantovani", cargo: "M. Entregador Master", nivel: "motorista" },
-          { nome: "Alexandre Lopes", cargo: "M. Entregador Master - Novo", nivel: "motorista" }
+          { nome: "Alexandre Lopes", cargo: "M. Entregador Master", nivel: "motorista", tag: "NOVO" }
         ]
       }
     }
@@ -792,7 +1089,7 @@ const ESTRUTURA = {
       reportaA: "Eduardo Martins",
       equipe: {
         "E-commerce": [
-          { nome: "Gabriel Ribeiro Marins", cargo: "Coordenador E-commerce", nivel: "assistente" }
+          { nome: "Gabriel Ribeiro Marins", cargo: "Setor E-commerce", nivel: "assistente" }
         ]
       }
     }
@@ -802,12 +1099,14 @@ const ESTRUTURA = {
     {
       nome: "Erivancleide da Silva",
       cargo: "Setor de Retira",
-      nivel: "analista"
+      nivel: "analista",
+      atribuicoesKey: "erivancleide"
     },
     {
       nome: "Lucas Souza",
       cargo: "Analista de Faturamento",
-      nivel: "analista"
+      nivel: "analista",
+      atribuicoesKey: "lucasSouza"
     }
   ],
   // Áreas no mesmo nível do Gerente Logístico (reportam ao Diretor)
@@ -825,6 +1124,465 @@ const ESTRUTURA = {
       }
     }
   ]
+};
+
+// ============================================================
+// ATRIBUIÇÕES POR ÁREA
+// ============================================================
+const ATRIBUICOES = {
+  gabriel: {
+    titulo: "Atribuições — Gabriel Barbosa M. Silva",
+    subtitulo: "Gerência de Logística",
+    categorias: [
+      {
+        nome: "Gestão Estratégica",
+        icone: "🎯",
+        itens: [
+          "Gestão geral do setor de logística",
+          "Definição de metas, indicadores e plano de ação",
+          "Alinhamento estratégico com a diretoria",
+          "Desenvolvimento e formação dos supervisores",
+          "Tomada de decisão em casos críticos da operação"
+        ]
+      },
+      {
+        nome: "Operação e Controle",
+        icone: "📊",
+        itens: [
+          "Acompanhamento da produtividade dos turnos",
+          "Análise de custos logísticos e propostas de redução",
+          "Garantia do cumprimento de prazos de entrega",
+          "Validação de processos e procedimentos operacionais",
+          "Aprovação de contratações, escalas e movimentações"
+        ]
+      },
+      {
+        nome: "Integração e Relacionamento",
+        icone: "🤝",
+        itens: [
+          "Integração entre logística, comercial, e-commerce e facilities",
+          "Negociação com fornecedores e prestadores de serviço",
+          "Representação da área em reuniões corporativas"
+        ]
+      }
+    ]
+  },
+  lucasSouza: {
+    titulo: "Atribuições — Lucas Souza",
+    subtitulo: "Analista de Faturamento",
+    categorias: [
+      {
+        nome: "Faturamento",
+        icone: "🧾",
+        itens: [
+          "Análise e processamento do faturamento",
+          "Conferência de pedidos a faturar",
+          "Acompanhamento das notas emitidas"
+        ]
+      },
+      {
+        nome: "Apoio Operacional",
+        icone: "🤝",
+        itens: [
+          "Auxiliar nos setores que precisarem (separação, conferência, etc.)",
+          "Suporte às equipes em demandas de alto volume"
+        ]
+      }
+    ]
+  },
+  erivancleide: {
+    titulo: "Atribuições — Erivancleide da Silva",
+    subtitulo: "Setor de Retira",
+    categorias: [
+      {
+        nome: "Preparação e Emissão",
+        icone: "🧾",
+        itens: [
+          "Preparar pedido no sistema se necessário",
+          "Impressão do pedido"
+        ]
+      },
+      {
+        nome: "Acompanhamento",
+        icone: "👀",
+        itens: [
+          "Acompanhamento do pedido na separação / checkout"
+        ]
+      },
+      {
+        nome: "Conferência Financeira",
+        icone: "💰",
+        itens: [
+          "Receber e conferir valores (sistema x físico)"
+        ]
+      }
+    ]
+  },
+  lideresPadrao: {
+    titulo: "Atribuições — Líder",
+    subtitulo: "Atribuições padrão da liderança",
+    categorias: [
+      {
+        nome: "Liderança e Coordenação",
+        icone: "⭐",
+        itens: [
+          "Liderar o setor",
+          "Responsável pelo fluxo de trabalho",
+          "Delega os trabalhos e fiscaliza",
+          "Coordena o processo",
+          "Alinhamento da produção"
+        ]
+      }
+    ]
+  },
+  laudiceia: {
+    titulo: "Atribuições — Laudiceia de Souza",
+    subtitulo: "Setor de Devoluções",
+    categorias: [
+      {
+        nome: "Processo de Devolução",
+        icone: "↩️",
+        itens: [
+          "Faz todo o processo de devolução",
+          "Análise do produto devolvido",
+          "Acompanhamento de produto a ser devolvido"
+        ]
+      },
+      {
+        nome: "Validação Fiscal",
+        icone: "📑",
+        itens: [
+          "Verificar se o cliente fez/emitiu a nota ou não",
+          "Dar andamento no sistema na situação do mesmo"
+        ]
+      },
+      {
+        nome: "Organização",
+        icone: "🗂️",
+        itens: [
+          "Organização do setor"
+        ]
+      }
+    ]
+  },
+  supervisoresPadrao: {
+    titulo: "Atribuições — Supervisor",
+    subtitulo: "Atribuições padrão da supervisão",
+    categorias: [
+      {
+        nome: "Gestão e Processos",
+        icone: "👔",
+        itens: [
+          "Gestão de processos e rotinas",
+          "Gestão das equipes",
+          "Desenvolve os líderes",
+          "Avalia procedimentos operacionais",
+          "Melhorias de processo"
+        ]
+      },
+      {
+        nome: "Análise e Controle",
+        icone: "📊",
+        itens: [
+          "Avaliação de produtividade",
+          "Análise de controle de desperdícios e avarias",
+          "Acompanha prazo de vencimento e validade dos produtos",
+          "Estabelece comunicação com o controle comercial"
+        ]
+      },
+      {
+        nome: "Operação",
+        icone: "📦",
+        itens: [
+          "Liberação dos pedidos"
+        ]
+      }
+    ]
+  },
+  auxiliaresTurnoBC: {
+    titulo: "Atribuições — Auxiliares",
+    subtitulo: "Auxiliares de Logística (Turnos B e C)",
+    categorias: [
+      {
+        nome: "Separação",
+        icone: "📦",
+        itens: [
+          "Separação dos itens dos pedidos",
+          "Armazena os pedidos em carrinhos e leva para conferência",
+          "Separa os pedidos de acordo com as prioridades das cargas"
+        ]
+      },
+      {
+        nome: "Operação",
+        icone: "🧹",
+        itens: [
+          "Limpeza dos produtos"
+        ]
+      },
+      {
+        nome: "Apoio",
+        icone: "🤝",
+        itens: [
+          "Apoio Liderança",
+          "Apoio Checkout"
+        ]
+      }
+    ]
+  },
+  conferentesTurnoBC: {
+    titulo: "Atribuições — Conferentes",
+    subtitulo: "Equipe de conferência (Turnos B e C)",
+    categorias: [
+      {
+        nome: "Conferência",
+        icone: "📋",
+        itens: [
+          "Conferência dos itens do pedido",
+          "Limpeza e fiscalização dos produtos"
+        ]
+      },
+      {
+        nome: "Embalagem e Identificação",
+        icone: "📦",
+        itens: [
+          "Embalagem dos produtos",
+          "Etiquetagem de código de barras",
+          "Identificação dos volumes"
+        ]
+      },
+      {
+        nome: "Apoio e Expedição",
+        icone: "🚛",
+        itens: [
+          "Apoio Liderança",
+          "Apoio a separação",
+          "Transferência dos volumes conferidos para o setor de expedição"
+        ]
+      }
+    ]
+  },
+  empilhadeira: {
+    titulo: "Atribuições — Operador de Empilhadeira",
+    subtitulo: "Função especializada de movimentação",
+    categorias: [
+      {
+        nome: "Operação",
+        icone: "🏗️",
+        itens: [
+          "Operar empilhadeira",
+          "Manuseia produtos",
+          "Realiza a movimentação de paletes entre diferentes níveis do armazém (subida e descida) e entre áreas de armazenamento"
+        ]
+      },
+      {
+        nome: "Apoio e Controle",
+        icone: "📋",
+        itens: [
+          "Colaborar com as equipes de estoque e recebimento",
+          "Manter registros precisos das operações de movimentação realizadas, auxiliando no rastreabilidade dos produtos"
+        ]
+      }
+    ]
+  },
+  conferentesVanessa: {
+    titulo: "Atribuições — Conferentes",
+    subtitulo: "Conferentes sob a Vanessa Ribeiro",
+    categorias: [
+      {
+        nome: "Recebimento e Tratamento",
+        icone: "📋",
+        itens: [
+          "Recebimento — conferência",
+          "Tratamento — etiquetar e embalar"
+        ]
+      },
+      {
+        nome: "Armazenagem",
+        icone: "🏭",
+        itens: [
+          "Armazenagem — paletizar e identificar",
+          "Endereçamento — pulmão"
+        ]
+      },
+      {
+        nome: "Pós-venda",
+        icone: "↩️",
+        itens: [
+          "Devolução, troca, defeito e reentrega"
+        ]
+      }
+    ]
+  },
+  auxiliaresVanessa: {
+    titulo: "Atribuições — Auxiliares",
+    subtitulo: "Auxiliares de Armazenagem sob a Vanessa Ribeiro",
+    categorias: [
+      {
+        nome: "Organização do Armazém",
+        icone: "🗂️",
+        itens: [
+          "Organização do PPP",
+          "Organização do Pesado",
+          "Organização geral do armazém"
+        ]
+      },
+      {
+        nome: "Abastecimento",
+        icone: "📦",
+        itens: [
+          "Abastecimento do picking",
+          "Abastecimento do pulmão"
+        ]
+      },
+      {
+        nome: "Inventário",
+        icone: "📑",
+        itens: [
+          "Participação no Inventário"
+        ]
+      }
+    ]
+  },
+  cleiton: {
+    titulo: "Atribuições — Cleiton Aparecido",
+    subtitulo: "Supervisor de Carregamento (Turno C)",
+    categorias: [
+      {
+        nome: "Coordenação e Supervisão",
+        icone: "👔",
+        itens: [
+          "Coordena a chegada e o carregamento dos carros",
+          "Acompanha carregamento, organização e transporte de cargas, de acordo com o produto e itinerário de entrega, a fim de evitar danos",
+          "Delega atividades aos auxiliares de logística",
+          "Orienta e acompanha profissionais de menor experiência",
+          "Supervisiona atividades e escalas, inspeciona documentação"
+        ]
+      },
+      {
+        nome: "Responsabilidades Operacionais",
+        icone: "📦",
+        itens: [
+          "Responsável pela finalização dos pesados",
+          "Responsável pelas ocorrências de devolução",
+          "Liberação para carregamento"
+        ]
+      }
+    ]
+  },
+  equipeCleiton: {
+    titulo: "Atribuições — Equipe de Carregamento",
+    subtitulo: "Colaboradores sob o Cleiton Aparecido",
+    categorias: [
+      {
+        nome: "Conferência",
+        icone: "📋",
+        itens: [
+          "Conferência dos pesados",
+          "Conferência dos volumes",
+          "Conferência dos pedidos complementares"
+        ]
+      },
+      {
+        nome: "Carregamento",
+        icone: "🚚",
+        itens: [
+          "Carregamento dos carros",
+          "Carregamento dos pesados"
+        ]
+      }
+    ]
+  },
+  rogerio: {
+    titulo: "Atribuições — Rogério de Ana Machado",
+    subtitulo: "Coordenação do setor de transporte",
+    categorias: [
+      {
+        nome: "Coordenação e Gestão",
+        icone: "👔",
+        itens: [
+          "Coordenar o setor de transporte",
+          "Atua com contratação de motoristas e freteiros",
+          "Gestão de toda equipe Motoristas e entregadores e Interna",
+          "Responsável pela jornada de trabalho dos entregadores",
+          "Definições de carros para retiradas",
+          "Participa de reuniões para alinhar estratégias e garantir agilidade nos processos",
+          "Suporte Fornecedores / Coordenadores"
+        ]
+      },
+      {
+        nome: "Análise e Indicadores",
+        icone: "📊",
+        itens: [
+          "Verifica custos logísticos de transporte e elaborar planilhas e relatórios",
+          "Analisa e propõe soluções para os problemas da área",
+          "Coleta dados, divulga e implementa melhorias nos indicadores de desempenho",
+          "Monitora o desempenho dos motoristas"
+        ]
+      },
+      {
+        nome: "Frota e Manutenção",
+        icone: "🛠️",
+        itens: [
+          "Responsável pela manutenção da frota",
+          "Negociação com fornecedores de peças — manutenção",
+          "Administrar Check List dos veículos (avarias, pneus, sistema elétrico, higienização, arrefecimento, freios, equipamentos obrigatórios, troca de óleo)",
+          "Auditar a verificação do nível do líquido de arrefecimento do reservatório",
+          "Auditar a verificação do nível do combustível",
+          "Acompanhar prazos ou quilometragem para revisões periódicas",
+          "Providenciar revisões periódicas",
+          "Administrar e acompanhar pequenos reparos mecânicos de emergência"
+        ]
+      }
+    ]
+  },
+  motoristas: {
+    titulo: "Atribuições e Atividades — Motoristas",
+    subtitulo: "Funções operacionais sob responsabilidade do Rogério",
+    categorias: [
+      {
+        nome: "Entregas e Operação",
+        icone: "🚚",
+        itens: [
+          "Efetuar entrega de pedidos nos clientes",
+          "Organizar as cargas no veículo",
+          "Auxiliar na carga e descarga do veículo",
+          "Separação e conferência da mercadoria no cliente",
+          "Conferência de trocas e devoluções",
+          "Conferência de recebimentos",
+          "Retirada e conferência de mercadorias nos fornecedores",
+          "Verificar condições físicas da carga",
+          "Carregar e manusear cargas"
+        ]
+      },
+      {
+        nome: "Recebimentos Financeiros",
+        icone: "💰",
+        itens: [
+          "Informar valor a receber",
+          "Receber numerário, cheques, etc.",
+          "Conferir dados do cliente para entrega de mercadorias e execução de serviços",
+          "Recolher assinatura do recebedor da mercadoria",
+          "Assinar comprovante de débito no fornecimento de combustíveis"
+        ]
+      },
+      {
+        nome: "Cuidados com o Veículo",
+        icone: "🔧",
+        itens: [
+          "Verificar nível do líquido de arrefecimento do reservatório",
+          "Identificar avarias no veículo",
+          "Verificar nível do combustível",
+          "Abastecer veículo",
+          "Verificar estado dos pneus",
+          "Testar sistema elétrico",
+          "Higienizar veículos",
+          "Testar sistema de freios",
+          "Conferir equipamentos obrigatórios do veículo",
+          "Trocar óleos"
+        ]
+      }
+    ]
+  }
 };
 
 // ============================================================
@@ -880,12 +1638,23 @@ function totalMotoristas() {
 function renderCard(pessoa, expandable = false, count = 0, subtle = false) {
   const div = document.createElement('div');
   div.className = `exec-card level-${pessoa.nivel}` + (expandable ? ' expandable' : '') + (subtle ? ' subtle' : '');
-  div.innerHTML = `
+  let html = `
     <div class="avatar">${iniciais(pessoa.nome)}</div>
     <div class="nome">${pessoa.nome}</div>
     <div class="cargo">${pessoa.cargo}</div>
-    ${expandable ? `<div class="team-info"><span>Equipe direta</span><span class="count">${count}</span></div>` : ''}
   `;
+  if (expandable) {
+    html += `<div class="team-info"><span>Equipe direta</span><span class="count">${count}</span></div>`;
+  }
+  // Suporta tanto atribuicoesKey (single) quanto atribuicoes (array)
+  if (pessoa.atribuicoes && pessoa.atribuicoes.length) {
+    pessoa.atribuicoes.forEach(a => {
+      html += `<button class="btn-atribuicoes" onclick="event.stopPropagation();abrirAtribuicoes('${a.key}')">${a.label}</button>`;
+    });
+  } else if (pessoa.atribuicoesKey) {
+    html += `<button class="btn-atribuicoes" onclick="event.stopPropagation();abrirAtribuicoes('${pessoa.atribuicoesKey}')">📋 Ver atribuições</button>`;
+  }
+  div.innerHTML = html;
   return div;
 }
 
@@ -913,13 +1682,18 @@ function renderTeamPanel(sup) {
     html += `<div class="team-panel-section-title">${grupo} · ${membros.length}</div>`;
     html += `<div class="team-panel-list">`;
     membros.forEach(m => {
+      const temAtrib = m.atribuicoesKey || (m.atribuicoes && m.atribuicoes.length);
+      const btnAtrib = temAtrib
+        ? `<button class="member-atrib-btn" onclick="event.stopPropagation();abrirAtribuicoes('${m.atribuicoesKey || m.atribuicoes[0].key}')" title="Ver atribuições">📋</button>`
+        : '';
       html += `
         <div class="team-member">
           <div class="mini-avatar">${iniciais(m.nome)}</div>
           <div class="member-info">
-            <div class="member-name">${m.nome}</div>
+            <div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}</div>
             <div class="member-role">${m.cargo}</div>
           </div>
+          ${btnAtrib}
         </div>
       `;
     });
@@ -1142,6 +1916,59 @@ function exportarExcel() {
 
   XLSX.writeFile(wb, 'organograma_logistica.xlsx');
 }
+
+// ============================================================
+// MODAL DE ATRIBUIÇÕES
+// ============================================================
+let atribAtual = null;
+
+function abrirAtribuicoes(chave) {
+  const dados = ATRIBUICOES[chave];
+  if (!dados) return;
+  atribAtual = chave;
+
+  document.getElementById('modalTitulo').textContent = dados.titulo;
+  document.getElementById('modalSubtitulo').textContent = dados.subtitulo;
+
+  const content = document.getElementById('atribContent');
+  content.innerHTML = '';
+
+  dados.categorias.forEach(cat => {
+    const cat_el = document.createElement('div');
+    cat_el.className = 'atrib-categoria';
+
+    cat_el.innerHTML = `
+      <div class="atrib-cat-header">
+        <div class="atrib-cat-icon">${cat.icone}</div>
+        <div class="atrib-cat-title">${cat.nome}</div>
+        <div class="atrib-cat-count"><strong>${cat.itens.length}</strong> atividades</div>
+      </div>
+      <div class="atrib-list">
+        ${cat.itens.map(item => `
+          <div class="atrib-item">
+            <div class="atrib-bullet"></div>
+            <div class="atrib-text">${item}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    content.appendChild(cat_el);
+  });
+
+  document.getElementById('modalAtribuicoes').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharModal() {
+  document.getElementById('modalAtribuicoes').classList.remove('show');
+  document.body.style.overflow = '';
+  atribAtual = null;
+}
+
+// Fechar com ESC
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') fecharModal();
+});
 
 // ============================================================
 // INIT
