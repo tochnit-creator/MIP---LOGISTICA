@@ -121,6 +121,27 @@
     letter-spacing: 1px;
     font-weight: 600;
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .kpi-info {
+    background: transparent;
+    border: none;
+    color: var(--muted-2);
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 50%;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .kpi-info:hover {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold);
+    transform: scale(1.15);
   }
   .kpi-value {
     font-size: 28px;
@@ -210,11 +231,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
     margin-bottom: 10px;
     box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+  }
+  .exec-card .avatar svg {
+    width: 22px;
+    height: 22px;
+    display: block;
   }
   .exec-card .nome {
     font-size: 13px;
@@ -267,8 +290,11 @@
     background: linear-gradient(135deg, #f4d574, #d4af37);
     width: 48px;
     height: 48px;
-    font-size: 15px;
     color: #0d1117;
+  }
+  .exec-card.level-diretor .avatar svg {
+    width: 28px;
+    height: 28px;
   }
   .exec-card.level-diretor .nome { font-size: 15px; }
 
@@ -300,8 +326,11 @@
   .exec-card.subtle .avatar {
     width: 30px;
     height: 30px;
-    font-size: 11px;
     margin-bottom: 8px;
+  }
+  .exec-card.subtle .avatar svg {
+    width: 17px;
+    height: 17px;
   }
   .exec-card.subtle .nome { font-size: 12px; }
   .exec-card.subtle .cargo { font-size: 10px; }
@@ -426,18 +455,21 @@
   }
   .team-member:hover { background: var(--gold-soft); }
   .team-member .mini-avatar {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: rgba(148, 163, 184, 0.15);
-    color: var(--muted);
+    color: var(--gold);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
-    font-weight: 600;
     flex-shrink: 0;
     border: 1px solid var(--line);
+  }
+  .team-member .mini-avatar svg {
+    width: 15px;
+    height: 15px;
+    display: block;
   }
   .team-member .member-info { min-width: 0; }
   .team-member .member-name {
@@ -710,6 +742,224 @@
   }
   .modal-footer-actions { display: flex; gap: 8px; }
 
+  /* ===== Modo Apresentação (Fullscreen) ===== */
+  body.modo-apresentacao {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.15), transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(59, 89, 152, 0.12), transparent 55%),
+      linear-gradient(180deg, #0a0e16 0%, #050810 100%) !important;
+  }
+  body.modo-apresentacao .container { max-width: 1600px; }
+  body.modo-apresentacao .header-left h1 { font-size: 40px !important; }
+  body.modo-apresentacao .header-left .subtitle { font-size: 16px; }
+  body.modo-apresentacao .kpi-grid {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  body.modo-apresentacao .kpi-value { font-size: 38px !important; }
+  body.modo-apresentacao .kpi-label { font-size: 12px; }
+  body.modo-apresentacao .exec-card { transform: scale(1.04); }
+  body.modo-apresentacao .exec-card:hover { transform: scale(1.07) translateY(-2px); }
+  body.modo-apresentacao .nome { font-size: 14px !important; }
+  body.modo-apresentacao .cargo { font-size: 12px !important; }
+  body.modo-apresentacao .shift-section-title { font-size: 13px !important; }
+  body.modo-apresentacao #btnFullscreen {
+    background: var(--gold);
+    color: #0d1117;
+    border-color: var(--gold);
+    font-weight: 700;
+  }
+  .modo-apresentacao-hint {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 11px;
+    color: var(--muted);
+    z-index: 999;
+    letter-spacing: 0.3px;
+  }
+  body.modo-apresentacao .modo-apresentacao-hint { display: block; }
+  .modo-apresentacao-hint kbd {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--line-2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--gold);
+    margin: 0 3px;
+  }
+
+  /* ===== Seções do modal de info KPI ===== */
+  .info-kpi-secao {
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .info-kpi-secao:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .info-kpi-titulo {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-kpi-titulo::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+  .info-kpi-texto {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  /* ===== Régua do Span of Control ===== */
+  .regua-span { margin-top: 8px; }
+  .regua-numeros {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+  .regua-resumo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 22px;
+    background: rgba(212, 175, 55, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 10px;
+  }
+  .regua-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .regua-num-destaque {
+    color: var(--gold);
+    font-size: 30px;
+    text-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+  }
+  .regua-divider {
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .regua-resumo-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-top: 8px;
+  }
+  .regua-barra {
+    position: relative;
+    height: 14px;
+    border-radius: 7px;
+    overflow: visible;
+    display: flex;
+    margin: 24px 0 12px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .regua-faixa {
+    height: 100%;
+  }
+  .regua-faixa-1 { width: 25%; background: linear-gradient(90deg, #ef4444, #f87171); border-radius: 7px 0 0 7px; }
+  .regua-faixa-2 { width: 25%; background: linear-gradient(90deg, #4ade80, #22c55e); }
+  .regua-faixa-3 { width: 25%; background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+  .regua-faixa-4 { width: 25%; background: linear-gradient(90deg, #ef4444, #dc2626); border-radius: 0 7px 7px 0; }
+  .regua-marcador {
+    position: absolute;
+    top: -10px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+  }
+  .regua-marcador-pin {
+    width: 4px;
+    height: 34px;
+    background: var(--ink);
+    box-shadow: 0 0 0 2px var(--paper-solid), 0 0 12px rgba(0,0,0,0.5);
+    border-radius: 2px;
+  }
+  .regua-marcador-valor {
+    margin-top: 6px;
+    background: var(--ink);
+    color: var(--gold);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid var(--gold);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    font-variant-numeric: tabular-nums;
+  }
+  .regua-legenda {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .regua-legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .regua-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .regua-status {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.02);
+    border-left: 3px solid;
+    border-radius: 6px;
+  }
+  .regua-status-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .regua-status-titulo {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .regua-status-desc {
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--bg-1); }
   ::-webkit-scrollbar-thumb { background: var(--bg-2); border-radius: 5px; }
@@ -752,48 +1002,221 @@
 
   /* ===== Impressão (PDF) — usa light mesmo em dark mode ===== */
   @media print {
-    @page { size: A3 landscape; margin: 1.5cm; }
+    @page { size: A4; margin: 0; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
     body {
       padding: 0;
-      background: white !important;
-      color: #111827 !important;
+      background: linear-gradient(180deg, #0d1117 0%, #1c2230 100%) !important;
+      color: #f1f5f9 !important;
+      background-attachment: scroll !important;
     }
-    .header-left h1 {
-      background: none;
-      -webkit-text-fill-color: #111827;
-      color: #111827 !important;
+    .container { max-width: 100% !important; padding: 0; }
+
+    .header-right, .footer .footer-brand,
+    .btn-atribuicoes, .modal-overlay,
+    .kpi-info, .team-member .member-atrib-btn,
+    .exec-card.expandable .team-info::after {
+      display: none !important;
     }
-    .header-left .subtitle, .footer { color: #6b7280 !important; }
-    .header-right, .footer .footer-brand { display: none; }
-    .btn-atribuicoes, .modal-overlay { display: none !important; }
-    .kpi { background: white !important; }
-    .kpi-label, .kpi-sub { color: #6b7280 !important; }
-    .kpi-value { color: #111827 !important; }
+
+    .header {
+      padding: 50px 50px 30px !important;
+      border-bottom: 2px solid #d4af37 !important;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.10), transparent) !important;
+      page-break-after: avoid;
+    }
+    .header-left h1 { font-size: 36px !important; }
+    .header-left .subtitle { color: #94a3b8 !important; font-size: 14px !important; }
+
+    .kpi-grid {
+      margin: 30px 50px 30px !important;
+      gap: 2px !important;
+      background: rgba(212, 175, 55, 0.3) !important;
+      border-radius: 14px !important;
+      border: none !important;
+      page-break-after: avoid;
+    }
+    .kpi {
+      background: linear-gradient(135deg, rgba(28, 34, 48, 0.98), rgba(13, 17, 23, 0.98)) !important;
+      padding: 20px 18px !important;
+    }
+    .kpi-label { color: #94a3b8 !important; }
+    .kpi-value { color: #d4af37 !important; font-size: 30px !important; }
+    .kpi-sub { color: #64748b !important; }
+
+    .tree { padding: 0 50px; }
+    .shift-section-title { color: #d4af37 !important; }
+    .tree-row { flex-wrap: wrap !important; page-break-inside: avoid; }
+    .tree-line::before {
+      background: linear-gradient(180deg, transparent, rgba(212, 175, 55, 0.4), transparent) !important;
+    }
     .exec-card {
-      background: white !important;
-      border: 1px solid #d1d5db !important;
-      box-shadow: none !important;
-      color: #111827 !important;
+      background: linear-gradient(135deg, rgba(28, 34, 48, 0.95), rgba(13, 17, 23, 0.95)) !important;
+      border: 1px solid rgba(212, 175, 55, 0.25) !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+      page-break-inside: avoid;
     }
-    .exec-card .nome { color: #111827 !important; }
-    .exec-card .cargo, .exec-card .team-info { color: #6b7280 !important; }
-    .exec-card .team-info .count { color: #b8941f !important; }
-    .exec-card .avatar { box-shadow: none !important; }
+    .exec-card .nome { color: #f1f5f9 !important; }
+    .exec-card .cargo { color: #94a3b8 !important; }
+    .exec-card .team-info { color: #cbd5e1 !important; border-color: rgba(148, 163, 184, 0.15) !important; }
+    .exec-card .team-info .count { color: #d4af37 !important; }
+    .exec-card.level-diretor {
+      border: 1.5px solid #d4af37 !important;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(28, 34, 48, 0.95)) !important;
+    }
+
     .team-panel {
-      background: white !important;
-      border-color: #e5e7eb !important;
+      display: block !important;
+      background: linear-gradient(135deg, rgba(28, 34, 48, 0.85), rgba(13, 17, 23, 0.85)) !important;
+      border: 1px solid rgba(212, 175, 55, 0.18) !important;
+      page-break-inside: avoid;
+      margin: 18px 50px !important;
+      padding: 20px 24px !important;
     }
-    .team-panel-title { color: #111827 !important; }
-    .team-panel-section-title { color: #b8941f !important; }
-    .team-member .member-name { color: #111827 !important; }
-    .team-member .member-role, .team-member .mini-avatar { color: #6b7280 !important; }
-    .shift-section-title { color: #6b7280 !important; }
-    .exec-card { break-inside: avoid; }
-    .team-panel { display: block !important; break-inside: avoid; }
-    .exec-card.expandable .team-info::after { display: none; }
-    .tree-row { flex-wrap: wrap; }
-    .kpi-grid { break-inside: avoid; }
+    .team-panel::before {
+      background: linear-gradient(90deg, transparent, #d4af37, transparent) !important;
+    }
+    .team-panel-title { color: #f1f5f9 !important; }
+    .team-panel-title span { color: #94a3b8 !important; }
+    .team-panel-section-title { color: #d4af37 !important; }
+    .team-panel-list { grid-template-columns: repeat(2, 1fr) !important; }
+    .team-member { background: rgba(255,255,255,0.03) !important; }
+    .team-member .member-name { color: #f1f5f9 !important; }
+    .team-member .member-role { color: #94a3b8 !important; }
+    .team-member .mini-avatar {
+      background: rgba(212, 175, 55, 0.15) !important;
+      color: #d4af37 !important;
+      border-color: rgba(212, 175, 55, 0.3) !important;
+    }
+    .team-panel-section.highlighted {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.04)) !important;
+      border: 1px solid rgba(212, 175, 55, 0.35) !important;
+    }
+    .team-member .member-tag {
+      background: linear-gradient(135deg, #4ade80, #16a34a) !important;
+      color: #052e16 !important;
+      box-shadow: none !important;
+      animation: none !important;
+    }
+
+    .footer {
+      margin: 30px 50px 20px !important;
+      padding-top: 16px !important;
+      border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+      color: #94a3b8 !important;
+    }
+
+    /* ===== Páginas dedicadas de atribuições ===== */
+    .print-atribuicoes {
+      page-break-before: always;
+      padding: 50px;
+      background: linear-gradient(180deg, #0d1117, #1c2230);
+      min-height: 100vh;
+    }
+    .print-atribuicoes h2 {
+      font-size: 24px;
+      background: linear-gradient(135deg, #fff, #d4af37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+    }
+    .print-atribuicoes-sub {
+      color: #94a3b8;
+      font-size: 12px;
+      margin-bottom: 28px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .print-atrib-bloco {
+      page-break-inside: avoid;
+      background: linear-gradient(135deg, rgba(28, 34, 48, 0.95), rgba(13, 17, 23, 0.95));
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .print-atrib-bloco::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 24px; right: 24px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    }
+    .print-atrib-bloco-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+    .print-atrib-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #f4d574, #d4af37);
+      color: #0d1117;
+    }
+    .print-atrib-avatar svg {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+    .print-atrib-bloco-info { flex: 1; }
+    .print-atrib-nome { font-size: 15px; font-weight: 600; color: #f1f5f9; }
+    .print-atrib-cargo { font-size: 11px; color: #94a3b8; letter-spacing: 0.3px; margin-top: 2px; }
+    .print-atrib-categoria { margin-bottom: 12px; }
+    .print-atrib-categoria:last-child { margin-bottom: 0; }
+    .print-atrib-cat-titulo {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #d4af37;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .print-atrib-cat-titulo::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #d4af37;
+    }
+    .print-atrib-itens {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 14px;
+    }
+    .print-atrib-item {
+      display: flex;
+      gap: 8px;
+      padding: 3px 0;
+      font-size: 11px;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+    .print-atrib-item::before {
+      content: '◆';
+      color: #d4af37;
+      flex-shrink: 0;
+      font-size: 7px;
+      margin-top: 5px;
+    }
   }
+
+  /* Esconde a seção dedicada de impressão na tela */
+  .print-atribuicoes { display: none; }
+  @media print { .print-atribuicoes { display: block; } }
 </style>
 </head>
 <body>
@@ -807,6 +1230,7 @@
       <div class="subtitle" id="reportDate"></div>
     </div>
     <div class="header-right">
+      <button class="btn" onclick="toggleFullscreen()" id="btnFullscreen">⛶ Modo apresentação</button>
       <button class="btn" onclick="exportarExcel()">Exportar Excel</button>
       <button class="btn btn-primary" onclick="window.print()">Exportar PDF</button>
     </div>
@@ -815,29 +1239,39 @@
   <!-- KPIs -->
   <div class="kpi-grid">
     <div class="kpi">
-      <div class="kpi-label">Total de colaboradores</div>
+      <div class="kpi-label">Total de colaboradores <button class="kpi-info" onclick="abrirInfoKpi('total')" aria-label="Sobre este indicador">ⓘ</button></div>
       <div class="kpi-value" id="kpiTotal">—</div>
       <div class="kpi-sub">Quadro ativo</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">Lideranças</div>
+      <div class="kpi-label">Lideranças <button class="kpi-info" onclick="abrirInfoKpi('lider')" aria-label="Sobre este indicador">ⓘ</button></div>
       <div class="kpi-value" id="kpiLideres">—</div>
-      <div class="kpi-sub">Sup., líderes e analistas</div>
+      <div class="kpi-sub">Sup., líderes e gestão</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">Turnos operacionais</div>
+      <div class="kpi-label">Turnos operacionais <button class="kpi-info" onclick="abrirInfoKpi('turnos')" aria-label="Sobre este indicador">ⓘ</button></div>
       <div class="kpi-value">3</div>
       <div class="kpi-sub">Manhã · Tarde · Noite</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">Frota de motoristas</div>
+      <div class="kpi-label">Frota de motoristas <button class="kpi-info" onclick="abrirInfoKpi('motoristas')" aria-label="Sobre este indicador">ⓘ</button></div>
       <div class="kpi-value" id="kpiMotoristas">—</div>
       <div class="kpi-sub">Entregadores ativos</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">Span of control</div>
+      <div class="kpi-label">Span médio <button class="kpi-info" onclick="abrirInfoKpi('span')" aria-label="Sobre este indicador">ⓘ</button></div>
       <div class="kpi-value" id="kpiSpan">—</div>
-      <div class="kpi-sub">Média por liderança</div>
+      <div class="kpi-sub">Subordinados por liderança</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Maior equipe <button class="kpi-info" onclick="abrirInfoKpi('spanMax')" aria-label="Sobre este indicador">ⓘ</button></div>
+      <div class="kpi-value" id="kpiSpanMax">—</div>
+      <div class="kpi-sub" id="kpiSpanMaxNome">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Menor equipe <button class="kpi-info" onclick="abrirInfoKpi('spanMin')" aria-label="Sobre este indicador">ⓘ</button></div>
+      <div class="kpi-value" id="kpiSpanMin">—</div>
+      <div class="kpi-sub" id="kpiSpanMinNome">—</div>
     </div>
   </div>
 
@@ -848,6 +1282,34 @@
   <div class="footer">
     <div>Logística · Estrutura vigente em <span id="footerDate"></span></div>
     <div class="footer-brand">Confidencial — uso interno</div>
+  </div>
+</div>
+
+<!-- Página dedicada para impressão (PDF) — mostra todas as atribuições -->
+<div class="print-atribuicoes" id="printAtribuicoes"></div>
+
+<!-- Dica do modo apresentação -->
+<div class="modo-apresentacao-hint">
+  Modo apresentação · Pressione <kbd>Esc</kbd> ou <kbd>F</kbd> para sair
+</div>
+
+<!-- Modal de Info KPI -->
+<div class="modal-overlay" id="modalInfoKpi" onclick="if(event.target===this)fecharInfoKpi()">
+  <div class="modal-content" style="max-width: 540px;">
+    <div class="modal-header">
+      <div>
+        <h2 id="infoKpiTitulo">—</h2>
+        <div class="modal-sub" id="infoKpiSub">—</div>
+      </div>
+      <button class="modal-close" onclick="fecharInfoKpi()" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-body" id="infoKpiBody"></div>
+    <div class="modal-footer">
+      <div class="modal-footer-info"></div>
+      <div class="modal-footer-actions">
+        <button class="btn btn-primary" onclick="fecharInfoKpi()">Entendi</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -897,8 +1359,8 @@ const ESTRUTURA = {
       nivel: "supervisor",
       turno: "A",
       atribuicoes: [
-        { key: "supervisoresPadrao", label: "📋 Minhas atribuições" },
-        { key: "laudiceia", label: "↩️ Devoluções (Laudiceia)" }
+        { key: "carlosHenrique", label: "📋 Minhas atribuições" },
+        { key: "supervisoresPadrao", label: "👔 Padrão da supervisão" }
       ],
       equipe: {
         "Liderança e Operação": [
@@ -908,8 +1370,10 @@ const ESTRUTURA = {
         "Operacional": [
           { nome: "Guilherme S. Nascimento", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Jefferson Alves S. Miranda", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Laudiceia de Souza", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Carlos Eduardo Pedrette", cargo: "Aux. Logística", nivel: "aux" }
+        ],
+        "Devolução": [
+          { nome: "Laudiceia de Souza", cargo: "Processo de Devolução", nivel: "assistente", atribuicoesKey: "laudiceia" }
         ]
       }
     },
@@ -920,7 +1384,8 @@ const ESTRUTURA = {
       nivel: "supervisor",
       turno: "A",
       atribuicoes: [
-        { key: "supervisoresPadrao", label: "📋 Minhas atribuições" },
+        { key: "vanessaRibeiro", label: "📋 Minhas atribuições" },
+        { key: "supervisoresPadrao", label: "👔 Padrão da supervisão" },
         { key: "conferentesVanessa", label: "📦 Atribuições conferentes" },
         { key: "auxiliaresVanessa", label: "🗂️ Atribuições auxiliares" },
         { key: "empilhadeira", label: "🏗️ Op. de empilhadeira" }
@@ -929,12 +1394,12 @@ const ESTRUTURA = {
         "Liderança": [
           { nome: "Rosicleude Silva", cargo: "Líder de Estoque", nivel: "lider", atribuicoesKey: "lideresPadrao" }
         ],
-        "Conferência": [
-          { nome: "Vinicius dos Santos", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
-          { nome: "Geneilda da Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
-          { nome: "Jose Luiz Jr.", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
-          { nome: "Leila Cristina Souza", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
-          { nome: "Marta Leandro", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+        "Conferência (Recebimento)": [
+          { nome: "Vinicius dos Santos", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
+          { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
+          { nome: "Jose Luiz Jr.", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
+          { nome: "Leila Cristina Souza", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
+          { nome: "Marta Leandro", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
           { nome: "Valcides da Silva Novaes", cargo: "Op. de Empilhadeira", nivel: "conferente" }
         ],
         "Auxiliares": [
@@ -966,7 +1431,8 @@ const ESTRUTURA = {
       nivel: "supervisor",
       turno: "B",
       atribuicoes: [
-        { key: "supervisoresPadrao", label: "📋 Minhas atribuições" },
+        { key: "claudioBarcelos", label: "📋 Minhas atribuições" },
+        { key: "supervisoresPadrao", label: "👔 Padrão da supervisão" },
         { key: "conferentesTurnoBC", label: "📋 Atribuições conferentes" },
         { key: "auxiliaresTurnoBC", label: "📦 Atribuições auxiliares" }
       ],
@@ -998,7 +1464,8 @@ const ESTRUTURA = {
       nivel: "supervisor",
       turno: "C",
       atribuicoes: [
-        { key: "supervisoresPadrao", label: "📋 Minhas atribuições" },
+        { key: "jeffersonVirissimo", label: "📋 Minhas atribuições" },
+        { key: "supervisoresPadrao", label: "👔 Padrão da supervisão" },
         { key: "conferentesTurnoBC", label: "📋 Atribuições conferentes" },
         { key: "auxiliaresTurnoBC", label: "📦 Atribuições auxiliares" },
         { key: "empilhadeira", label: "🏗️ Op. de empilhadeira" }
@@ -1024,7 +1491,6 @@ const ESTRUTURA = {
           { nome: "Wesley Fioravan", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "John Mike Rodrigues da Silva", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Silvio Gomes", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Mauricio", cargo: "Aux. Logística - Pesado", nivel: "aux" },
           { nome: "Peterson Martins", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Rodrigo Sousa Santos", cargo: "Aux. Logística", nivel: "aux" }
         ]
@@ -1046,7 +1512,8 @@ const ESTRUTURA = {
           { nome: "Rubenildo Silva Cerqueira", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Vinicius Inacio da Silva", cargo: "Aux. Logística - Pesado", nivel: "aux" },
           { nome: "Josue Vitor Manzi da Silva", cargo: "Aux. Logística - Pesado", nivel: "aux" },
-          { nome: "Junior Luiz de Oliveira", cargo: "Aux. Logística - Pesado", nivel: "aux" }
+          { nome: "Junior Luiz de Oliveira", cargo: "Aux. Logística - Pesado", nivel: "aux" },
+          { nome: "Mauricio", cargo: "Aux. Logística - Pesado", nivel: "aux" }
         ]
       }
     },
@@ -1261,6 +1728,146 @@ const ATRIBUICOES = {
         icone: "🗂️",
         itens: [
           "Organização do setor"
+        ]
+      }
+    ]
+  },
+  vanessaRibeiro: {
+    titulo: "Atribuições — Vanessa Ribeiro",
+    subtitulo: "Supervisora de Armazenagem (Turno A)",
+    categorias: [
+      {
+        nome: "Gestão da Armazenagem",
+        icone: "🏭",
+        itens: [
+          "Coordenação do recebimento, tratamento e armazenagem dos produtos",
+          "Gestão do endereçamento e organização do pulmão",
+          "Acompanhamento do líder de estoque (Rosicleude)",
+          "Acompanhamento do operador de empilhadeira (Valcides)"
+        ]
+      },
+      {
+        nome: "Inventário e Estoque",
+        icone: "📑",
+        itens: [
+          "Coordenação dos processos de inventário (Renato e Douglas)",
+          "Acompanhamento do prazo de vencimento e validade dos produtos",
+          "Análise de controle de desperdícios e avarias"
+        ]
+      },
+      {
+        nome: "Gestão da Equipe",
+        icone: "👥",
+        itens: [
+          "Gestão das equipes de conferência e auxiliares",
+          "Avaliação de produtividade",
+          "Desenvolvimento do líder",
+          "Estabelece comunicação com o controle comercial"
+        ]
+      }
+    ]
+  },
+  carlosHenrique: {
+    titulo: "Atribuições — Carlos Henrique Bailhão",
+    subtitulo: "Supervisor de Carregamento (Turno A)",
+    categorias: [
+      {
+        nome: "Coordenação do Carregamento",
+        icone: "🚛",
+        itens: [
+          "Coordenar a chegada e o carregamento dos veículos no Turno A",
+          "Acompanhar o carregamento e organização das cargas conforme o itinerário",
+          "Liberação de cargas para saída",
+          "Responsável pela finalização do turno"
+        ]
+      },
+      {
+        nome: "Gestão da Equipe",
+        icone: "👥",
+        itens: [
+          "Delegar atividades aos auxiliares de logística do carregamento",
+          "Acompanhar a produtividade da equipe",
+          "Desenvolvimento e orientação do líder de carregamento",
+          "Acompanhamento do processo de devolução (via Laudiceia)"
+        ]
+      },
+      {
+        nome: "Análise e Indicadores",
+        icone: "📊",
+        itens: [
+          "Análise de produtividade e avarias do carregamento",
+          "Comunicação com o controle comercial sobre prazos e prioridades",
+          "Melhorias contínuas no processo de carregamento"
+        ]
+      }
+    ]
+  },
+  claudioBarcelos: {
+    titulo: "Atribuições — Claudio Barcelos Jr",
+    subtitulo: "Supervisor do Turno B",
+    categorias: [
+      {
+        nome: "Gestão do Turno B",
+        icone: "🌅",
+        itens: [
+          "Coordenação geral da operação do Turno B",
+          "Liberação dos pedidos",
+          "Garantia do cumprimento das metas do turno",
+          "Acompanhamento do líder do turno (Mauricio)"
+        ]
+      },
+      {
+        nome: "Gestão da Equipe",
+        icone: "👥",
+        itens: [
+          "Desenvolvimento e orientação do líder",
+          "Avaliação de produtividade dos conferentes e auxiliares",
+          "Definição de escalas e atividades"
+        ]
+      },
+      {
+        nome: "Análise e Controle",
+        icone: "📊",
+        itens: [
+          "Análise de desperdícios e avarias",
+          "Acompanhamento do prazo de vencimento e validade dos produtos",
+          "Comunicação com o controle comercial",
+          "Melhorias de processo"
+        ]
+      }
+    ]
+  },
+  jeffersonVirissimo: {
+    titulo: "Atribuições — Jefferson & Edgar",
+    subtitulo: "Supervisão do Turno C",
+    categorias: [
+      {
+        nome: "Gestão do Turno C",
+        icone: "🌙",
+        itens: [
+          "Coordenação geral da operação noturna",
+          "Liberação dos pedidos do turno",
+          "Co-supervisão entre Jefferson e Edgar para cobertura total",
+          "Garantia da entrega para os carregamentos do dia seguinte"
+        ]
+      },
+      {
+        nome: "Gestão da Equipe",
+        icone: "👥",
+        itens: [
+          "Distribuição de atividades entre conferentes e auxiliares",
+          "Avaliação de produtividade da equipe noturna",
+          "Acompanhamento do operador de empilhadeira (Carlos Alberto)"
+        ]
+      },
+      {
+        nome: "Análise e Controle",
+        icone: "📊",
+        itens: [
+          "Análise de desperdícios e avarias do turno",
+          "Acompanhamento do prazo de vencimento dos produtos",
+          "Comunicação com o controle comercial",
+          "Melhorias de processo do turno"
         ]
       }
     ]
@@ -1592,6 +2199,24 @@ function iniciais(nome) {
   return nome.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
 }
 
+// Ícones SVG por nível (estilo monocromático, herda currentColor)
+const ICONES = {
+  diretor: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 V12 C4 16.5 7.5 20.5 12 22 C16.5 20.5 20 16.5 20 12 V6 Z"/><path d="M9 11 L11 13 L15 9"/></svg>`,
+  gerente: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.5"/><path d="M5.5 21 C5.5 16.5 8.5 14 12 14 C15.5 14 18.5 16.5 18.5 21"/><path d="M9 18 L12 21 L15 18" opacity="0.5"/></svg>`,
+  supervisor: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3 19 C3 15.5 5.5 13.5 9 13.5 C12.5 13.5 15 15.5 15 19"/><path d="M13.5 13.5 C16 13.5 18.5 14.5 19.5 17"/></svg>`,
+  lider: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 L5 14 L10 9 L14 13 L19 8 L19 19 Z" fill="currentColor" fill-opacity="0.15"/><path d="M5 19 L5 14 L10 9 L14 13 L19 8 L19 19 Z"/><path d="M3 19 L21 19"/></svg>`,
+  analista: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5 L19 5 L19 19 L5 19 Z" fill="currentColor" fill-opacity="0.1"/><path d="M5 5 L19 5 L19 19 L5 19 Z"/><path d="M8 15 L8 11 M11 15 L11 8 M14 15 L14 12 M17 15 L17 9"/></svg>`,
+  assistente: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="6" width="14" height="14" rx="1.5" fill="currentColor" fill-opacity="0.1"/><rect x="5" y="6" width="14" height="14" rx="1.5"/><path d="M9 4 L9 8 M15 4 L15 8"/><path d="M8 12 L16 12 M8 15 L13 15"/></svg>`,
+  conferente: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="16" rx="1.5" fill="currentColor" fill-opacity="0.1"/><rect x="5" y="5" width="14" height="16" rx="1.5"/><path d="M8 3 L16 3 L16 7 L8 7 Z"/><path d="M8.5 12 L10.5 14 L15 10"/></svg>`,
+  aux: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 L4 11 L9 8 L15 8 L20 11 L20 18 Z" fill="currentColor" fill-opacity="0.1"/><path d="M4 18 L4 11 L9 8 L15 8 L20 11 L20 18 Z"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M9 8 L9 11 L15 11 L15 8"/></svg>`,
+  motorista: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16 L2 9 L11 9 L11 16 Z" fill="currentColor" fill-opacity="0.1"/><path d="M2 16 L2 9 L11 9 L11 16"/><path d="M11 11 L17 11 L20 14 L20 16 L11 16" fill="currentColor" fill-opacity="0.1"/><path d="M11 11 L17 11 L20 14 L20 16 L11 16"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/></svg>`,
+  servicos: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3 L17.7 9.3 L9.5 17.5 L6 18 L6.5 14.5 Z" fill="currentColor" fill-opacity="0.15"/><path d="M14.7 6.3 L17.7 9.3 L9.5 17.5 L6 18 L6.5 14.5 Z"/><path d="M13 8 L16 11"/></svg>`
+};
+
+function iconePorNivel(nivel) {
+  return ICONES[nivel] || ICONES.aux;
+}
+
 function contarEquipe(sup) {
   let total = 0;
   for (const grupo in sup.equipe) total += sup.equipe[grupo].length;
@@ -1614,13 +2239,13 @@ function totalLiderancas() {
   n += 1; // Gerente
   n += ESTRUTURA.areasGerencia.length;
   if (ESTRUTURA.areasIndep) {
-    n += ESTRUTURA.areasIndep.filter(a => ['lider','analista','supervisor'].includes(a.nivel)).length;
+    n += ESTRUTURA.areasIndep.filter(a => ['lider','supervisor'].includes(a.nivel)).length;
   }
   ESTRUTURA.supervisores.forEach(s => {
     n += 1;
     for (const grupo in s.equipe) {
       s.equipe[grupo].forEach(p => {
-        if (['lider', 'analista', 'supervisor'].includes(p.nivel)) n++;
+        if (['lider', 'supervisor'].includes(p.nivel)) n++;
       });
     }
   });
@@ -1639,7 +2264,7 @@ function renderCard(pessoa, expandable = false, count = 0, subtle = false) {
   const div = document.createElement('div');
   div.className = `exec-card level-${pessoa.nivel}` + (expandable ? ' expandable' : '') + (subtle ? ' subtle' : '');
   let html = `
-    <div class="avatar">${iniciais(pessoa.nome)}</div>
+    <div class="avatar">${iconePorNivel(pessoa.nivel)}</div>
     <div class="nome">${pessoa.nome}</div>
     <div class="cargo">${pessoa.cargo}</div>
   `;
@@ -1676,7 +2301,7 @@ function renderTeamPanel(sup) {
     const membros = sup.equipe[grupo];
     if (!membros.length) continue;
     // Seções que devem ser destacadas (subáreas dentro da equipe)
-    const SECOES_DESTACADAS = ['Inventário', 'Setor de Retira', 'E-commerce'];
+    const SECOES_DESTACADAS = ['Inventário', 'Setor de Retira', 'E-commerce', 'Devolução'];
     const destaque = SECOES_DESTACADAS.includes(grupo);
     html += `<div class="team-panel-section${destaque ? ' highlighted' : ''}">`;
     html += `<div class="team-panel-section-title">${grupo} · ${membros.length}</div>`;
@@ -1688,7 +2313,7 @@ function renderTeamPanel(sup) {
         : '';
       html += `
         <div class="team-member">
-          <div class="mini-avatar">${iniciais(m.nome)}</div>
+          <div class="mini-avatar">${iconePorNivel(m.nivel)}</div>
           <div class="member-info">
             <div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}</div>
             <div class="member-role">${m.cargo}</div>
@@ -1829,6 +2454,31 @@ function atualizarKPIs() {
   document.getElementById('kpiLideres').textContent = lider;
   document.getElementById('kpiMotoristas').textContent = mot;
   document.getElementById('kpiSpan').textContent = span;
+
+  // Span máximo e mínimo entre supervisores e áreas com equipe
+  const equipes = [];
+  ESTRUTURA.supervisores.forEach(s => {
+    const c = contarEquipe(s);
+    if (c > 0) equipes.push({ nome: s.nome.split(' ')[0], count: c, full: s.nome });
+  });
+  ESTRUTURA.areasDir.forEach(a => {
+    const c = contarEquipe(a);
+    if (c > 0) equipes.push({ nome: a.nome, count: c, full: a.nome });
+  });
+  ESTRUTURA.areasGerencia.forEach(a => {
+    const c = contarEquipe(a);
+    if (c > 0) equipes.push({ nome: a.nome, count: c, full: a.nome });
+  });
+
+  if (equipes.length) {
+    equipes.sort((a, b) => b.count - a.count);
+    const max = equipes[0];
+    const min = equipes[equipes.length - 1];
+    document.getElementById('kpiSpanMax').textContent = max.count;
+    document.getElementById('kpiSpanMaxNome').textContent = max.full;
+    document.getElementById('kpiSpanMin').textContent = min.count;
+    document.getElementById('kpiSpanMinNome').textContent = min.full;
+  }
 }
 
 // ============================================================
@@ -1918,6 +2568,218 @@ function exportarExcel() {
 }
 
 // ============================================================
+// MODAL DE INFO DOS KPIs
+// ============================================================
+const INFO_KPI = {
+  total: {
+    titulo: "Total de colaboradores",
+    sub: "Quadro ativo da operação",
+    secoes: [
+      {
+        nome: "O que é",
+        texto: "Soma de todas as pessoas que fazem parte do quadro de logística — incluindo diretoria, gerências, supervisores, líderes, analistas, conferentes, auxiliares, motoristas, e-commerce e facilities."
+      },
+      {
+        nome: "Como interpretar",
+        texto: "Indicador básico de dimensionamento da operação. Permite comparar com volume de pedidos, faturamento e produtividade por pessoa."
+      }
+    ]
+  },
+  lider: {
+    titulo: "Lideranças",
+    sub: "Pessoas com responsabilidade de gestão",
+    secoes: [
+      {
+        nome: "O que é",
+        texto: "Contagem dos cargos com responsabilidade direta de gestão de pessoas: Diretor, Gerentes, Supervisores e Líderes."
+      },
+      {
+        nome: "Como interpretar",
+        texto: "Mostra quantas posições de comando existem na estrutura. Comparado com o total de colaboradores, ajuda a entender se a estrutura está enxuta ou com excesso de gestão."
+      }
+    ]
+  },
+  turnos: {
+    titulo: "Turnos operacionais",
+    sub: "Janelas de operação ao longo do dia",
+    secoes: [
+      {
+        nome: "O que é",
+        texto: "Quantidade de turnos que mantêm a operação funcionando: Manhã (A), Tarde (B) e Noite (C)."
+      },
+      {
+        nome: "Como interpretar",
+        texto: "Operação 24h em 3 turnos é típica de centros de distribuição com alto volume. Permite atender pedidos em janelas amplas e garantir saída de cargas no início do dia seguinte."
+      }
+    ]
+  },
+  motoristas: {
+    titulo: "Frota de motoristas",
+    sub: "Capacidade de entrega",
+    secoes: [
+      {
+        nome: "O que é",
+        texto: "Total de motoristas entregadores ativos (Pleno e Master), incluindo os que estão temporariamente afastados."
+      },
+      {
+        nome: "Como interpretar",
+        texto: "Define a capacidade máxima de rotas simultâneas por dia. Comparado com o volume de pedidos para entrega, mostra se a frota está dimensionada corretamente ou se há gargalo."
+      }
+    ]
+  },
+  span: {
+    titulo: "Span médio",
+    sub: "Média de subordinados por liderança",
+    secoes: [
+      {
+        nome: "O que é",
+        texto: "Conceito clássico de gestão que mede quantos subordinados diretos cada líder gerencia, em média. Fórmula: (Total de colaboradores − Lideranças) ÷ Lideranças."
+      },
+      {
+        nome: "Faixas de referência",
+        texto: "1 a 4 → estrutura inchada, muitos chefes para pouca gente · 5 a 8 → faixa saudável (ideal) · 9 a 12 → operação enxuta, mas com risco de sobrecarga · 13 ou mais → estrutura achatada demais, risco de perda de direção."
+      },
+      {
+        nome: "Como interpretar",
+        texto: "É um dos indicadores que diretores e RH usam para avaliar se a estrutura precisa contratar mais supervisão, reduzir camadas de gestão ou está bem dimensionada. Logística geralmente opera entre 6 e 10."
+      },
+      {
+        nome: "__regua_span__",
+        texto: ""
+      }
+    ]
+  },
+  spanMax: {
+    titulo: "Maior equipe",
+    sub: "Líder com mais subordinados diretos",
+    secoes: [
+      {
+        nome: "O que é",
+        texto: "Identifica quem comanda a maior quantidade de pessoas na operação. É o oposto do conceito de média: aqui mostramos o caso individual de maior carga de comando."
+      },
+      {
+        nome: "Por que isso importa",
+        texto: "Se este número estiver muito alto (acima de 15), pode indicar sobrecarga dessa liderança. A média geral pode parecer saudável mas esconder casos extremos. Vale avaliar se essa pessoa precisa de um líder intermediário ou de mais apoio."
+      }
+    ]
+  },
+  spanMin: {
+    titulo: "Menor equipe",
+    sub: "Líder com menos subordinados diretos",
+    secoes: [
+      {
+        nome: "O que é",
+        texto: "Identifica quem comanda a menor quantidade de pessoas. O oposto da maior equipe."
+      },
+      {
+        nome: "Por que isso importa",
+        texto: "Se for muito baixo (1 a 3), pode indicar subutilização ou que essa posição poderia absorver mais responsabilidades. Em alguns casos é justificado (área especializada que demanda menos gente), em outros é sinal de estrutura inchada."
+      }
+    ]
+  }
+};
+
+function abrirInfoKpi(chave) {
+  const dados = INFO_KPI[chave];
+  if (!dados) return;
+
+  document.getElementById('infoKpiTitulo').textContent = dados.titulo;
+  document.getElementById('infoKpiSub').textContent = dados.sub;
+
+  const body = document.getElementById('infoKpiBody');
+  body.innerHTML = '';
+  dados.secoes.forEach(s => {
+    if (s.nome === '__regua_span__') {
+      body.appendChild(renderReguaSpan());
+      return;
+    }
+    const div = document.createElement('div');
+    div.className = 'info-kpi-secao';
+    div.innerHTML = `
+      <div class="info-kpi-titulo">${s.nome}</div>
+      <div class="info-kpi-texto">${s.texto}</div>
+    `;
+    body.appendChild(div);
+  });
+
+  document.getElementById('modalInfoKpi').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderReguaSpan() {
+  const total = totalGeral();
+  const lider = totalLiderancas();
+  const subs = total - lider;
+  const span = subs / lider;
+  // posição na régua (0 a 100%) — clamp pra 0..16 -> 0..100
+  const pct = Math.max(0, Math.min(100, (span / 16) * 100));
+
+  let status, statusColor, statusDesc;
+  if (span <= 4) {
+    status = "Estrutura inchada";
+    statusColor = "#f87171";
+    statusDesc = "Muitos chefes para pouca gente. Custo de gestão alto, risco de microgerenciamento.";
+  } else if (span <= 8) {
+    status = "Saudável (faixa ideal)";
+    statusColor = "#4ade80";
+    statusDesc = "Equilíbrio entre controle e autonomia. Lideranças conseguem acompanhar a equipe sem sobrecarga.";
+  } else if (span <= 12) {
+    status = "Operação enxuta";
+    statusColor = "#fbbf24";
+    statusDesc = "Lideranças com muita responsabilidade. Funciona bem em operações maduras, mas exige atenção a sobrecarga.";
+  } else {
+    status = "Estrutura achatada demais";
+    statusColor = "#f87171";
+    statusDesc = "Risco de perda de direção e qualidade. Vale considerar abrir nova camada de supervisão.";
+  }
+
+  const div = document.createElement('div');
+  div.className = 'info-kpi-secao';
+  div.innerHTML = `
+    <div class="info-kpi-titulo">Como está sua equipe</div>
+    <div class="regua-span">
+      <div class="regua-numeros">
+        <div class="regua-resumo">
+          <span class="regua-num">${subs}</span>
+          <span class="regua-divider">÷</span>
+          <span class="regua-num">${lider}</span>
+          <span class="regua-divider">=</span>
+          <span class="regua-num regua-num-destaque">${span.toFixed(1)}</span>
+        </div>
+        <div class="regua-resumo-label">colaboradores ÷ lideranças = span atual</div>
+      </div>
+      <div class="regua-barra">
+        <div class="regua-faixa regua-faixa-1"></div>
+        <div class="regua-faixa regua-faixa-2"></div>
+        <div class="regua-faixa regua-faixa-3"></div>
+        <div class="regua-faixa regua-faixa-4"></div>
+        <div class="regua-marcador" style="left:${pct}%">
+          <div class="regua-marcador-pin"></div>
+          <div class="regua-marcador-valor">${span.toFixed(1)}</div>
+        </div>
+      </div>
+      <div class="regua-legenda">
+        <div class="regua-legenda-item"><span class="regua-dot" style="background:#f87171"></span>1-4 Inchada</div>
+        <div class="regua-legenda-item"><span class="regua-dot" style="background:#4ade80"></span>5-8 Ideal</div>
+        <div class="regua-legenda-item"><span class="regua-dot" style="background:#fbbf24"></span>9-12 Enxuta</div>
+        <div class="regua-legenda-item"><span class="regua-dot" style="background:#f87171"></span>13+ Achatada</div>
+      </div>
+      <div class="regua-status" style="border-color:${statusColor};color:${statusColor}">
+        <div class="regua-status-label">Diagnóstico</div>
+        <div class="regua-status-titulo">${status}</div>
+        <div class="regua-status-desc">${statusDesc}</div>
+      </div>
+    </div>
+  `;
+  return div;
+}
+
+function fecharInfoKpi() {
+  document.getElementById('modalInfoKpi').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
 // MODAL DE ATRIBUIÇÕES
 // ============================================================
 let atribAtual = null;
@@ -1967,7 +2829,148 @@ function fecharModal() {
 
 // Fechar com ESC
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') fecharModal();
+  if (e.key === 'Escape') {
+    fecharModal();
+    fecharInfoKpi();
+  }
+});
+
+// ============================================================
+// MONTAR SEÇÃO DE ATRIBUIÇÕES PARA O PDF
+// ============================================================
+function iniciaisPrint(nome) {
+  return nome.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
+}
+
+function renderBlocoAtribuicaoPrint(nome, cargo, chaveAtrib, nivel = 'supervisor') {
+  const dados = ATRIBUICOES[chaveAtrib];
+  if (!dados) return '';
+
+  let html = `
+    <div class="print-atrib-bloco">
+      <div class="print-atrib-bloco-header">
+        <div class="print-atrib-avatar">${iconePorNivel(nivel)}</div>
+        <div class="print-atrib-bloco-info">
+          <div class="print-atrib-nome">${nome}</div>
+          <div class="print-atrib-cargo">${cargo}</div>
+        </div>
+      </div>
+  `;
+  dados.categorias.forEach(cat => {
+    html += `<div class="print-atrib-categoria">`;
+    html += `<div class="print-atrib-cat-titulo">${cat.nome}</div>`;
+    html += `<div class="print-atrib-itens">`;
+    cat.itens.forEach(item => {
+      html += `<div class="print-atrib-item">${item}</div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+function montarSecaoAtribuicoesPdf() {
+  const root = document.getElementById('printAtribuicoes');
+  if (!root) return;
+
+  let html = `
+    <h2>Atribuições e Responsabilidades</h2>
+    <div class="print-atribuicoes-sub">Lideranças e Equipes da Logística</div>
+  `;
+
+  // Diretor (sem atribuições por enquanto, pula)
+
+  // Gerente
+  if (ESTRUTURA.gerente.atribuicoesKey) {
+    html += renderBlocoAtribuicaoPrint(
+      ESTRUTURA.gerente.nome,
+      ESTRUTURA.gerente.cargo,
+      ESTRUTURA.gerente.atribuicoesKey,
+      ESTRUTURA.gerente.nivel
+    );
+  }
+
+  // Áreas independentes (Erivancleide, Lucas Souza)
+  (ESTRUTURA.areasIndep || []).forEach(area => {
+    if (area.atribuicoesKey) {
+      html += renderBlocoAtribuicaoPrint(area.nome, area.cargo, area.atribuicoesKey, area.nivel);
+    }
+  });
+
+  // Supervisores: 1 bloco por chave única (evita duplicar atribuições padrão)
+  const chavesUsadas = new Set();
+  ESTRUTURA.supervisores.forEach(sup => {
+    if (!sup.atribuicoes) return;
+    sup.atribuicoes.forEach(a => {
+      if (chavesUsadas.has(a.key)) return;
+      chavesUsadas.add(a.key);
+      const dados = ATRIBUICOES[a.key];
+      if (!dados) return;
+      const titulo = dados.titulo.replace(/^Atribuições — /, '');
+      const sub = dados.subtitulo || '';
+      // Define nível visual baseado na chave
+      let nivelBloco = 'supervisor';
+      if (a.key.includes('conferentes') || a.key === 'empilhadeira') nivelBloco = 'conferente';
+      else if (a.key.includes('auxiliares') || a.key.includes('equipeCleiton')) nivelBloco = 'aux';
+      else if (a.key === 'motoristas') nivelBloco = 'motorista';
+      else if (a.key === 'lideresPadrao') nivelBloco = 'lider';
+      html += renderBlocoAtribuicaoPrint(titulo, sub, a.key, nivelBloco);
+    });
+  });
+
+  // Líderes (dentro da equipe dos supervisores)
+  const lideresVistos = new Set();
+  ESTRUTURA.supervisores.forEach(sup => {
+    for (const grupo in sup.equipe) {
+      sup.equipe[grupo].forEach(m => {
+        if (m.atribuicoesKey && !lideresVistos.has(m.nome)) {
+          lideresVistos.add(m.nome);
+          html += renderBlocoAtribuicaoPrint(m.nome, m.cargo, m.atribuicoesKey, m.nivel);
+        }
+      });
+    }
+  });
+
+  root.innerHTML = html;
+}
+
+// ============================================================
+// MODO APRESENTAÇÃO (FULLSCREEN)
+// ============================================================
+function toggleFullscreen() {
+  const ativo = document.body.classList.toggle('modo-apresentacao');
+  const btn = document.getElementById('btnFullscreen');
+
+  if (ativo) {
+    btn.textContent = '⛶ Sair da apresentação';
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } else {
+    btn.textContent = '⛶ Modo apresentação';
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
+}
+
+// Detecta saída do fullscreen pelo navegador (Esc no fullscreen nativo)
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && document.body.classList.contains('modo-apresentacao')) {
+    document.body.classList.remove('modo-apresentacao');
+    document.getElementById('btnFullscreen').textContent = '⛶ Modo apresentação';
+  }
+});
+
+// Atalhos de teclado
+document.addEventListener('keydown', e => {
+  // Esc OU F sai do modo apresentação
+  if ((e.key === 'Escape' || e.key === 'f' || e.key === 'F') && document.body.classList.contains('modo-apresentacao')) {
+    // Esc fecha modais primeiro; só sai do modo apresentação se nenhum modal estiver aberto
+    const modalAberto = document.querySelector('.modal-overlay.show');
+    if (e.key === 'Escape' && modalAberto) return; // deixa o handler do modal lidar
+    toggleFullscreen();
+  }
 });
 
 // ============================================================
@@ -1976,6 +2979,7 @@ document.addEventListener('keydown', e => {
 montarArvore();
 atualizarKPIs();
 setarData();
+montarSecaoAtribuicoesPdf();
 </script>
 
 </body>
