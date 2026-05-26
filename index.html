@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Organograma Executivo — Logística</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -1260,7 +1261,7 @@
     <div class="header-right">
       <button class="btn" onclick="toggleFullscreen()" id="btnFullscreen">⛶ Modo apresentação</button>
       <button class="btn" onclick="exportarExcel()">Exportar Excel</button>
-      <button class="btn btn-primary" onclick="window.print()">Exportar PDF</button>
+      <button class="btn btn-primary" onclick="baixarPDF()" id="btnPdf">📥 Baixar PDF</button>
     </div>
   </div>
 
@@ -2518,6 +2519,96 @@ function setarData() {
   const str = hoje.toLocaleDateString('pt-BR', opts);
   document.getElementById('reportDate').textContent = `Documento gerado em ${str}`;
   document.getElementById('footerDate').textContent = str;
+}
+
+// ============================================================
+// EXPORT PDF (download direto)
+// ============================================================
+function baixarPDF() {
+  const btn = document.getElementById('btnPdf');
+  const textoOriginal = btn.textContent;
+  btn.textContent = '⏳ Gerando PDF...';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+
+  // Fecha qualquer modal aberto e sai do modo apresentação antes de gerar
+  if (document.body.classList.contains('modo-apresentacao')) {
+    document.body.classList.remove('modo-apresentacao');
+  }
+  document.querySelectorAll('.modal-overlay.show').forEach(m => m.classList.remove('show'));
+
+  // Cria um wrapper temporário com tudo que deve sair no PDF
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'background:#0d1117;color:#f1f5f9;padding:0;font-family:Inter,sans-serif;';
+
+  // Clona o container principal
+  const container = document.querySelector('.container').cloneNode(true);
+  // Remove o botão de exportar (que não deve aparecer no PDF)
+  const headerRight = container.querySelector('.header-right');
+  if (headerRight) headerRight.remove();
+  // Remove dica de modo apresentação se estiver visível
+  container.querySelectorAll('.modo-apresentacao-hint').forEach(e => e.remove());
+  // Remove botões de info dos KPIs
+  container.querySelectorAll('.kpi-info').forEach(e => e.remove());
+  // Remove botões de atribuições dos cards
+  container.querySelectorAll('.btn-atribuicoes').forEach(e => e.remove());
+  // Remove botões de atribuições dos team-members
+  container.querySelectorAll('.member-atrib-btn').forEach(e => e.remove());
+  // Abre todos os painéis de equipe
+  container.querySelectorAll('.team-panel').forEach(p => {
+    p.classList.add('show');
+    p.style.display = 'block';
+  });
+  // Remove os chevrons das info
+  container.querySelectorAll('.exec-card.expandable').forEach(c => c.classList.remove('expandable'));
+
+  wrapper.appendChild(container);
+
+  // Clona a seção dedicada de atribuições
+  const atribSection = document.getElementById('printAtribuicoes').cloneNode(true);
+  atribSection.style.cssText = 'background:linear-gradient(180deg,#0d1117,#1c2230);padding:40px;page-break-before:always;display:block;';
+  wrapper.appendChild(atribSection);
+
+  // Coloca o wrapper invisível no body (fora da viewport)
+  wrapper.style.position = 'absolute';
+  wrapper.style.left = '-9999px';
+  wrapper.style.top = '0';
+  wrapper.style.width = '210mm';
+  document.body.appendChild(wrapper);
+
+  const opt = {
+    margin: 0,
+    filename: 'organograma_logistica.pdf',
+    image: { type: 'jpeg', quality: 0.95 },
+    html2canvas: {
+      scale: 2,
+      backgroundColor: '#0d1117',
+      logging: false,
+      useCORS: true,
+      letterRendering: true
+    },
+    jsPDF: {
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'portrait',
+      compress: true
+    },
+    pagebreak: { mode: ['css', 'legacy'], avoid: ['.exec-card', '.team-panel', '.print-atrib-bloco'] }
+  };
+
+  html2pdf().set(opt).from(wrapper).save().then(() => {
+    document.body.removeChild(wrapper);
+    btn.textContent = textoOriginal;
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }).catch(err => {
+    console.error('Erro ao gerar PDF:', err);
+    document.body.removeChild(wrapper);
+    btn.textContent = textoOriginal;
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    alert('Erro ao gerar PDF. Tente novamente ou use o botão direito → Imprimir.');
+  });
 }
 
 // ============================================================
