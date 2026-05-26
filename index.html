@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Organograma Executivo — Logística</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -2522,93 +2523,136 @@ function setarData() {
 }
 
 // ============================================================
-// EXPORT PDF (download direto)
+// EXPORT PDF (download direto - html2canvas + jsPDF)
 // ============================================================
-function baixarPDF() {
+async function baixarPDF() {
   const btn = document.getElementById('btnPdf');
   const textoOriginal = btn.textContent;
-  btn.textContent = '⏳ Gerando PDF...';
+  btn.textContent = '⏳ Preparando...';
   btn.disabled = true;
   btn.style.opacity = '0.7';
 
-  // Fecha qualquer modal aberto e sai do modo apresentação antes de gerar
-  if (document.body.classList.contains('modo-apresentacao')) {
-    document.body.classList.remove('modo-apresentacao');
-  }
+  // Estado original
+  const erafullscreen = document.body.classList.contains('modo-apresentacao');
+  if (erafullscreen) document.body.classList.remove('modo-apresentacao');
+
+  // Fecha modais
   document.querySelectorAll('.modal-overlay.show').forEach(m => m.classList.remove('show'));
 
-  // Cria um wrapper temporário com tudo que deve sair no PDF
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'background:#0d1117;color:#f1f5f9;padding:0;font-family:Inter,sans-serif;';
-
-  // Clona o container principal
-  const container = document.querySelector('.container').cloneNode(true);
-  // Remove o botão de exportar (que não deve aparecer no PDF)
-  const headerRight = container.querySelector('.header-right');
-  if (headerRight) headerRight.remove();
-  // Remove dica de modo apresentação se estiver visível
-  container.querySelectorAll('.modo-apresentacao-hint').forEach(e => e.remove());
-  // Remove botões de info dos KPIs
-  container.querySelectorAll('.kpi-info').forEach(e => e.remove());
-  // Remove botões de atribuições dos cards
-  container.querySelectorAll('.btn-atribuicoes').forEach(e => e.remove());
-  // Remove botões de atribuições dos team-members
-  container.querySelectorAll('.member-atrib-btn').forEach(e => e.remove());
   // Abre todos os painéis de equipe
-  container.querySelectorAll('.team-panel').forEach(p => {
-    p.classList.add('show');
-    p.style.display = 'block';
+  const paineisFechados = [];
+  document.querySelectorAll('.team-panel').forEach(p => {
+    if (!p.classList.contains('show')) {
+      paineisFechados.push(p);
+      p.classList.add('show');
+    }
   });
-  // Remove os chevrons das info
-  container.querySelectorAll('.exec-card.expandable').forEach(c => c.classList.remove('expandable'));
 
-  wrapper.appendChild(container);
+  // Esconde elementos que não devem aparecer no PDF
+  const elsParaEsconder = [
+    ...document.querySelectorAll('.header-right'),
+    ...document.querySelectorAll('.kpi-info'),
+    ...document.querySelectorAll('.btn-atribuicoes'),
+    ...document.querySelectorAll('.member-atrib-btn'),
+    ...document.querySelectorAll('.modo-apresentacao-hint'),
+  ];
+  elsParaEsconder.forEach(el => el.dataset.displayBackup = el.style.display);
+  elsParaEsconder.forEach(el => el.style.display = 'none');
 
-  // Clona a seção dedicada de atribuições
-  const atribSection = document.getElementById('printAtribuicoes').cloneNode(true);
-  atribSection.style.cssText = 'background:linear-gradient(180deg,#0d1117,#1c2230);padding:40px;page-break-before:always;display:block;';
-  wrapper.appendChild(atribSection);
+  // Mostra a seção do PDF
+  const printSection = document.getElementById('printAtribuicoes');
+  const printOriginalDisplay = printSection.style.display;
+  printSection.style.display = 'block';
+  printSection.style.background = 'linear-gradient(180deg, #0d1117, #1c2230)';
+  printSection.style.color = '#f1f5f9';
+  printSection.style.padding = '40px';
 
-  // Coloca o wrapper invisível no body (fora da viewport)
-  wrapper.style.position = 'absolute';
-  wrapper.style.left = '-9999px';
-  wrapper.style.top = '0';
-  wrapper.style.width = '210mm';
-  document.body.appendChild(wrapper);
+  // Espera o navegador aplicar os estilos
+  await new Promise(r => setTimeout(r, 300));
 
-  const opt = {
-    margin: 0,
-    filename: 'organograma_logistica.pdf',
-    image: { type: 'jpeg', quality: 0.95 },
-    html2canvas: {
+  try {
+    btn.textContent = '⏳ Capturando página 1...';
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait' });
+    const pageWidthPt = pdf.internal.pageSize.getWidth();
+    const pageHeightPt = pdf.internal.pageSize.getHeight();
+
+    // ===== Captura 1: Container principal (organograma + KPIs) =====
+    const container = document.querySelector('.container');
+    const canvas1 = await html2canvas(container, {
       scale: 2,
       backgroundColor: '#0d1117',
       logging: false,
       useCORS: true,
-      letterRendering: true
-    },
-    jsPDF: {
-      unit: 'mm',
-      format: 'a4',
-      orientation: 'portrait',
-      compress: true
-    },
-    pagebreak: { mode: ['css', 'legacy'], avoid: ['.exec-card', '.team-panel', '.print-atrib-bloco'] }
-  };
+      windowWidth: container.scrollWidth,
+      windowHeight: container.scrollHeight,
+    });
 
-  html2pdf().set(opt).from(wrapper).save().then(() => {
-    document.body.removeChild(wrapper);
+    // Adiciona o canvas1 ao PDF, dividindo em páginas se necessário
+    addCanvasToPdf(pdf, canvas1, pageWidthPt, pageHeightPt);
+
+    btn.textContent = '⏳ Capturando atribuições...';
+
+    // ===== Captura 2: Seção de atribuições =====
+    const canvas2 = await html2canvas(printSection, {
+      scale: 2,
+      backgroundColor: '#0d1117',
+      logging: false,
+      useCORS: true,
+      windowWidth: printSection.scrollWidth,
+      windowHeight: printSection.scrollHeight,
+    });
+
+    pdf.addPage();
+    addCanvasToPdf(pdf, canvas2, pageWidthPt, pageHeightPt);
+
+    btn.textContent = '⏳ Salvando...';
+    pdf.save('organograma_logistica.pdf');
+
+  } catch (err) {
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    // Restaura tudo
+    elsParaEsconder.forEach(el => {
+      el.style.display = el.dataset.displayBackup || '';
+      delete el.dataset.displayBackup;
+    });
+    paineisFechados.forEach(p => p.classList.remove('show'));
+    printSection.style.display = printOriginalDisplay;
+    printSection.style.background = '';
+    printSection.style.color = '';
+    printSection.style.padding = '';
+    if (erafullscreen) document.body.classList.add('modo-apresentacao');
+
     btn.textContent = textoOriginal;
     btn.disabled = false;
     btn.style.opacity = '1';
-  }).catch(err => {
-    console.error('Erro ao gerar PDF:', err);
-    document.body.removeChild(wrapper);
-    btn.textContent = textoOriginal;
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    alert('Erro ao gerar PDF. Tente novamente ou use o botão direito → Imprimir.');
-  });
+  }
+}
+
+// Adiciona um canvas ao PDF dividindo em múltiplas páginas se necessário
+function addCanvasToPdf(pdf, canvas, pageW, pageH) {
+  const imgData = canvas.toDataURL('image/jpeg', 0.92);
+  const canvasW = canvas.width;
+  const canvasH = canvas.height;
+
+  // Calcula proporção e altura escalada
+  const imgWidth = pageW;
+  const imgHeight = (canvasH * pageW) / canvasW;
+
+  let heightLeft = imgHeight;
+  let position = 0;
+  let firstPage = true;
+
+  while (heightLeft > 0) {
+    if (!firstPage) pdf.addPage();
+    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+    heightLeft -= pageH;
+    position -= pageH;
+    firstPage = false;
+  }
 }
 
 // ============================================================
