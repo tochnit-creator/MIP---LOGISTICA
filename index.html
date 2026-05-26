@@ -2523,137 +2523,576 @@ function setarData() {
 }
 
 // ============================================================
-// EXPORT PDF (download direto - html2canvas + jsPDF)
+// EXPORT PDF (geração programática nativa - texto selecionável)
 // ============================================================
+const PDF_THEME = {
+  bg: [13, 17, 23],          // #0d1117 fundo principal
+  bgCard: [28, 34, 48],      // #1c2230 cards
+  bgCardAlt: [22, 27, 39],   // entre os dois
+  gold: [212, 175, 55],      // #d4af37 ouro
+  goldDark: [184, 148, 31],
+  text: [241, 245, 249],     // #f1f5f9 texto principal
+  textDim: [203, 213, 225],  // #cbd5e1 texto secundário
+  textMute: [148, 163, 184], // #94a3b8 texto fraco
+  line: [148, 163, 184],     // bordas (com alpha)
+  white: [255, 255, 255]
+};
+
 async function baixarPDF() {
   const btn = document.getElementById('btnPdf');
   const textoOriginal = btn.textContent;
-  btn.textContent = '⏳ Preparando...';
+  btn.textContent = '⏳ Gerando PDF...';
   btn.disabled = true;
   btn.style.opacity = '0.7';
 
-  // Estado original
-  const erafullscreen = document.body.classList.contains('modo-apresentacao');
-  if (erafullscreen) document.body.classList.remove('modo-apresentacao');
-
-  // Fecha modais
-  document.querySelectorAll('.modal-overlay.show').forEach(m => m.classList.remove('show'));
-
-  // Abre todos os painéis de equipe
-  const paineisFechados = [];
-  document.querySelectorAll('.team-panel').forEach(p => {
-    if (!p.classList.contains('show')) {
-      paineisFechados.push(p);
-      p.classList.add('show');
-    }
-  });
-
-  // Esconde elementos que não devem aparecer no PDF
-  const elsParaEsconder = [
-    ...document.querySelectorAll('.header-right'),
-    ...document.querySelectorAll('.kpi-info'),
-    ...document.querySelectorAll('.btn-atribuicoes'),
-    ...document.querySelectorAll('.member-atrib-btn'),
-    ...document.querySelectorAll('.modo-apresentacao-hint'),
-  ];
-  elsParaEsconder.forEach(el => el.dataset.displayBackup = el.style.display);
-  elsParaEsconder.forEach(el => el.style.display = 'none');
-
-  // Mostra a seção do PDF
-  const printSection = document.getElementById('printAtribuicoes');
-  const printOriginalDisplay = printSection.style.display;
-  printSection.style.display = 'block';
-  printSection.style.background = 'linear-gradient(180deg, #0d1117, #1c2230)';
-  printSection.style.color = '#f1f5f9';
-  printSection.style.padding = '40px';
-
-  // Espera o navegador aplicar os estilos
-  await new Promise(r => setTimeout(r, 300));
-
   try {
-    btn.textContent = '⏳ Capturando página 1...';
-
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait' });
-    const pageWidthPt = pdf.internal.pageSize.getWidth();
-    const pageHeightPt = pdf.internal.pageSize.getHeight();
+    const pdf = new jsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait', compress: true });
 
-    // ===== Captura 1: Container principal (organograma + KPIs) =====
-    const container = document.querySelector('.container');
-    const canvas1 = await html2canvas(container, {
-      scale: 2,
-      backgroundColor: '#0d1117',
-      logging: false,
-      useCORS: true,
-      windowWidth: container.scrollWidth,
-      windowHeight: container.scrollHeight,
+    // ============================================================
+    // CONSTANTES
+    // ============================================================
+    const PAGE_W = pdf.internal.pageSize.getWidth();   // 595.28
+    const PAGE_H = pdf.internal.pageSize.getHeight();  // 841.89
+    const MARGIN = 36;
+    const CONTENT_W = PAGE_W - 2 * MARGIN;
+    const FOOTER_Y = PAGE_H - 30;
+
+    const COR = {
+      bg: [13, 17, 23],
+      bgCard: [26, 32, 44],
+      bgCardGold: [40, 33, 18],
+      gold: [212, 175, 55],
+      goldLight: [244, 213, 116],
+      text: [248, 250, 252],
+      textDim: [203, 213, 225],
+      textMute: [148, 163, 184],
+      border: [55, 65, 81],
+      green: [74, 222, 128]
+    };
+
+    let y = MARGIN;
+
+    // ============================================================
+    // HELPERS PRIMITIVOS
+    // ============================================================
+    const setFill = c => pdf.setFillColor(c[0], c[1], c[2]);
+    const setStroke = c => pdf.setDrawColor(c[0], c[1], c[2]);
+    const setText = c => pdf.setTextColor(c[0], c[1], c[2]);
+
+    function pintarFundo() {
+      setFill(COR.bg);
+      pdf.rect(0, 0, PAGE_W, PAGE_H, 'F');
+    }
+
+    function rodape() {
+      const data = new Date().toLocaleDateString('pt-BR');
+      setStroke(COR.gold);
+      pdf.setLineWidth(0.4);
+      pdf.line(MARGIN, FOOTER_Y - 6, PAGE_W - MARGIN, FOOTER_Y - 6);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(8);
+      setText(COR.textMute);
+      pdf.text(`Logística · Estrutura vigente em ${data}`, MARGIN, FOOTER_Y + 6);
+      setText(COR.gold);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('CONFIDENCIAL', PAGE_W - MARGIN, FOOTER_Y + 6, { align: 'right' });
+    }
+
+    function faixaTopo() {
+      setFill(COR.gold);
+      pdf.rect(0, 0, PAGE_W, 4, 'F');
+    }
+
+    function novaPagina() {
+      pdf.addPage();
+      pintarFundo();
+      faixaTopo();
+      rodape();
+      y = MARGIN + 16;
+    }
+
+    function garantirEspaco(altura) {
+      if (y + altura > FOOTER_Y - 12) {
+        novaPagina();
+        return true;
+      }
+      return false;
+    }
+
+    function tituloPagina(titulo, subtitulo) {
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(20);
+      setText(COR.text);
+      pdf.text(titulo, MARGIN, y + 14);
+      setStroke(COR.gold);
+      pdf.setLineWidth(2);
+      pdf.line(MARGIN, y + 22, MARGIN + 60, y + 22);
+      y += 32;
+      if (subtitulo) {
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(10);
+        setText(COR.textDim);
+        pdf.text(subtitulo, MARGIN, y);
+        y += 16;
+      }
+      y += 8;
+    }
+
+    function tituloSecao(texto) {
+      garantirEspaco(28);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(9);
+      setText(COR.gold);
+      pdf.text(texto, MARGIN, y + 10);
+      const tw = pdf.getTextWidth(texto);
+      setStroke(COR.gold);
+      pdf.setLineWidth(0.3);
+      pdf.line(MARGIN + tw + 8, y + 7, PAGE_W - MARGIN, y + 7);
+      y += 18;
+    }
+
+    // ============================================================
+    // DESENHAR LINHA DE CARDS (cabeças)
+    // ============================================================
+    function desenharLinhaCards(items, opts = {}) {
+      const destaque = opts.destaque || false;
+      const cardH = 56;
+      const gap = 8;
+      const maxPorLinha = Math.min(items.length, 5);
+
+      let idx = 0;
+      while (idx < items.length) {
+        const fim = Math.min(idx + maxPorLinha, items.length);
+        const linha = items.slice(idx, fim);
+        const cardW = (CONTENT_W - gap * (linha.length - 1)) / linha.length;
+
+        garantirEspaco(cardH + 12);
+
+        linha.forEach((item, i) => {
+          const x = MARGIN + i * (cardW + gap);
+          // fundo
+          setFill(destaque ? COR.bgCardGold : COR.bgCard);
+          pdf.roundedRect(x, y, cardW, cardH, 4, 4, 'F');
+          // borda
+          setStroke(COR.gold);
+          pdf.setLineWidth(destaque ? 0.8 : 0.3);
+          pdf.roundedRect(x, y, cardW, cardH, 4, 4, 'S');
+
+          // Nome
+          pdf.setFont('helvetica', 'bold');
+          pdf.setFontSize(9);
+          setText(COR.text);
+          const linhasNome = pdf.splitTextToSize(item.nome, cardW - 16);
+          pdf.text(linhasNome[0], x + 8, y + 14);
+          let nextY = 14;
+          if (linhasNome[1]) { pdf.text(linhasNome[1], x + 8, y + 24); nextY = 24; }
+
+          // Cargo
+          pdf.setFont('helvetica', 'normal');
+          pdf.setFontSize(7.5);
+          setText(COR.textDim);
+          const linhasCargo = pdf.splitTextToSize(item.cargo, cardW - 16);
+          pdf.text(linhasCargo[0], x + 8, y + nextY + 10);
+          if (linhasCargo[1]) pdf.text(linhasCargo[1], x + 8, y + nextY + 18);
+
+          // Equipe
+          if (item.count !== undefined && item.count > 0) {
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(7);
+            setText(COR.textMute);
+            pdf.text('Equipe:', x + 8, y + cardH - 6);
+            pdf.setFont('helvetica', 'bold');
+            setText(COR.gold);
+            pdf.text(String(item.count), x + cardW - 8, y + cardH - 6, { align: 'right' });
+          }
+        });
+
+        y += cardH + 10;
+        idx = fim;
+      }
+    }
+
+    // ============================================================
+    // DESENHAR EQUIPE COMPLETA (lista de membros)
+    // ============================================================
+    function desenharEquipe(lider, equipe) {
+      const totalMembros = Object.values(equipe).reduce((a, arr) => a + arr.length, 0);
+      if (totalMembros === 0) return;
+
+      // Calcula altura aproximada do bloco
+      let alturaPrevista = 30;
+      for (const grupo in equipe) {
+        if (!equipe[grupo].length) continue;
+        alturaPrevista += 16;
+        alturaPrevista += Math.ceil(equipe[grupo].length / 3) * 20;
+      }
+      alturaPrevista += 12;
+
+      // Se não cabe na página, quebra
+      garantirEspaco(alturaPrevista);
+
+      const startY = y;
+      const cardX = MARGIN;
+      const cardW = CONTENT_W;
+
+      // Header do bloco
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(11);
+      setText(COR.text);
+      pdf.text(lider, cardX + 12, y + 16);
+      const liderW = pdf.getTextWidth(lider);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(8);
+      setText(COR.textDim);
+      pdf.text(`· ${totalMembros} ${totalMembros === 1 ? 'pessoa' : 'pessoas'} sob responsabilidade direta`,
+               cardX + 12 + liderW + 4, y + 16);
+
+      y += 22;
+      // Linha separadora
+      setStroke(COR.gold);
+      pdf.setLineWidth(0.3);
+      pdf.line(cardX + 12, y, cardX + cardW - 12, y);
+      y += 6;
+
+      const destacadas = ['Inventário', 'Setor de Retira', 'E-commerce', 'Devolução'];
+
+      for (const grupo in equipe) {
+        const membros = equipe[grupo];
+        if (!membros.length) continue;
+
+        // Título do grupo
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(7.5);
+        setText(COR.gold);
+        pdf.text(`${grupo.toUpperCase()}  ·  ${membros.length}`, cardX + 12, y + 8);
+        if (destacadas.includes(grupo)) {
+          pdf.text('★', cardX + cardW - 18, y + 8);
+        }
+        y += 14;
+
+        // Membros em 3 colunas
+        const colW = (cardW - 24) / 3;
+        membros.forEach((m, i) => {
+          const col = i % 3;
+          const row = Math.floor(i / 3);
+          const xM = cardX + 12 + col * colW;
+          const yM = y + row * 20;
+
+          // Bullet dourado
+          setFill(COR.gold);
+          pdf.circle(xM + 3, yM + 6, 1.5, 'F');
+
+          // Nome
+          pdf.setFont('helvetica', 'bold');
+          pdf.setFontSize(8.5);
+          setText(COR.text);
+          const nomeT = pdf.splitTextToSize(m.nome, colW - 14)[0] || m.nome;
+          pdf.text(nomeT, xM + 9, yM + 6);
+
+          // Cargo
+          pdf.setFont('helvetica', 'normal');
+          pdf.setFontSize(7);
+          setText(COR.textMute);
+          let cargoT = m.cargo;
+          if (m.tag) cargoT += `   [${m.tag}]`;
+          const cargoLine = pdf.splitTextToSize(cargoT, colW - 14)[0] || cargoT;
+          pdf.text(cargoLine, xM + 9, yM + 14);
+        });
+
+        y += Math.ceil(membros.length / 3) * 20 + 4;
+      }
+
+      const cardH = y - startY + 4;
+      // Borda do card por cima
+      setStroke(COR.gold);
+      pdf.setLineWidth(0.4);
+      pdf.roundedRect(cardX, startY - 4, cardW, cardH + 4, 4, 4, 'S');
+
+      y += 14;
+    }
+
+    // ============================================================
+    // DESENHAR BLOCO DE ATRIBUIÇÕES
+    // ============================================================
+    function desenharAtribuicao(nome, cargo, chave) {
+      const dados = ATRIBUICOES[chave];
+      if (!dados) return;
+
+      // Calcula altura
+      let alt = 44;
+      dados.categorias.forEach(cat => {
+        alt += 14;
+        alt += Math.ceil(cat.itens.length / 2) * 14;
+        alt += 4;
+      });
+      alt += 12;
+
+      garantirEspaco(alt);
+
+      const cardX = MARGIN;
+      const cardW = CONTENT_W;
+      const startY = y;
+
+      // Avatar dourado redondo com iniciais
+      setFill(COR.gold);
+      pdf.circle(cardX + 24, y + 18, 12, 'F');
+      const inic = nome.split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
+      setText(COR.bg);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(10);
+      pdf.text(inic, cardX + 24, y + 22, { align: 'center' });
+
+      // Nome e cargo
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(12);
+      setText(COR.text);
+      pdf.text(nome, cardX + 44, y + 16);
+
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(8.5);
+      setText(COR.textDim);
+      pdf.text(cargo, cardX + 44, y + 28);
+
+      y += 38;
+      setStroke(COR.gold);
+      pdf.setLineWidth(0.3);
+      pdf.line(cardX + 12, y, cardX + cardW - 12, y);
+      y += 8;
+
+      // Categorias e itens
+      dados.categorias.forEach(cat => {
+        // Verifica se precisa quebrar antes da categoria
+        const altCat = 14 + Math.ceil(cat.itens.length / 2) * 14 + 4;
+        if (y + altCat > FOOTER_Y - 12) {
+          // Fecha o card atual e abre novo
+          setStroke(COR.gold);
+          pdf.setLineWidth(0.4);
+          pdf.roundedRect(cardX, startY - 4, cardW, y - startY + 4, 4, 4, 'S');
+          novaPagina();
+          y = MARGIN + 16;
+        }
+
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(8);
+        setText(COR.gold);
+        pdf.text(cat.nome.toUpperCase(), cardX + 12, y + 8);
+        y += 12;
+
+        const colW = (cardW - 24) / 2;
+        cat.itens.forEach((item, i) => {
+          const col = i % 2;
+          const row = Math.floor(i / 2);
+          const xI = cardX + 12 + col * colW;
+          const yI = y + row * 14;
+
+          setFill(COR.gold);
+          pdf.setFontSize(6);
+          pdf.text('◆', xI, yI + 5);
+
+          pdf.setFont('helvetica', 'normal');
+          pdf.setFontSize(8);
+          setText(COR.textDim);
+          const t = pdf.splitTextToSize(item, colW - 12);
+          pdf.text(t[0], xI + 7, yI + 5);
+          if (t[1]) pdf.text(t[1], xI + 7, yI + 13);
+        });
+
+        y += Math.ceil(cat.itens.length / 2) * 14 + 4;
+      });
+
+      y += 4;
+      // Borda final do card
+      setStroke(COR.gold);
+      pdf.setLineWidth(0.4);
+      pdf.roundedRect(cardX, startY - 4, cardW, y - startY + 4, 4, 4, 'S');
+      y += 14;
+    }
+
+    // ============================================================
+    // ============================================================
+    // EXECUÇÃO
+    // ============================================================
+    // ============================================================
+
+    // ===== PÁGINA 1: CAPA + KPIs + ÁRVORE =====
+    pintarFundo();
+    faixaTopo();
+    rodape();
+    y = MARGIN + 20;
+
+    // Título principal
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(24);
+    setText(COR.goldLight);
+    pdf.text('Estrutura Organizacional', MARGIN, y);
+    y += 22;
+
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(14);
+    setText(COR.text);
+    pdf.text('Logística', MARGIN, y);
+    y += 12;
+
+    setStroke(COR.gold);
+    pdf.setLineWidth(1);
+    pdf.line(MARGIN, y, PAGE_W - MARGIN, y);
+    y += 10;
+
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(9);
+    setText(COR.textMute);
+    const dataExt = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    pdf.text(`Documento gerado em ${dataExt}`, MARGIN, y + 4);
+    y += 18;
+
+    // ===== KPIs =====
+    const total = totalGeral();
+    const lider = totalLiderancas();
+    const mot = totalMotoristas();
+    const span = ((total - lider) / lider).toFixed(1);
+    const equipes = [];
+    ESTRUTURA.supervisores.forEach(s => { const c = contarEquipe(s); if (c > 0) equipes.push({ nome: s.nome, count: c }); });
+    ESTRUTURA.areasDir.forEach(a => { const c = contarEquipe(a); if (c > 0) equipes.push({ nome: a.nome, count: c }); });
+    ESTRUTURA.areasGerencia.forEach(a => { const c = contarEquipe(a); if (c > 0) equipes.push({ nome: a.nome, count: c }); });
+    equipes.sort((a, b) => b.count - a.count);
+    const kMax = equipes[0];
+    const kMin = equipes[equipes.length - 1];
+
+    const kpis = [
+      { label: 'TOTAL', value: total, sub: 'colaboradores' },
+      { label: 'LIDERANÇAS', value: lider, sub: 'cargos de gestão' },
+      { label: 'TURNOS', value: 3, sub: 'M · T · N' },
+      { label: 'MOTORISTAS', value: mot, sub: 'entregadores' },
+      { label: 'SPAN MÉDIO', value: span, sub: 'sub / líder' },
+      { label: 'MAIOR EQUIPE', value: kMax.count, sub: kMax.nome.split(' ').slice(0, 2).join(' ') },
+      { label: 'MENOR EQUIPE', value: kMin.count, sub: kMin.nome.split(' ').slice(0, 2).join(' ') }
+    ];
+
+    const kpiH = 58;
+    const kpiGap = 4;
+    const kpiW = (CONTENT_W - kpiGap * 6) / 7;
+
+    kpis.forEach((k, i) => {
+      const x = MARGIN + i * (kpiW + kpiGap);
+      setFill(COR.bgCard);
+      pdf.roundedRect(x, y, kpiW, kpiH, 4, 4, 'F');
+      setStroke(COR.gold);
+      pdf.setLineWidth(0.3);
+      pdf.roundedRect(x, y, kpiW, kpiH, 4, 4, 'S');
+      // Linha decorativa no topo
+      pdf.setLineWidth(1.2);
+      pdf.line(x + 6, y, x + kpiW - 6, y);
+
+      // Label
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(6.5);
+      setText(COR.textMute);
+      const labelLines = pdf.splitTextToSize(k.label, kpiW - 12);
+      pdf.text(labelLines[0], x + 6, y + 11);
+
+      // Value
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(20);
+      setText(COR.gold);
+      pdf.text(String(k.value), x + 6, y + 34);
+
+      // Sub
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(6.5);
+      setText(COR.textDim);
+      const subLines = pdf.splitTextToSize(k.sub, kpiW - 10);
+      pdf.text(subLines[0] || '', x + 6, y + 46);
+      if (subLines[1]) pdf.text(subLines[1], x + 6, y + 53);
     });
 
-    // Adiciona o canvas1 ao PDF, dividindo em páginas se necessário
-    addCanvasToPdf(pdf, canvas1, pageWidthPt, pageHeightPt);
+    y += kpiH + 18;
 
-    btn.textContent = '⏳ Capturando atribuições...';
+    // ===== ÁRVORE =====
+    tituloSecao('DIRETORIA');
+    desenharLinhaCards([
+      { nome: 'Eduardo Martins', cargo: 'Diretor' },
+      ...ESTRUTURA.areasDir.map(a => ({ nome: a.nome, cargo: a.cargo, count: contarEquipe(a) }))
+    ], { destaque: true });
 
-    // ===== Captura 2: Seção de atribuições =====
-    const canvas2 = await html2canvas(printSection, {
-      scale: 2,
-      backgroundColor: '#0d1117',
-      logging: false,
-      useCORS: true,
-      windowWidth: printSection.scrollWidth,
-      windowHeight: printSection.scrollHeight,
+    tituloSecao('GERÊNCIA');
+    desenharLinhaCards([
+      { nome: ESTRUTURA.gerente.nome, cargo: ESTRUTURA.gerente.cargo },
+      ...ESTRUTURA.areasGerencia.map(a => ({ nome: a.nome, cargo: a.cargo, count: contarEquipe(a) }))
+    ]);
+
+    if (ESTRUTURA.areasIndep && ESTRUTURA.areasIndep.length) {
+      tituloSecao('ÁREAS VINCULADAS À GERÊNCIA');
+      desenharLinhaCards(ESTRUTURA.areasIndep.map(a => ({ nome: a.nome, cargo: a.cargo })));
+    }
+
+    tituloSecao('LIDERANÇAS OPERACIONAIS');
+    desenharLinhaCards(ESTRUTURA.supervisores.map(s => ({
+      nome: s.nome, cargo: s.cargo, count: contarEquipe(s)
+    })));
+
+    // ===== PÁGINAS DE EQUIPES =====
+    novaPagina();
+    tituloPagina('Composição das Equipes', 'Colaboradores diretos de cada liderança');
+
+    ESTRUTURA.areasDir.forEach(a => desenharEquipe(a.nome, a.equipe));
+    ESTRUTURA.areasGerencia.forEach(a => desenharEquipe(a.nome, a.equipe));
+    ESTRUTURA.supervisores.forEach(s => desenharEquipe(s.nome, s.equipe));
+
+    // ===== PÁGINAS DE ATRIBUIÇÕES =====
+    novaPagina();
+    tituloPagina('Atribuições e Responsabilidades', 'Funções de cada liderança, equipe e setor');
+
+    // Gerente
+    if (ESTRUTURA.gerente.atribuicoesKey) {
+      desenharAtribuicao(ESTRUTURA.gerente.nome, ESTRUTURA.gerente.cargo, ESTRUTURA.gerente.atribuicoesKey);
+    }
+
+    // Áreas independentes
+    (ESTRUTURA.areasIndep || []).forEach(a => {
+      if (a.atribuicoesKey) desenharAtribuicao(a.nome, a.cargo, a.atribuicoesKey);
     });
 
-    pdf.addPage();
-    addCanvasToPdf(pdf, canvas2, pageWidthPt, pageHeightPt);
+    // Supervisores com chave específica
+    const compartilhadas = ['supervisoresPadrao', 'conferentesTurnoBC', 'auxiliaresTurnoBC',
+                            'conferentesVanessa', 'auxiliaresVanessa', 'empilhadeira',
+                            'equipeCleiton', 'motoristas', 'laudiceia', 'lideresPadrao'];
+    ESTRUTURA.supervisores.forEach(sup => {
+      if (!sup.atribuicoes) return;
+      sup.atribuicoes.forEach(a => {
+        if (!compartilhadas.includes(a.key) && ATRIBUICOES[a.key]) {
+          desenharAtribuicao(sup.nome, sup.cargo, a.key);
+        }
+      });
+    });
 
+    tituloSecao('ATRIBUIÇÕES POR EQUIPE');
+
+    desenharAtribuicao('Supervisores (Padrão)', 'Atribuições comuns a todos os supervisores', 'supervisoresPadrao');
+    desenharAtribuicao('Líderes (Padrão)', 'Atribuições padrão da liderança operacional', 'lideresPadrao');
+    desenharAtribuicao('Conferentes — Recebimento', 'Equipe da Vanessa (Turno A)', 'conferentesVanessa');
+    desenharAtribuicao('Auxiliares — Armazenagem', 'Equipe da Vanessa (Turno A)', 'auxiliaresVanessa');
+    desenharAtribuicao('Conferentes — Expedição', 'Equipes do Claudio e Jefferson (Turnos B e C)', 'conferentesTurnoBC');
+    desenharAtribuicao('Auxiliares — Expedição', 'Equipes do Claudio e Jefferson (Turnos B e C)', 'auxiliaresTurnoBC');
+    desenharAtribuicao('Equipe de Carregamento', 'Sob Cleiton Aparecido (Turno C)', 'equipeCleiton');
+    desenharAtribuicao('Operador de Empilhadeira', 'Função especializada de movimentação', 'empilhadeira');
+    desenharAtribuicao('Motoristas', 'Setor de entregas (Rogério)', 'motoristas');
+    desenharAtribuicao('Laudiceia de Souza', 'Processo de Devolução (Turno A)', 'laudiceia');
+
+    // Salvar
     btn.textContent = '⏳ Salvando...';
     pdf.save('organograma_logistica.pdf');
 
   } catch (err) {
-    console.error(err);
+    console.error('Erro PDF:', err);
     alert('Erro ao gerar PDF: ' + err.message);
   } finally {
-    // Restaura tudo
-    elsParaEsconder.forEach(el => {
-      el.style.display = el.dataset.displayBackup || '';
-      delete el.dataset.displayBackup;
-    });
-    paineisFechados.forEach(p => p.classList.remove('show'));
-    printSection.style.display = printOriginalDisplay;
-    printSection.style.background = '';
-    printSection.style.color = '';
-    printSection.style.padding = '';
-    if (erafullscreen) document.body.classList.add('modo-apresentacao');
-
     btn.textContent = textoOriginal;
     btn.disabled = false;
     btn.style.opacity = '1';
   }
 }
 
-// Adiciona um canvas ao PDF dividindo em múltiplas páginas se necessário
-function addCanvasToPdf(pdf, canvas, pageW, pageH) {
-  const imgData = canvas.toDataURL('image/jpeg', 0.92);
-  const canvasW = canvas.width;
-  const canvasH = canvas.height;
-
-  // Calcula proporção e altura escalada
-  const imgWidth = pageW;
-  const imgHeight = (canvasH * pageW) / canvasW;
-
-  let heightLeft = imgHeight;
-  let position = 0;
-  let firstPage = true;
-
-  while (heightLeft > 0) {
-    if (!firstPage) pdf.addPage();
-    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-    heightLeft -= pageH;
-    position -= pageH;
-    firstPage = false;
-  }
-}
 
 // ============================================================
 // EXPORT EXCEL
