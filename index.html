@@ -1005,117 +1005,149 @@
     @page { size: A4; margin: 0; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-    body {
-      padding: 0;
-      background: linear-gradient(180deg, #0d1117 0%, #1c2230 100%) !important;
+    html, body {
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #0d1117 !important;
       color: #f1f5f9 !important;
-      background-attachment: scroll !important;
     }
-    .container { max-width: 100% !important; padding: 0; }
+
+    /* Container principal recebe o fundo gradiente */
+    .container {
+      max-width: 100% !important;
+      padding: 0 !important;
+      background: linear-gradient(180deg, #0d1117 0%, #1c2230 100%) !important;
+      min-height: 100vh;
+      position: relative;
+    }
 
     .header-right, .footer .footer-brand,
     .btn-atribuicoes, .modal-overlay,
     .kpi-info, .team-member .member-atrib-btn,
-    .exec-card.expandable .team-info::after {
+    .exec-card.expandable .team-info::after,
+    .modo-apresentacao-hint, #btnFullscreen {
       display: none !important;
     }
 
     .header {
-      padding: 50px 50px 30px !important;
+      padding: 40px 40px 24px !important;
       border-bottom: 2px solid #d4af37 !important;
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.10), transparent) !important;
       page-break-after: avoid;
     }
-    .header-left h1 { font-size: 36px !important; }
-    .header-left .subtitle { color: #94a3b8 !important; font-size: 14px !important; }
+    .header-left h1 {
+      font-size: 30px !important;
+      background: linear-gradient(135deg, #fff 0%, #d4af37 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+    .header-left .subtitle { color: #cbd5e1 !important; font-size: 13px !important; }
 
     .kpi-grid {
-      margin: 30px 50px 30px !important;
+      margin: 24px 40px !important;
       gap: 2px !important;
       background: rgba(212, 175, 55, 0.3) !important;
-      border-radius: 14px !important;
+      border-radius: 12px !important;
       border: none !important;
       page-break-after: avoid;
+      grid-template-columns: repeat(4, 1fr) !important;
     }
     .kpi {
-      background: linear-gradient(135deg, rgba(28, 34, 48, 0.98), rgba(13, 17, 23, 0.98)) !important;
-      padding: 20px 18px !important;
+      background: #1c2230 !important;
+      padding: 16px 14px !important;
     }
-    .kpi-label { color: #94a3b8 !important; }
-    .kpi-value { color: #d4af37 !important; font-size: 30px !important; }
-    .kpi-sub { color: #64748b !important; }
+    .kpi-label { color: #cbd5e1 !important; font-size: 10px !important; }
+    .kpi-value { color: #d4af37 !important; font-size: 24px !important; }
+    .kpi-sub { color: #94a3b8 !important; font-size: 10px !important; }
 
-    .tree { padding: 0 50px; }
-    .shift-section-title { color: #d4af37 !important; }
-    .tree-row { flex-wrap: wrap !important; page-break-inside: avoid; }
+    .tree { padding: 0 40px; }
+    .shift-section-title { color: #d4af37 !important; margin-top: 18px !important; font-size: 11px !important; }
+    .tree-row {
+      flex-wrap: wrap !important;
+      page-break-inside: avoid;
+      gap: 10px !important;
+    }
+    .tree-line { height: 16px !important; }
     .tree-line::before {
-      background: linear-gradient(180deg, transparent, rgba(212, 175, 55, 0.4), transparent) !important;
+      background: linear-gradient(180deg, transparent, #d4af37, transparent) !important;
+      opacity: 0.5;
     }
     .exec-card {
-      background: linear-gradient(135deg, rgba(28, 34, 48, 0.95), rgba(13, 17, 23, 0.95)) !important;
+      background: #1c2230 !important;
       border: 1px solid rgba(212, 175, 55, 0.25) !important;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
       page-break-inside: avoid;
+      padding: 12px 14px !important;
+      min-width: 180px !important;
     }
-    .exec-card .nome { color: #f1f5f9 !important; }
-    .exec-card .cargo { color: #94a3b8 !important; }
-    .exec-card .team-info { color: #cbd5e1 !important; border-color: rgba(148, 163, 184, 0.15) !important; }
-    .exec-card .team-info .count { color: #d4af37 !important; }
+    .exec-card .nome { color: #f1f5f9 !important; font-size: 12px !important; }
+    .exec-card .cargo { color: #cbd5e1 !important; font-size: 10px !important; }
+    .exec-card .team-info { color: #cbd5e1 !important; border-color: rgba(148, 163, 184, 0.2) !important; font-size: 10px !important; }
+    .exec-card .team-info .count { color: #d4af37 !important; font-weight: 700 !important; }
+    .exec-card .avatar { width: 32px !important; height: 32px !important; margin-bottom: 8px !important; }
+    .exec-card .avatar svg { width: 18px !important; height: 18px !important; }
     .exec-card.level-diretor {
       border: 1.5px solid #d4af37 !important;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(28, 34, 48, 0.95)) !important;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), #1c2230) !important;
     }
+    .exec-card.level-diretor .avatar { width: 40px !important; height: 40px !important; }
+    .exec-card.level-diretor .avatar svg { width: 24px !important; height: 24px !important; }
 
     .team-panel {
       display: block !important;
-      background: linear-gradient(135deg, rgba(28, 34, 48, 0.85), rgba(13, 17, 23, 0.85)) !important;
+      background: #1c2230 !important;
       border: 1px solid rgba(212, 175, 55, 0.18) !important;
       page-break-inside: avoid;
-      margin: 18px 50px !important;
-      padding: 20px 24px !important;
+      margin: 14px 40px !important;
+      padding: 16px 20px !important;
     }
     .team-panel::before {
       background: linear-gradient(90deg, transparent, #d4af37, transparent) !important;
     }
-    .team-panel-title { color: #f1f5f9 !important; }
-    .team-panel-title span { color: #94a3b8 !important; }
-    .team-panel-section-title { color: #d4af37 !important; }
-    .team-panel-list { grid-template-columns: repeat(2, 1fr) !important; }
-    .team-member { background: rgba(255,255,255,0.03) !important; }
-    .team-member .member-name { color: #f1f5f9 !important; }
-    .team-member .member-role { color: #94a3b8 !important; }
+    .team-panel-title { color: #f1f5f9 !important; font-size: 13px !important; }
+    .team-panel-title span { color: #cbd5e1 !important; }
+    .team-panel-section-title { color: #d4af37 !important; font-size: 10px !important; }
+    .team-panel-list { grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; }
+    .team-member {
+      background: rgba(255,255,255,0.04) !important;
+      padding: 6px 8px !important;
+    }
+    .team-member .member-name { color: #f1f5f9 !important; font-size: 11px !important; }
+    .team-member .member-role { color: #cbd5e1 !important; font-size: 9px !important; }
     .team-member .mini-avatar {
-      background: rgba(212, 175, 55, 0.15) !important;
+      background: rgba(212, 175, 55, 0.18) !important;
       color: #d4af37 !important;
-      border-color: rgba(212, 175, 55, 0.3) !important;
+      border-color: rgba(212, 175, 55, 0.4) !important;
     }
     .team-panel-section.highlighted {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.04)) !important;
+      background: rgba(212, 175, 55, 0.12) !important;
       border: 1px solid rgba(212, 175, 55, 0.35) !important;
     }
     .team-member .member-tag {
-      background: linear-gradient(135deg, #4ade80, #16a34a) !important;
+      background: #16a34a !important;
       color: #052e16 !important;
       box-shadow: none !important;
       animation: none !important;
     }
 
     .footer {
-      margin: 30px 50px 20px !important;
-      padding-top: 16px !important;
+      margin: 0 40px !important;
+      padding: 14px 0 24px !important;
       border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
-      color: #94a3b8 !important;
+      color: #cbd5e1 !important;
+      font-size: 10px !important;
     }
 
     /* ===== Páginas dedicadas de atribuições ===== */
     .print-atribuicoes {
       page-break-before: always;
-      padding: 50px;
-      background: linear-gradient(180deg, #0d1117, #1c2230);
+      padding: 40px;
+      background: linear-gradient(180deg, #0d1117 0%, #1c2230 100%);
       min-height: 100vh;
     }
     .print-atribuicoes h2 {
-      font-size: 24px;
+      font-size: 22px;
       background: linear-gradient(135deg, #fff, #d4af37);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -1123,39 +1155,39 @@
       margin-bottom: 4px;
     }
     .print-atribuicoes-sub {
-      color: #94a3b8;
-      font-size: 12px;
-      margin-bottom: 28px;
+      color: #cbd5e1;
+      font-size: 11px;
+      margin-bottom: 22px;
       letter-spacing: 0.5px;
       text-transform: uppercase;
     }
     .print-atrib-bloco {
       page-break-inside: avoid;
-      background: linear-gradient(135deg, rgba(28, 34, 48, 0.95), rgba(13, 17, 23, 0.95));
-      border: 1px solid rgba(212, 175, 55, 0.22);
-      border-radius: 12px;
-      padding: 22px 26px;
-      margin-bottom: 18px;
+      background: #1c2230;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 14px;
       position: relative;
     }
     .print-atrib-bloco::before {
       content: '';
       position: absolute;
-      top: 0; left: 24px; right: 24px;
+      top: 0; left: 20px; right: 20px;
       height: 1px;
       background: linear-gradient(90deg, transparent, #d4af37, transparent);
     }
     .print-atrib-bloco-header {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 14px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
     }
     .print-atrib-avatar {
-      width: 46px;
-      height: 46px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -1164,20 +1196,16 @@
       background: linear-gradient(135deg, #f4d574, #d4af37);
       color: #0d1117;
     }
-    .print-atrib-avatar svg {
-      width: 26px;
-      height: 26px;
-      display: block;
-    }
+    .print-atrib-avatar svg { width: 22px; height: 22px; }
     .print-atrib-bloco-info { flex: 1; }
-    .print-atrib-nome { font-size: 15px; font-weight: 600; color: #f1f5f9; }
-    .print-atrib-cargo { font-size: 11px; color: #94a3b8; letter-spacing: 0.3px; margin-top: 2px; }
-    .print-atrib-categoria { margin-bottom: 12px; }
+    .print-atrib-nome { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+    .print-atrib-cargo { font-size: 11px; color: #cbd5e1; margin-top: 2px; }
+    .print-atrib-categoria { margin-bottom: 10px; }
     .print-atrib-categoria:last-child { margin-bottom: 0; }
     .print-atrib-cat-titulo {
       font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       color: #d4af37;
       font-weight: 700;
       margin-bottom: 6px;
@@ -1195,14 +1223,14 @@
     .print-atrib-itens {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4px 14px;
+      gap: 3px 12px;
     }
     .print-atrib-item {
       display: flex;
-      gap: 8px;
-      padding: 3px 0;
-      font-size: 11px;
-      color: #cbd5e1;
+      gap: 6px;
+      padding: 2px 0;
+      font-size: 10.5px;
+      color: #e2e8f0;
       line-height: 1.4;
     }
     .print-atrib-item::before {
@@ -1210,7 +1238,7 @@
       color: #d4af37;
       flex-shrink: 0;
       font-size: 7px;
-      margin-top: 5px;
+      margin-top: 4px;
     }
   }
 
