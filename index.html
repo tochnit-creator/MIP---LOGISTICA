@@ -1426,7 +1426,7 @@ const ESTRUTURA = {
         ],
         "Conferência (Recebimento)": [
           { nome: "Vinicius dos Santos", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
-          { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
+          { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente", atribuicoesKey: "geneilda" },
           { nome: "Jose Luiz Jr.", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
           { nome: "Leila Cristina Souza", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
           { nome: "Marta Leandro", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
@@ -1434,7 +1434,7 @@ const ESTRUTURA = {
         ],
         "Auxiliares": [
           { nome: "Devanir Barbosa Souza", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Cleiton Henrique Lopes", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Cleiton Henrique Lopes", cargo: "Aux. Logística · Apoio à Liderança", nivel: "aux", atribuicoesKey: "cleitonHenrique" },
           { nome: "Paulo Eduardo da Silva", cargo: "Aux. Estoque", nivel: "aux" },
           { nome: "Luis Diego Costa Mendonça", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Marcelo Lopes", cargo: "Aux. Logística", nivel: "aux" },
@@ -1474,7 +1474,7 @@ const ESTRUTURA = {
           { nome: "Lucas", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Jessica de Souza", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Marcos Fernande", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
-          { nome: "Maria Debora Alves", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Maria Debora Alves", cargo: "Conf. Expedição Jr.", nivel: "conferente", atribuicoesKey: "mariaDebora" },
           { nome: "Vanessa Gomes", cargo: "Conf. Expedição Jr.", nivel: "conferente" }
         ],
         "Auxiliares": [
@@ -1728,6 +1728,85 @@ const ATRIBUICOES = {
           "Delega os trabalhos e fiscaliza",
           "Coordena o processo",
           "Alinhamento da produção"
+        ]
+      }
+    ]
+  },
+  geneilda: {
+    titulo: "Atribuições — Geneilda da Silva",
+    subtitulo: "Conferente Recebimento — Retorno de Motoristas Terceirizados",
+    categorias: [
+      {
+        nome: "Retorno de Motoristas Terceirizados",
+        icone: "🚚",
+        itens: [
+          "Recepção e conferência do retorno dos motoristas terceirizados",
+          "Conferência de pedidos entregues e não entregues",
+          "Conferência de pagamentos relativos às entregas",
+          "Tratativa de divergências entre pedidos faturados e retornados"
+        ]
+      },
+      {
+        nome: "Conferência de Recebimento",
+        icone: "📦",
+        itens: [
+          "Demais atividades padrão de conferência de recebimento",
+          "Tratamento e identificação dos volumes recebidos"
+        ]
+      }
+    ]
+  },
+  mariaDebora: {
+    titulo: "Atribuições — Maria Debora Alves",
+    subtitulo: "Conferente — Retorno de Caminhões Próprios",
+    categorias: [
+      {
+        nome: "Retorno de Caminhões Próprios",
+        icone: "🚛",
+        itens: [
+          "Conferência dos retornos dos caminhões próprios",
+          "Conferência de pedidos entregues",
+          "Conferência de pagamentos recebidos nas entregas",
+          "Identificação e tratativa de pedidos que retornaram sem entrega (sem tempo hábil)"
+        ]
+      },
+      {
+        nome: "Conferência de Expedição",
+        icone: "📋",
+        itens: [
+          "Demais atividades padrão de conferência de expedição",
+          "Reporte de ocorrências para a supervisão"
+        ]
+      }
+    ]
+  },
+  cleitonHenrique: {
+    titulo: "Atribuições — Cleiton Henrique Lopes",
+    subtitulo: "Apoio à Liderança — Armazenagem (Turno A)",
+    categorias: [
+      {
+        nome: "Apoio à Liderança",
+        icone: "🤝",
+        itens: [
+          "Auxiliar a liderança do setor de armazenagem",
+          "Apoio direto à líder Rosicleude Silva nas demandas do turno",
+          "Suporte na coordenação e organização da equipe"
+        ]
+      },
+      {
+        nome: "Monitoramento da Equipe e Processos",
+        icone: "👀",
+        itens: [
+          "Monitoramento da equipe e dos setores 2 e 3",
+          "Acompanhamento dos processos e atividades realizados",
+          "Reporte de ocorrências e demandas à liderança"
+        ]
+      },
+      {
+        nome: "Atividades de Auxiliar",
+        icone: "📦",
+        itens: [
+          "Demais atividades padrão de Auxiliar de Logística"
         ]
       }
     ]
@@ -3085,6 +3164,9 @@ async function baixarPDF() {
     desenharAtribuicao('Operador de Empilhadeira', 'Função especializada de movimentação', 'empilhadeira');
     desenharAtribuicao('Motoristas', 'Setor de entregas (Rogério)', 'motoristas');
     desenharAtribuicao('Laudiceia de Souza', 'Processo de Devolução (Turno A)', 'laudiceia');
+    desenharAtribuicao('Geneilda da Silva', 'Retorno Motoristas Terceirizados (Turno A)', 'geneilda');
+    desenharAtribuicao('Maria Debora Alves', 'Retorno Caminhões Próprios (Turno B)', 'mariaDebora');
+    desenharAtribuicao('Cleiton Henrique Lopes', 'Apoio à Liderança — Armazenagem (Turno A)', 'cleitonHenrique');
 
     // Salvar
     btn.textContent = '⏳ Salvando...';
