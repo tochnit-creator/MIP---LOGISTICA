@@ -2767,7 +2767,14 @@ async function baixarPDF() {
         setText(COR.gold);
         pdf.text(`${grupo.toUpperCase()}  ·  ${membros.length}`, cardX + 12, y + 8);
         if (destacadas.includes(grupo)) {
-          pdf.text('★', cardX + cardW - 18, y + 8);
+          // Badge "DESTAQUE" em dourado
+          const badge = 'DESTAQUE';
+          pdf.setFontSize(6);
+          const bw = pdf.getTextWidth(badge) + 8;
+          setFill(COR.gold);
+          pdf.roundedRect(cardX + cardW - 12 - bw, y + 1, bw, 9, 2, 2, 'F');
+          setText(COR.bg);
+          pdf.text(badge, cardX + cardW - 12 - bw + 4, y + 7);
         }
         y += 14;
 
@@ -2886,16 +2893,16 @@ async function baixarPDF() {
           const xI = cardX + 12 + col * colW;
           const yI = y + row * 14;
 
+          // Marcador dourado (círculo) — desenhado nativamente para garantir renderização
           setFill(COR.gold);
-          pdf.setFontSize(6);
-          pdf.text('◆', xI, yI + 5);
+          pdf.circle(xI + 2, yI + 3, 1.4, 'F');
 
           pdf.setFont('helvetica', 'normal');
           pdf.setFontSize(8);
           setText(COR.textDim);
           const t = pdf.splitTextToSize(item, colW - 12);
-          pdf.text(t[0], xI + 7, yI + 5);
-          if (t[1]) pdf.text(t[1], xI + 7, yI + 13);
+          pdf.text(t[0], xI + 8, yI + 5);
+          if (t[1]) pdf.text(t[1], xI + 8, yI + 13);
         });
 
         y += Math.ceil(cat.itens.length / 2) * 14 + 4;
