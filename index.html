@@ -508,6 +508,34 @@
     border-color: var(--gold);
     transform: scale(1.05);
   }
+
+  /* Linha de "vaga em aberto" — destaque diferente dos demais */
+  .team-member.vaga {
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(212, 175, 55, 0.04),
+      rgba(212, 175, 55, 0.04) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+    border: 1px dashed rgba(212, 175, 55, 0.4);
+  }
+  .team-member.vaga .mini-avatar {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--gold);
+    border-color: rgba(212, 175, 55, 0.4);
+    border-style: dashed;
+  }
+  .team-member.vaga .member-name {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .team-member.vaga .member-role {
+    color: var(--gold);
+    opacity: 0.75;
+    font-style: italic;
+  }
   .team-member .member-tag {
     display: inline-block;
     background: linear-gradient(135deg, #4ade80, #16a34a);
@@ -547,13 +575,94 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
     font-size: 11px;
     color: var(--muted-2);
     letter-spacing: 0.3px;
   }
+  .footer-center { flex: 1; text-align: center; }
   .footer .footer-brand {
     font-weight: 600;
     color: var(--muted);
+  }
+  .footer-btn {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--gold);
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .footer-btn:hover {
+    background: var(--gold);
+    color: #0d1117;
+    border-color: var(--gold);
+  }
+
+  /* ===== Lista de histórico ===== */
+  .historico-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .historico-item:last-child { border-bottom: none; }
+  .historico-data {
+    flex-shrink: 0;
+    min-width: 86px;
+    padding-top: 2px;
+  }
+  .historico-data-valor {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .historico-info { flex: 1; }
+  .historico-tipo {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+  }
+  .historico-tipo-Movimentação {
+    background: rgba(139, 188, 220, 0.15);
+    color: #8db5d8;
+    border: 1px solid rgba(139, 188, 220, 0.3);
+  }
+  .historico-tipo-Desligamento {
+    background: rgba(248, 113, 113, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+  }
+  .historico-tipo-Promoção {
+    background: rgba(74, 222, 128, 0.15);
+    color: #86efac;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+  }
+  .historico-tipo-Reestruturação {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  .historico-tipo-Contratação {
+    background: rgba(193, 216, 112, 0.15);
+    color: #c1d870;
+    border: 1px solid rgba(193, 216, 112, 0.3);
+  }
+  .historico-desc {
+    font-size: 12.5px;
+    color: var(--ink-2);
+    line-height: 1.5;
   }
 
   /* ===== Botão atribuições no card ===== */
@@ -1311,6 +1420,9 @@
   <!-- Rodapé -->
   <div class="footer">
     <div>Logística · Estrutura vigente em <span id="footerDate"></span></div>
+    <div class="footer-center">
+      <button class="footer-btn" onclick="abrirHistorico()">🕐 Ver histórico de alterações</button>
+    </div>
     <div class="footer-brand">Confidencial — uso interno</div>
   </div>
 </div>
@@ -1360,6 +1472,26 @@
       <div class="modal-footer-info"></div>
       <div class="modal-footer-actions">
         <button class="btn btn-primary" onclick="fecharModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Histórico -->
+<div class="modal-overlay" id="modalHistorico" onclick="if(event.target===this)fecharHistorico()">
+  <div class="modal-content" style="max-width: 680px;">
+    <div class="modal-header">
+      <div>
+        <h2>Histórico de Alterações</h2>
+        <div class="modal-sub">Movimentações recentes na estrutura</div>
+      </div>
+      <button class="modal-close" onclick="fecharHistorico()" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-body" id="historicoBody"></div>
+    <div class="modal-footer">
+      <div class="modal-footer-info"></div>
+      <div class="modal-footer-actions">
+        <button class="btn btn-primary" onclick="fecharHistorico()">Fechar</button>
       </div>
     </div>
   </div>
@@ -1444,7 +1576,7 @@ const ESTRUTURA = {
           { nome: "William Vieira Miranda", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Iury", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Iury Carvalho", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Thalita", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true },
           { nome: "Matheus Souza", cargo: "Aux. Endereçamento", nivel: "aux" },
           { nome: "Adilson", cargo: "Aux. Logística", nivel: "aux" }
         ],
@@ -1623,6 +1755,47 @@ const ESTRUTURA = {
     }
   ]
 };
+
+// ============================================================
+// HISTÓRICO DE ALTERAÇÕES
+// ============================================================
+const HISTORICO = [
+  {
+    data: "25/05/2026",
+    tipo: "Desligamento",
+    descricao: "Thalita pediu demissão · Vaga em aberto na equipe da Vanessa Ribeiro (Auxiliar de Logística)"
+  },
+  {
+    data: "25/05/2026",
+    tipo: "Movimentação",
+    descricao: "Maicon Rosa da Silva adicionado à conferência do Turno C (equipe Jefferson & Edgar)"
+  },
+  {
+    data: "25/05/2026",
+    tipo: "Movimentação",
+    descricao: "Mauricio (Aux. Pesado) movido da equipe Jefferson para a equipe Cleiton Aparecido"
+  },
+  {
+    data: "25/05/2026",
+    tipo: "Movimentação",
+    descricao: "Junior Luiz de Oliveira movido da equipe Jefferson para a equipe Cleiton Aparecido"
+  },
+  {
+    data: "25/05/2026",
+    tipo: "Desligamento",
+    descricao: "Nicolas Moura desligado da equipe do Turno C"
+  },
+  {
+    data: "25/05/2026",
+    tipo: "Reestruturação",
+    descricao: "Jefferson e Edgar Claro unificados em co-supervisão do Turno C (antes apareciam como cards separados)"
+  },
+  {
+    data: "25/05/2026",
+    tipo: "Promoção",
+    descricao: "Cleiton Henrique Lopes reconhecido formalmente como Apoio à Liderança da Vanessa (setores 2 e 3)"
+  }
+];
 
 // ============================================================
 // ATRIBUIÇÕES POR ÁREA
@@ -2421,9 +2594,14 @@ function renderTeamPanel(sup) {
       const btnAtrib = temAtrib
         ? `<button class="member-atrib-btn" onclick="event.stopPropagation();abrirAtribuicoes('${m.atribuicoesKey || m.atribuicoes[0].key}')" title="Ver atribuições">📋</button>`
         : '';
+      const classeVaga = m.vaga ? ' vaga' : '';
+      // Ícone "?" para vagas em aberto
+      const iconeMembro = m.vaga
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9 A2.5 2.5 0 0 1 14.5 9 C14.5 11 12 11.5 12 13.5"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>`
+        : iconePorNivel(m.nivel);
       html += `
-        <div class="team-member">
-          <div class="mini-avatar">${iconePorNivel(m.nivel)}</div>
+        <div class="team-member${classeVaga}">
+          <div class="mini-avatar">${iconeMembro}</div>
           <div class="member-info">
             <div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}</div>
             <div class="member-role">${m.cargo}</div>
@@ -3524,6 +3702,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     fecharModal();
     fecharInfoKpi();
+    fecharHistorico();
   }
 });
 
@@ -3664,6 +3843,31 @@ document.addEventListener('keydown', e => {
     toggleFullscreen();
   }
 });
+
+// ============================================================
+// MODAL DE HISTÓRICO
+// ============================================================
+function abrirHistorico() {
+  const body = document.getElementById('historicoBody');
+  body.innerHTML = HISTORICO.map(item => `
+    <div class="historico-item">
+      <div class="historico-data">
+        <div class="historico-data-valor">${item.data}</div>
+      </div>
+      <div class="historico-info">
+        <span class="historico-tipo historico-tipo-${item.tipo}">${item.tipo}</span>
+        <div class="historico-desc">${item.descricao}</div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('modalHistorico').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharHistorico() {
+  document.getElementById('modalHistorico').classList.remove('show');
+  document.body.style.overflow = '';
+}
 
 // ============================================================
 // INIT
