@@ -158,6 +158,45 @@
     margin-top: 4px;
   }
 
+  /* KPI especial: Vagas em aberto */
+  .kpi-vagas {
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .kpi-vagas:hover { background: rgba(255, 165, 89, 0.08); }
+  .kpi-vagas.tem-vagas {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.10), rgba(28, 34, 48, 0.7));
+  }
+  .kpi-vagas.tem-vagas .kpi-value {
+    color: #fbbf24;
+    text-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+  }
+  .kpi-vagas.tem-vagas::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 36px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fbbf24;
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+    animation: pulse-vaga 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse-vaga {
+    0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+  }
+  .kpi-vagas.zero-vagas .kpi-value {
+    color: #86efac;
+  }
+  .kpi-vagas.zero-vagas .kpi-sub {
+    color: #86efac;
+    opacity: 0.7;
+  }
+
   /* ===== Árvore hierárquica ===== */
   .tree {
     position: relative;
@@ -942,6 +981,198 @@
     line-height: 1.6;
   }
 
+  /* Lista de vagas no modal */
+  .vagas-zero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    background: rgba(74, 222, 128, 0.08);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 10px;
+  }
+  .vagas-zero-icone {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4ade80, #16a34a);
+    color: #052e16;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .vagas-zero-titulo {
+    font-size: 14px;
+    font-weight: 700;
+    color: #86efac;
+    margin-bottom: 2px;
+  }
+  .vagas-zero-desc {
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  /* Resumo no topo do modal de vagas */
+  .vagas-resumo {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 16px 14px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(28, 34, 48, 0.5));
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .vagas-resumo-item {
+    text-align: center;
+    flex: 1;
+  }
+  .vagas-resumo-valor {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fbbf24;
+    line-height: 1;
+    text-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+  }
+  .vagas-resumo-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .vagas-resumo-divider {
+    width: 1px;
+    height: 36px;
+    background: rgba(251, 191, 36, 0.2);
+  }
+
+  .vagas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .vaga-card {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.06), rgba(28, 34, 48, 0.5));
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-left: 4px solid #fbbf24;
+  }
+  .vaga-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .vaga-card-lider-wrap { flex: 1; min-width: 0; }
+  .vaga-card-lider {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .vaga-card-lider-cargo {
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .vaga-card-badges {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .vaga-card-turno {
+    font-size: 9.5px;
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .vaga-card-qtd {
+    font-size: 9.5px;
+    color: var(--ink);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--line-2);
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .vaga-card-itens {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .vaga-card-item {
+    padding: 10px 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 7px;
+    border-left: 2px solid rgba(251, 191, 36, 0.4);
+  }
+  .vaga-card-item-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .vaga-card-cargo {
+    font-size: 12px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .vaga-card-grupo {
+    font-size: 9.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    background: rgba(255,255,255,0.05);
+    padding: 2px 7px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .vaga-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 9px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(148, 163, 184, 0.2);
+  }
+  .vaga-card-meta-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .vaga-card-meta-label {
+    color: var(--muted);
+    font-weight: 600;
+    min-width: 78px;
+    text-transform: uppercase;
+    font-size: 9.5px;
+    letter-spacing: 0.5px;
+  }
+  .vaga-card-meta-valor {
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
   /* ===== Régua do Span of Control ===== */
   .regua-span { margin-top: 8px; }
   .regua-numeros {
@@ -1412,6 +1643,11 @@
       <div class="kpi-value" id="kpiSpanMin">—</div>
       <div class="kpi-sub" id="kpiSpanMinNome">—</div>
     </div>
+    <div class="kpi kpi-vagas" id="kpiVagasCard" onclick="abrirInfoKpi('vagas')">
+      <div class="kpi-label">Vagas em aberto <button class="kpi-info" onclick="event.stopPropagation();abrirInfoKpi('vagas')" aria-label="Sobre este indicador">ⓘ</button></div>
+      <div class="kpi-value" id="kpiVagas">—</div>
+      <div class="kpi-sub" id="kpiVagasSub">—</div>
+    </div>
   </div>
 
   <!-- Árvore -->
@@ -1530,7 +1766,7 @@ const ESTRUTURA = {
           { nome: "Eduardo Toledo Santana", cargo: "Assistente Logística Faturamento", nivel: "assistente" }
         ],
         "Operacional": [
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Guilherme S. Nascimento", motivoSaida: "Pediu demissão", dataAbertura: "25/05/2026" },
           { nome: "Jefferson Alves S. Miranda", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Carlos Eduardo Pedrette", cargo: "Aux. Logística", nivel: "aux" }
         ],
@@ -1576,7 +1812,7 @@ const ESTRUTURA = {
           { nome: "William Vieira Miranda", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Iury", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Iury Carvalho", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Thalita", motivoSaida: "Pediu demissão", dataAbertura: "25/05/2026" },
           { nome: "Matheus Souza", cargo: "Aux. Endereçamento", nivel: "aux" },
           { nome: "Adilson", cargo: "Aux. Logística", nivel: "aux" }
         ],
@@ -2772,6 +3008,62 @@ function atualizarKPIs() {
     document.getElementById('kpiSpanMin').textContent = min.count;
     document.getElementById('kpiSpanMinNome').textContent = min.full;
   }
+
+  // ===== Vagas em aberto =====
+  const vagas = coletarVagas();
+  const card = document.getElementById('kpiVagasCard');
+  const valor = document.getElementById('kpiVagas');
+  const sub = document.getElementById('kpiVagasSub');
+
+  valor.textContent = vagas.length;
+  card.classList.remove('tem-vagas', 'zero-vagas');
+
+  if (vagas.length === 0) {
+    card.classList.add('zero-vagas');
+    sub.textContent = 'Quadro completo ✓';
+  } else {
+    card.classList.add('tem-vagas');
+    // Mostra resumo: turnos únicos
+    const turnos = [...new Set(vagas.map(v => v.turno).filter(Boolean))];
+    if (turnos.length === 1) {
+      sub.textContent = `Turno ${turnos[0]} · clique para detalhes`;
+    } else if (turnos.length > 1) {
+      sub.textContent = `Turnos ${turnos.join(', ')} · clique para detalhes`;
+    } else {
+      sub.textContent = 'clique para detalhes';
+    }
+  }
+}
+
+// Percorre toda a estrutura procurando objetos com vaga: true
+function coletarVagas() {
+  const vagas = [];
+
+  function inspecionarEquipe(equipe, liderNome, liderCargo, turno) {
+    if (!equipe) return;
+    for (const grupo in equipe) {
+      equipe[grupo].forEach(m => {
+        if (m.vaga) {
+          vagas.push({
+            cargo: m.cargo,
+            grupo: grupo,
+            lider: liderNome,
+            liderCargo: liderCargo || '',
+            turno: turno || '—',
+            anterior: m.anterior || null,
+            motivoSaida: m.motivoSaida || null,
+            dataAbertura: m.dataAbertura || null
+          });
+        }
+      });
+    }
+  }
+
+  (ESTRUTURA.areasDir || []).forEach(a => inspecionarEquipe(a.equipe, a.nome, a.cargo, '—'));
+  (ESTRUTURA.areasGerencia || []).forEach(a => inspecionarEquipe(a.equipe, a.nome, a.cargo, '—'));
+  ESTRUTURA.supervisores.forEach(s => inspecionarEquipe(s.equipe, s.nome, s.cargo, s.turno));
+
+  return vagas;
 }
 
 // ============================================================
@@ -3551,6 +3843,20 @@ const INFO_KPI = {
         texto: "Se for muito baixo (1 a 3), pode indicar subutilização ou que essa posição poderia absorver mais responsabilidades. Em alguns casos é justificado (área especializada que demanda menos gente), em outros é sinal de estrutura inchada."
       }
     ]
+  },
+  vagas: {
+    titulo: "Vagas em aberto",
+    sub: "Posições aguardando contratação",
+    secoes: [
+      {
+        nome: "O que é",
+        texto: "Contagem em tempo real das posições que estão sem ocupante na estrutura. Atualiza automaticamente sempre que uma vaga é aberta ou preenchida."
+      },
+      {
+        nome: "__lista_vagas__",
+        texto: ""
+      }
+    ]
   }
 };
 
@@ -3568,6 +3874,10 @@ function abrirInfoKpi(chave) {
       body.appendChild(renderReguaSpan());
       return;
     }
+    if (s.nome === '__lista_vagas__') {
+      body.appendChild(renderListaVagas());
+      return;
+    }
     const div = document.createElement('div');
     div.className = 'info-kpi-secao';
     div.innerHTML = `
@@ -3579,6 +3889,114 @@ function abrirInfoKpi(chave) {
 
   document.getElementById('modalInfoKpi').classList.add('show');
   document.body.style.overflow = 'hidden';
+}
+
+function renderListaVagas() {
+  const vagas = coletarVagas();
+  const div = document.createElement('div');
+  div.className = 'info-kpi-secao';
+
+  if (vagas.length === 0) {
+    div.innerHTML = `
+      <div class="info-kpi-titulo">Situação atual</div>
+      <div class="vagas-zero">
+        <div class="vagas-zero-icone">✓</div>
+        <div>
+          <div class="vagas-zero-titulo">Quadro completo</div>
+          <div class="vagas-zero-desc">Nenhuma vaga em aberto no momento. Toda a estrutura está preenchida.</div>
+        </div>
+      </div>
+    `;
+    return div;
+  }
+
+  // Resumo geral
+  const turnos = [...new Set(vagas.map(v => v.turno).filter(t => t && t !== '—'))];
+  const lideres = [...new Set(vagas.map(v => v.lider))];
+
+  // Agrupa por liderança
+  const porLider = {};
+  vagas.forEach(v => {
+    if (!porLider[v.lider]) {
+      porLider[v.lider] = { lider: v.lider, liderCargo: v.liderCargo, turno: v.turno, itens: [] };
+    }
+    porLider[v.lider].itens.push(v);
+  });
+
+  let html = `
+    <div class="info-kpi-titulo">Visão geral</div>
+    <div class="vagas-resumo">
+      <div class="vagas-resumo-item">
+        <div class="vagas-resumo-valor">${vagas.length}</div>
+        <div class="vagas-resumo-label">${vagas.length === 1 ? 'vaga aberta' : 'vagas abertas'}</div>
+      </div>
+      <div class="vagas-resumo-divider"></div>
+      <div class="vagas-resumo-item">
+        <div class="vagas-resumo-valor">${lideres.length}</div>
+        <div class="vagas-resumo-label">${lideres.length === 1 ? 'liderança afetada' : 'lideranças afetadas'}</div>
+      </div>
+      <div class="vagas-resumo-divider"></div>
+      <div class="vagas-resumo-item">
+        <div class="vagas-resumo-valor">${turnos.length || 1}</div>
+        <div class="vagas-resumo-label">${turnos.length === 1 ? 'turno impactado' : 'turnos impactados'}</div>
+      </div>
+    </div>
+  `;
+
+  html += `<div class="info-kpi-titulo" style="margin-top:20px">Detalhamento por liderança</div>`;
+  html += `<div class="vagas-lista">`;
+
+  Object.values(porLider).forEach(g => {
+    const turnoLabel = g.turno && g.turno !== '—' ? `Turno ${g.turno}` : 'Sem turno';
+    html += `
+      <div class="vaga-card">
+        <div class="vaga-card-header">
+          <div class="vaga-card-lider-wrap">
+            <div class="vaga-card-lider">${g.lider}</div>
+            <div class="vaga-card-lider-cargo">${g.liderCargo || ''}</div>
+          </div>
+          <div class="vaga-card-badges">
+            <span class="vaga-card-turno">${turnoLabel}</span>
+            <span class="vaga-card-qtd">${g.itens.length} ${g.itens.length === 1 ? 'vaga' : 'vagas'}</span>
+          </div>
+        </div>
+        <div class="vaga-card-itens">
+          ${g.itens.map(v => `
+            <div class="vaga-card-item">
+              <div class="vaga-card-item-topo">
+                <div class="vaga-card-cargo">${v.cargo}</div>
+                <div class="vaga-card-grupo">${v.grupo}</div>
+              </div>
+              ${v.anterior ? `
+                <div class="vaga-card-meta">
+                  <span class="vaga-card-meta-row">
+                    <span class="vaga-card-meta-label">Sucessor de:</span>
+                    <span class="vaga-card-meta-valor">${v.anterior}</span>
+                  </span>
+                  ${v.motivoSaida ? `
+                    <span class="vaga-card-meta-row">
+                      <span class="vaga-card-meta-label">Motivo:</span>
+                      <span class="vaga-card-meta-valor">${v.motivoSaida}</span>
+                    </span>
+                  ` : ''}
+                  ${v.dataAbertura ? `
+                    <span class="vaga-card-meta-row">
+                      <span class="vaga-card-meta-label">Aberta em:</span>
+                      <span class="vaga-card-meta-valor">${v.dataAbertura}</span>
+                    </span>
+                  ` : ''}
+                </div>
+              ` : ''}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+
+  div.innerHTML = html;
+  return div;
 }
 
 function renderReguaSpan() {
