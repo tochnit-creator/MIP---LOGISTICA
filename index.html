@@ -296,9 +296,52 @@
     pointer-events: none;
     z-index: 2;
   }
+
+  /* Ribbon de aumento de quadro — verde/teal */
+  .exec-card.tem-vaga-aberta.vaga-expansao .vaga-badge {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #012118;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.45);
+    animation: shimmerRibbonGreen 3s ease-in-out infinite;
+  }
+  @keyframes shimmerRibbonGreen {
+    0%, 100% { opacity: 0.85; box-shadow: 0 2px 8px rgba(16,185,129,0.4); }
+    50% { opacity: 1; box-shadow: 0 2px 14px rgba(16,185,129,0.75); }
+  }
+
+  /* Ribbon de aviso de dispensa — vermelho */
+  .exec-card.tem-aviso-dispensa {
+    overflow: hidden;
+  }
+  .aviso-dispensa-badge { display: none; }
+  .exec-card.tem-aviso-dispensa .aviso-dispensa-badge {
+    display: block;
+    position: absolute;
+    top: 13px;
+    right: -28px;
+    width: 90px;
+    text-align: center;
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    color: #fff0f0;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 4px 0;
+    transform: rotate(45deg);
+    transform-origin: center;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+    animation: shimmerRibbonRed 3s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 2;
+  }
   @keyframes shimmerRibbon {
     0%, 100% { opacity: 0.85; box-shadow: 0 2px 8px rgba(245,158,11,0.4); }
     50% { opacity: 1; box-shadow: 0 2px 14px rgba(245,158,11,0.75); }
+  }
+  @keyframes shimmerRibbonRed {
+    0%, 100% { opacity: 0.85; box-shadow: 0 2px 8px rgba(239,68,68,0.4); }
+    50% { opacity: 1; box-shadow: 0 2px 14px rgba(239,68,68,0.75); }
   }
 
   .exec-card.level-diretor {
@@ -875,7 +918,9 @@ const ESTRUTURA = {
           { nome: "Fabiane dos Santos Cruz", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Gabriel Figueredo", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Luciano Pereira", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Allan Soares", cargo: "Aux. Logística", nivel: "aux" }
+          { nome: "Allan Soares", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — aumento de quadro", nivel: "aux", vaga: true, dataAbertura: "25/06/2026" },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — aumento de quadro", nivel: "aux", vaga: true, dataAbertura: "25/06/2026" }
         ]
       }
     },
@@ -936,7 +981,7 @@ const ESTRUTURA = {
           { nome: "Vinicius Inacio da Silva", cargo: "Aux. Logística - Pesado", nivel: "aux" },
           { nome: "Josue Vitor Manzi da Silva", cargo: "Aux. Logística - Pesado", nivel: "aux" },
           { nome: "Junior Luiz de Oliveira", cargo: "Aux. Logística - Pesado", nivel: "aux" },
-          { nome: "Mauricio", cargo: "Aux. Logística - Pesado", nivel: "aux" }
+          { nome: "Mauricio", cargo: "Aux. Logística - Pesado", nivel: "aux", avisoDispensa: true }
         ]
       }
     },
@@ -1010,6 +1055,7 @@ const HISTORICO = [
   { data: "24/06/2026", tipo: "Contratação", descricao: "LUCAS DAS GRAÇAS COSTA BRAGA contratado para a equipe do Claudio Barcelos (Conf. Expedição Jr. — Turno B) · vaga aberta pela promoção do Mauricio" },
   { data: "09/06/2026", tipo: "Contratação", descricao: "Marcelo Angelos contratado para a equipe do Carlos Henrique (Aux. Logística — Carregamento Turno A) · vaga aberta pela saída do Guilherme S. Nascimento" },
   { data: "09/06/2026", tipo: "Desligamento", descricao: "Laudiceia de Souza pediu demissão · Vaga em aberto no setor de Devolução (equipe Carlos Henrique — Turno A)" },
+  { data: "25/06/2026", tipo: "Reestruturação", descricao: "Abertura de 2 novas vagas de Aux. Logística no Turno B (equipe Claudio Barcelos) · aumento de quadro aprovado" },
   { data: "25/06/2026", tipo: "Desligamento", descricao: "Paulo Eduardo da Silva demitido por justa causa · Vaga em aberto no Inventário (equipe Vanessa Ribeiro — Turno A)" },
   { data: "25/06/2026", tipo: "Contratação", descricao: "LEONARDO AVILA XAVIER contratado para a Frota de Motoristas (equipe Rogério) · substituindo Alessandro de Ana Machado" },
   { data: "09/06/2026", tipo: "Desligamento", descricao: "Alessandro de Ana Machado pediu demissão · Vaga em aberto na Frota de Motoristas (equipe Rogério)" },
@@ -1292,17 +1338,45 @@ function contarVagasAbertas(pessoa) {
   return n;
 }
 
+function todasVagasSaoExpansao(pessoa) {
+  if (!pessoa.equipe) return false;
+  let vagas = [];
+  for (const grupo in pessoa.equipe) vagas = vagas.concat(pessoa.equipe[grupo].filter(m => m.vaga));
+  return vagas.length > 0 && vagas.every(m => !m.anterior);
+}
+
+function temAvisoDispensa(pessoa) {
+  if (!pessoa.equipe) return false;
+  for (const grupo in pessoa.equipe) {
+    if (pessoa.equipe[grupo].some(m => m.avisoDispensa)) return true;
+  }
+  return false;
+}
+
 function renderCard(pessoa, expandable = false, count = 0, subtle = false) {
   const div = document.createElement('div');
   const temVaga = temVagaAberta(pessoa);
-  div.className = `exec-card level-${pessoa.nivel}` + (expandable ? ' expandable' : '') + (subtle ? ' subtle' : '') + (temVaga ? ' tem-vaga-aberta' : '');
+  const temDispensa = temAvisoDispensa(pessoa);
+  const ehExpansao = temVaga && todasVagasSaoExpansao(pessoa);
+  let classes = `exec-card level-${pessoa.nivel}`;
+  if (expandable) classes += ' expandable';
+  if (subtle) classes += ' subtle';
+  if (temVaga) classes += ' tem-vaga-aberta';
+  if (ehExpansao) classes += ' vaga-expansao';
+  if (temDispensa) classes += ' tem-aviso-dispensa';
+  div.className = classes;
+
   let html = `<div class="avatar">${iconePorNivel(pessoa.nivel)}</div><div class="nome">${pessoa.nome}</div><div class="cargo">${pessoa.cargo}</div>`;
   if (expandable) {
     html += `<div class="team-info"><span>Equipe direta</span><span class="count">${count}</span></div>`;
   }
   if (temVaga) {
     const qtd = contarVagasAbertas(pessoa);
-    html += `<div class="vaga-badge">${qtd > 1 ? qtd + ' vagas' : 'vaga'}</div>`;
+    const label = ehExpansao ? (qtd > 1 ? `+${qtd} vagas` : '+1 vaga') : (qtd > 1 ? `${qtd} vagas` : 'vaga');
+    html += `<div class="vaga-badge">${label}</div>`;
+  }
+  if (temDispensa) {
+    html += `<div class="aviso-dispensa-badge">dispensa</div>`;
   }
   if (pessoa.atribuicoes && pessoa.atribuicoes.length) {
     pessoa.atribuicoes.forEach(a => {
@@ -1335,7 +1409,8 @@ function renderTeamPanel(sup) {
       const iconeMembro = m.vaga
         ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9 A2.5 2.5 0 0 1 14.5 9 C14.5 11 12 11.5 12 13.5"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>`
         : iconePorNivel(m.nivel);
-      html += `<div class="team-member${classeVaga}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}</div><div class="member-role">${m.cargo}</div></div>${btnAtrib}</div>`;
+      const tagDispensa = m.avisoDispensa ? `<span style="display:inline-block;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:7.5px;font-weight:800;letter-spacing:0.8px;padding:2px 6px;border-radius:8px;margin-left:5px;vertical-align:middle;text-transform:uppercase;">aviso</span>` : '';
+      html += `<div class="team-member${classeVaga}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}</div><div class="member-role">${m.cargo}</div></div>${btnAtrib}</div>`;
     });
     html += `</div></div>`;
   }
