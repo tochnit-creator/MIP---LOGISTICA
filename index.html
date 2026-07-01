@@ -588,6 +588,131 @@
   .regua-status-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 4px; }
   .regua-status-titulo { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
   .regua-status-desc { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+  /* ===== Barra de busca ===== */
+  .search-bar-wrap {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .search-bar-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(28, 34, 48, 0.7);
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    padding: 10px 16px;
+    backdrop-filter: blur(20px);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-bar-inner:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,175,55,0.10);
+  }
+  .search-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+  }
+  .search-input::placeholder { color: var(--muted-2); }
+  .search-clear {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: inherit;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+  .search-clear:hover { color: var(--ink); }
+  .search-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0; right: 0;
+    background: linear-gradient(135deg, rgba(22,27,39,0.98), rgba(13,17,23,0.98));
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 200;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    display: none;
+  }
+  .search-results.show { display: block; }
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid var(--line);
+  }
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover { background: rgba(212,175,55,0.07); }
+  .search-result-item.active { background: rgba(212,175,55,0.10); }
+  .search-result-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(148,163,184,0.15);
+    border: 1px solid var(--line-2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--gold);
+  }
+  .search-result-avatar svg { width: 16px; height: 16px; }
+  .search-result-info { flex: 1; min-width: 0; }
+  .search-result-nome {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .search-result-nome mark {
+    background: rgba(212,175,55,0.25);
+    color: var(--gold);
+    border-radius: 2px;
+    padding: 0 1px;
+    font-style: normal;
+  }
+  .search-result-cargo { font-size: 11px; color: var(--muted); }
+  .search-result-breadcrumb {
+    font-size: 10px;
+    color: var(--muted-2);
+    white-space: nowrap;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .search-result-breadcrumb span {
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .search-no-result {
+    padding: 18px 16px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .search-highlight {
+    animation: highlightCard 2s ease;
+  }
+  @keyframes highlightCard {
+    0% { box-shadow: 0 0 0 3px rgba(212,175,55,0.8), 0 0 30px rgba(212,175,55,0.3); }
+    100% { box-shadow: none; }
+  }
+
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--bg-1); }
   ::-webkit-scrollbar-thumb { background: var(--bg-2); border-radius: 5px; }
@@ -691,6 +816,24 @@
       <button class="btn" onclick="exportarExcel()">Exportar Excel</button>
       <button class="btn btn-primary" onclick="baixarPDF()" id="btnPdf">&#128229; Baixar PDF</button>
     </div>
+  </div>
+
+  <!-- Barra de busca de colaboradores -->
+  <div class="search-bar-wrap">
+    <div class="search-bar-inner">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input
+        type="text"
+        id="searchColaborador"
+        class="search-input"
+        placeholder="Buscar colaborador… ex: Lucas Ferreira"
+        autocomplete="off"
+        oninput="buscarColaborador(this.value)"
+        onkeydown="if(event.key==='Escape'){limparBusca()}"
+      />
+      <button class="search-clear" id="searchClear" onclick="limparBusca()" style="display:none">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
   </div>
 
   <div class="kpi-grid">
@@ -910,7 +1053,7 @@ const ESTRUTURA = {
           { nome: "Marcos Fernande", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Maria Debora Alves", cargo: "Conf. Expedição Jr.", nivel: "conferente", atribuicoesKey: "mariaDebora" },
           { nome: "Vanessa Gomes", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
-          { nome: "LUCAS DAS GRAÇAS COSTA BRAGA", cargo: "Conf. Expedição Jr.", nivel: "conferente", tag: "NOVO" }
+          { nome: "Lucas das Graças Costa Braga", cargo: "Conf. Expedição Jr.", nivel: "conferente", tag: "NOVO" }
         ],
         "Auxiliares": [
           { nome: "Beatriz dos Santos", cargo: "Aux. Logística", nivel: "aux" },
@@ -959,7 +1102,7 @@ const ESTRUTURA = {
           { nome: "Wesley Fioravan", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "John Mike Rodrigues da Silva", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Silvio Gomes", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "ALEX SANDER DO NASCIMENTO SILVA", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
+          { nome: "Alex Sander do Nascimento Silva", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
           { nome: "Rodrigo Sousa Santos", cargo: "Aux. Logística", nivel: "aux" }
         ]
       }
@@ -1993,6 +2136,149 @@ async function baixarPDF() {
     btn.style.opacity = '1';
   }
 }
+
+// ============================================================
+// BUSCA DE COLABORADORES
+// ============================================================
+function indexarColaboradores() {
+  const lista = [];
+
+  function addPessoa(pessoa, supervisorNome, supervisorCargo, grupo) {
+    if (!pessoa.nome || pessoa.vaga) return;
+    lista.push({
+      nome: pessoa.nome,
+      cargo: pessoa.cargo,
+      nivel: pessoa.nivel,
+      supId: supervisorNome,
+      supNome: supervisorNome,
+      supCargo: supervisorCargo,
+      grupo: grupo,
+      tag: pessoa.tag || null,
+      avisoDispensa: pessoa.avisoDispensa || false
+    });
+  }
+
+  // Diretor
+  lista.push({ nome: ESTRUTURA.diretor.nome, cargo: ESTRUTURA.diretor.cargo, nivel: ESTRUTURA.diretor.nivel, supNome: '—', supCargo: '', grupo: 'Diretoria', tag: null });
+
+  // Áreas diretoria
+  ESTRUTURA.areasDir.forEach(a => {
+    lista.push({ nome: a.nome, cargo: a.cargo, nivel: a.nivel, supNome: ESTRUTURA.diretor.nome, supCargo: ESTRUTURA.diretor.cargo, grupo: 'Diretoria', tag: null });
+    for (const g in a.equipe) a.equipe[g].forEach(m => addPessoa(m, a.nome, a.cargo, g));
+  });
+
+  // Gerente
+  lista.push({ nome: ESTRUTURA.gerente.nome, cargo: ESTRUTURA.gerente.cargo, nivel: ESTRUTURA.gerente.nivel, supNome: ESTRUTURA.diretor.nome, supCargo: ESTRUTURA.diretor.cargo, grupo: 'Gerência', tag: null });
+
+  // Áreas gerência
+  ESTRUTURA.areasGerencia.forEach(a => {
+    lista.push({ nome: a.nome, cargo: a.cargo, nivel: a.nivel, supNome: ESTRUTURA.diretor.nome, supCargo: ESTRUTURA.diretor.cargo, grupo: 'Gerência', tag: null });
+    for (const g in a.equipe) a.equipe[g].forEach(m => addPessoa(m, a.nome, a.cargo, g));
+  });
+
+  // Áreas indep
+  (ESTRUTURA.areasIndep || []).forEach(a => {
+    lista.push({ nome: a.nome, cargo: a.cargo, nivel: a.nivel, supNome: ESTRUTURA.gerente.nome, supCargo: ESTRUTURA.gerente.cargo, grupo: 'Vinculado à Gerência', tag: null });
+  });
+
+  // Supervisores e equipes
+  ESTRUTURA.supervisores.forEach(sup => {
+    lista.push({ nome: sup.nome, cargo: sup.cargo, nivel: sup.nivel, supNome: ESTRUTURA.gerente.nome, supCargo: ESTRUTURA.gerente.cargo, grupo: `Turno ${sup.turno}`, tag: null, supId: sup.id });
+    for (const g in sup.equipe) sup.equipe[g].forEach(m => {
+      if (!m.vaga) lista.push({ nome: m.nome, cargo: m.cargo, nivel: m.nivel, supNome: sup.nome, supCargo: sup.cargo, grupo: g, tag: m.tag || null, avisoDispensa: m.avisoDispensa || false, supId: sup.id });
+    });
+  });
+
+  return lista;
+}
+
+function highlight(texto, query) {
+  if (!query) return texto;
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return texto.replace(re, '<mark>$1</mark>');
+}
+
+function buscarColaborador(q) {
+  const results = document.getElementById('searchResults');
+  const clearBtn = document.getElementById('searchClear');
+  clearBtn.style.display = q ? 'block' : 'none';
+
+  if (!q || q.trim().length < 2) {
+    results.classList.remove('show');
+    results.innerHTML = '';
+    return;
+  }
+
+  const termo = q.trim().toLowerCase();
+  const lista = indexarColaboradores();
+  const found = lista.filter(p => p.nome.toLowerCase().includes(termo) || p.cargo.toLowerCase().includes(termo));
+
+  if (!found.length) {
+    results.innerHTML = `<div class="search-no-result">Nenhum colaborador encontrado para "<strong>${q}</strong>"</div>`;
+    results.classList.add('show');
+    return;
+  }
+
+  results.innerHTML = found.slice(0, 12).map((p, i) => `
+    <div class="search-result-item" onclick="irParaColaborador('${p.supId || ''}', ${i})" data-idx="${i}">
+      <div class="search-result-avatar">${iconePorNivel(p.nivel)}</div>
+      <div class="search-result-info">
+        <div class="search-result-nome">${highlight(p.nome, q.trim())}${p.tag ? `<span class="member-tag">${p.tag}</span>` : ''}${p.avisoDispensa ? `<span style="display:inline-block;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:7.5px;font-weight:800;letter-spacing:0.8px;padding:2px 6px;border-radius:8px;margin-left:5px;vertical-align:middle;text-transform:uppercase;">aviso</span>` : ''}</div>
+        <div class="search-result-cargo">${p.cargo}</div>
+      </div>
+      <div class="search-result-breadcrumb">
+        ${p.grupo}<br><span>${p.supNome}</span>
+      </div>
+    </div>
+  `).join('');
+
+  if (found.length > 12) {
+    results.innerHTML += `<div class="search-no-result" style="border-top:1px solid var(--line)">+ ${found.length - 12} resultado(s) — refine a busca</div>`;
+  }
+
+  results.classList.add('show');
+}
+
+function irParaColaborador(supId, idx) {
+  // Fecha resultado
+  document.getElementById('searchResults').classList.remove('show');
+
+  if (!supId) return;
+
+  // Abre o painel do supervisor
+  const panel = document.getElementById(`panel-${supId}`);
+  const card = document.querySelector(`.exec-card[data-sup-id="${supId}"]`);
+  if (!panel || !card) return;
+
+  // Fecha todos e abre o certo
+  document.querySelectorAll('.team-panel.show').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.exec-card.expanded').forEach(c => c.classList.remove('expanded'));
+  panel.classList.add('show');
+  card.classList.add('expanded');
+  const rowDoCard = card.closest('.tree-row');
+  rowDoCard.parentElement.insertBefore(panel, rowDoCard.nextSibling);
+
+  // Scroll suave para o card e destaque
+  setTimeout(() => {
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.classList.add('search-highlight');
+    setTimeout(() => card.classList.remove('search-highlight'), 2000);
+  }, 80);
+}
+
+function limparBusca() {
+  document.getElementById('searchColaborador').value = '';
+  document.getElementById('searchResults').classList.remove('show');
+  document.getElementById('searchResults').innerHTML = '';
+  document.getElementById('searchClear').style.display = 'none';
+}
+
+// Fecha resultados ao clicar fora
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-bar-wrap')) {
+    document.getElementById('searchResults').classList.remove('show');
+  }
+});
 
 montarArvore();
 atualizarKPIs();
