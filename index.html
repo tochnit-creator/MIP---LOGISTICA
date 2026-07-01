@@ -185,6 +185,37 @@
   }
   .kpi-vagas.zero-vagas .kpi-value { color: #86efac; }
   .kpi-vagas.zero-vagas .kpi-sub { color: #86efac; opacity: 0.7; }
+
+  /* KPI Afastados */
+  .kpi-afastados {
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .kpi-afastados:hover { background: rgba(148,163,184,0.06); }
+  .kpi-afastados.tem-afastados {
+    background: linear-gradient(135deg, rgba(148,163,184,0.08), rgba(28,34,48,0.7));
+  }
+  .kpi-afastados.tem-afastados .kpi-value {
+    color: #94a3b8;
+  }
+  .kpi-afastados.zero-afastados .kpi-value { color: #86efac; }
+
+  /* Badge afastado inline nos painéis */
+  .member-badge-afastado {
+    display: inline-block;
+    background: rgba(148,163,184,0.15);
+    border: 1px solid rgba(148,163,184,0.3);
+    color: #94a3b8;
+    font-size: 7.5px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    margin-left: 5px;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
   .tree { position: relative; }
   .tree-row {
     display: flex;
@@ -713,6 +744,123 @@
     100% { box-shadow: none; }
   }
 
+  /* ===== Card de Afastados ===== */
+  .afastados-section {
+    margin-top: 40px;
+    margin-bottom: 10px;
+  }
+  .afastados-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .afastados-card {
+    background: linear-gradient(135deg, rgba(148,163,184,0.07), rgba(28,34,48,0.6));
+    border: 1px solid rgba(148,163,184,0.2);
+    border-radius: 12px;
+    padding: 18px 24px;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .afastados-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20px; right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(148,163,184,0.35), transparent);
+  }
+  .afastados-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .afastados-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(148,163,184,0.12);
+    border: 1px solid rgba(148,163,184,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .afastados-card-titulo {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+  .afastados-card-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .afastados-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+  }
+  .afastado-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(148,163,184,0.12);
+    border-radius: 8px;
+    transition: background 0.15s;
+  }
+  .afastado-item:hover { background: rgba(148,163,184,0.06); }
+  .afastado-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(148,163,184,0.12);
+    border: 1px dashed rgba(148,163,184,0.3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--muted);
+  }
+  .afastado-avatar svg { width: 15px; height: 15px; }
+  .afastado-info { flex: 1; min-width: 0; }
+  .afastado-nome {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-2);
+    margin-bottom: 2px;
+  }
+  .afastado-cargo {
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .afastado-equipe {
+    font-size: 9.5px;
+    color: var(--muted-2);
+    text-align: right;
+    flex-shrink: 0;
+    max-width: 90px;
+    line-height: 1.3;
+  }
+  .afastado-badge {
+    display: inline-block;
+    background: rgba(148,163,184,0.12);
+    border: 1px solid rgba(148,163,184,0.25);
+    color: var(--muted);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--bg-1); }
   ::-webkit-scrollbar-thumb { background: var(--bg-2); border-radius: 5px; }
@@ -876,6 +1024,11 @@
       <div class="kpi-label">Vagas em aberto <button class="kpi-info" onclick="event.stopPropagation();abrirInfoKpi('vagas')" aria-label="Sobre este indicador">&#9432;</button></div>
       <div class="kpi-value" id="kpiVagas">—</div>
       <div class="kpi-sub" id="kpiVagasSub">—</div>
+    </div>
+    <div class="kpi kpi-afastados" id="kpiAfastadosCard" onclick="abrirInfoKpi('afastados')">
+      <div class="kpi-label">Afastados <button class="kpi-info" onclick="event.stopPropagation();abrirInfoKpi('afastados')" aria-label="Sobre este indicador">&#9432;</button></div>
+      <div class="kpi-value" id="kpiAfastados">—</div>
+      <div class="kpi-sub" id="kpiAfastadosSub">—</div>
     </div>
   </div>
 
@@ -1090,7 +1243,7 @@ const ESTRUTURA = {
           { nome: "Michel Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Danilo Heleno", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Osvaldo Junior", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
-          { nome: "Everaldo da Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Everaldo da Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente", afastado: true },
           { nome: "Laerte Antonio", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Maicon Rosa da Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente" }
         ],
@@ -1150,7 +1303,7 @@ const ESTRUTURA = {
           { nome: "Mayllon dos Santos Oliveira", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Isaias Justino Bulhoes", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Jefferson Luis Torres", cargo: "M. Entregador Master", nivel: "motorista" },
-          { nome: "Marcelo Severiano Ramos", cargo: "M. Entregador Master (afastado)", nivel: "motorista" },
+          { nome: "Marcelo Severiano Ramos", cargo: "M. Entregador Master", nivel: "motorista", afastado: true },
           { nome: "Jose Luis Mantovani", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Alexandre Lopes", cargo: "M. Entregador Master", nivel: "motorista", tag: "NOVO" }
         ]
@@ -1188,6 +1341,10 @@ const ESTRUTURA = {
         ]
       }
     }
+  ],
+  afastados: [
+    { nome: "Everaldo da Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente", equipe: "Jefferson & Edgar (Turno C)" },
+    { nome: "Marcelo Severiano Ramos", cargo: "M. Entregador Master", nivel: "motorista", equipe: "Rogério — Motoristas" }
   ]
 };
 
@@ -1553,7 +1710,8 @@ function renderTeamPanel(sup) {
         ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9 A2.5 2.5 0 0 1 14.5 9 C14.5 11 12 11.5 12 13.5"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>`
         : iconePorNivel(m.nivel);
       const tagDispensa = m.avisoDispensa ? `<span style="display:inline-block;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:7.5px;font-weight:800;letter-spacing:0.8px;padding:2px 6px;border-radius:8px;margin-left:5px;vertical-align:middle;text-transform:uppercase;">aviso</span>` : '';
-      html += `<div class="team-member${classeVaga}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}</div><div class="member-role">${m.cargo}</div></div>${btnAtrib}</div>`;
+      const tagAfastado = m.afastado ? `<span class="member-badge-afastado">afastado</span>` : '';
+      html += `<div class="team-member${classeVaga}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}</div><div class="member-role">${m.cargo}</div></div>${btnAtrib}</div>`;
     });
     html += `</div></div>`;
   }
@@ -1670,6 +1828,21 @@ function atualizarKPIs() {
     else if (turnos.length > 1) sub.textContent = `Turnos ${turnos.join(', ')} · clique para detalhes`;
     else sub.textContent = 'clique para detalhes';
   }
+
+  // KPI Afastados
+  const afastados = ESTRUTURA.afastados || [];
+  const cardAf = document.getElementById('kpiAfastadosCard');
+  const valorAf = document.getElementById('kpiAfastados');
+  const subAf = document.getElementById('kpiAfastadosSub');
+  valorAf.textContent = afastados.length;
+  cardAf.classList.remove('tem-afastados','zero-afastados');
+  if (afastados.length === 0) {
+    cardAf.classList.add('zero-afastados');
+    subAf.textContent = 'Nenhum afastamento ✓';
+  } else {
+    cardAf.classList.add('tem-afastados');
+    subAf.textContent = 'clique para detalhes';
+  }
 }
 
 function coletarVagas() {
@@ -1704,7 +1877,8 @@ const INFO_KPI = {
   span: { titulo: "Span médio", sub: "Média de subordinados por liderança", secoes: [{ nome: "O que é", texto: "Conceito clássico de gestão que mede quantos subordinados diretos cada líder gerencia, em média. Fórmula: (Total de colaboradores − Lideranças) ÷ Lideranças." }, { nome: "Faixas de referência", texto: "1 a 4 → estrutura inchada, muitos chefes para pouca gente · 5 a 8 → faixa saudável (ideal) · 9 a 12 → operação enxuta, mas com risco de sobrecarga · 13 ou mais → estrutura achatada demais, risco de perda de direção." }, { nome: "Como interpretar", texto: "É um dos indicadores que diretores e RH usam para avaliar se a estrutura precisa contratar mais supervisão, reduzir camadas de gestão ou está bem dimensionada. Logística geralmente opera entre 6 e 10." }, { nome: "__regua_span__", texto: "" }] },
   spanMax: { titulo: "Maior equipe", sub: "Líder com mais subordinados diretos", secoes: [{ nome: "O que é", texto: "Identifica quem comanda a maior quantidade de pessoas na operação." }, { nome: "Por que isso importa", texto: "Se este número estiver muito alto (acima de 15), pode indicar sobrecarga dessa liderança. A média geral pode parecer saudável mas esconder casos extremos." }] },
   spanMin: { titulo: "Menor equipe", sub: "Líder com menos subordinados diretos", secoes: [{ nome: "O que é", texto: "Identifica quem comanda a menor quantidade de pessoas." }, { nome: "Por que isso importa", texto: "Se for muito baixo (1 a 3), pode indicar subutilização ou que essa posição poderia absorver mais responsabilidades." }] },
-  vagas: { titulo: "Vagas em aberto", sub: "Posições aguardando contratação", secoes: [{ nome: "O que é", texto: "Contagem em tempo real das posições que estão sem ocupante na estrutura. Atualiza automaticamente sempre que uma vaga é aberta ou preenchida." }, { nome: "__lista_vagas__", texto: "" }] }
+  vagas: { titulo: "Vagas em aberto", sub: "Posições aguardando contratação", secoes: [{ nome: "O que é", texto: "Contagem em tempo real das posições que estão sem ocupante na estrutura. Atualiza automaticamente sempre que uma vaga é aberta ou preenchida." }, { nome: "__lista_vagas__", texto: "" }] },
+  afastados: { titulo: "Colaboradores Afastados", sub: "Afastamentos ativos no momento", secoes: [{ nome: "O que é", texto: "Colaboradores que estão temporariamente afastados de suas funções. A vaga é mantida no quadro durante o período de afastamento." }, { nome: "__lista_afastados__", texto: "" }] }
 };
 
 function abrirInfoKpi(chave) {
@@ -1717,6 +1891,7 @@ function abrirInfoKpi(chave) {
   dados.secoes.forEach(s => {
     if (s.nome === '__regua_span__') { body.appendChild(renderReguaSpan()); return; }
     if (s.nome === '__lista_vagas__') { body.appendChild(renderListaVagas()); return; }
+    if (s.nome === '__lista_afastados__') { body.appendChild(renderListaAfastados()); return; }
     const div = document.createElement('div');
     div.className = 'info-kpi-secao';
     div.innerHTML = `<div class="info-kpi-titulo">${s.nome}</div><div class="info-kpi-texto">${s.texto}</div>`;
@@ -1757,6 +1932,47 @@ function renderListaVagas() {
       html += `</div>`;
     });
     html += `</div></div>`;
+  });
+  html += `</div>`;
+  div.innerHTML = html;
+  return div;
+}
+
+function renderListaAfastados() {
+  const afastados = ESTRUTURA.afastados || [];
+  const div = document.createElement('div');
+  div.className = 'info-kpi-secao';
+  if (afastados.length === 0) {
+    div.innerHTML = `<div class="info-kpi-titulo">Situação atual</div><div class="vagas-zero"><div class="vagas-zero-icone">✓</div><div><div class="vagas-zero-titulo">Sem afastamentos</div><div class="vagas-zero-desc">Nenhum colaborador afastado no momento.</div></div></div>`;
+    return div;
+  }
+  let html = `<div class="info-kpi-titulo">Afastados atualmente · ${afastados.length}</div><div class="vagas-lista">`;
+  afastados.forEach(p => {
+    html += `
+      <div class="vaga-card" style="border-left-color:#64748b;background:linear-gradient(135deg,rgba(100,116,139,0.07),rgba(28,34,48,0.5));border-color:rgba(100,116,139,0.3);">
+        <div class="vaga-card-header">
+          <div class="vaga-card-lider-wrap">
+            <div class="vaga-card-lider">${p.nome}</div>
+            <div class="vaga-card-lider-cargo">${p.cargo}</div>
+          </div>
+          <div class="vaga-card-badges">
+            <span class="vaga-card-turno" style="color:#94a3b8;background:rgba(148,163,184,0.1);border-color:rgba(148,163,184,0.3);">afastado</span>
+          </div>
+        </div>
+        <div class="vaga-card-itens">
+          <div class="vaga-card-item" style="border-left-color:rgba(148,163,184,0.3);">
+            <div class="vaga-card-item-topo">
+              <div class="vaga-card-cargo" style="color:var(--muted)">Equipe de origem</div>
+            </div>
+            <div class="vaga-card-meta" style="margin-top:6px;padding-top:6px;">
+              <span class="vaga-card-meta-row">
+                <span class="vaga-card-meta-label">Supervisor:</span>
+                <span class="vaga-card-meta-valor">${p.equipe}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>`;
   });
   html += `</div>`;
   div.innerHTML = html;
