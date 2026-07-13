@@ -1155,14 +1155,12 @@ const ESTRUTURA = {
       equipe: {
         "Liderança e Operação": [
           { nome: "Lucas Ferreira", cargo: "Líder de Carregamento", nivel: "lider", atribuicoesKey: "lideresPadrao" },
-          { nome: "Eduardo Toledo Santana", cargo: "Assistente Logística Faturamento", nivel: "assistente", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Geneilda da Silva, desde 09/06/2026." }
+          { nome: "Eduardo Toledo Santana", cargo: "Assistente Logística Faturamento", nivel: "assistente", atribuicoesKey: "eduardo", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Geneilda da Silva, desde 09/06/2026." }
         ],
         "Operacional": [
           { nome: "ALISSON PEREIRA SANTOS", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
           { nome: "Jefferson Alves S. Miranda", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Carlos Eduardo Pedrette", cargo: "Aux. Logística", nivel: "aux" }
-        ],
-        "Devolução": [
+          { nome: "Carlos Eduardo Pedrette", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Laudiceia de Souza", motivoSaida: "Pediu demissão · Processo de Devolução redistribuído entre Eduardo Toledo Santana e Geneilda da Silva", dataAbertura: "09/06/2026" }
         ]
       }
@@ -1444,6 +1442,14 @@ const ATRIBUICOES = {
     categorias: [
       { nome: "Retorno de Motoristas Terceirizados", icone: "🚚", itens: ["Recepção e conferência do retorno dos motoristas terceirizados","Conferência de pedidos entregues e não entregues","Conferência de pagamentos relativos às entregas","Tratativa de divergências entre pedidos faturados e retornados"] },
       { nome: "Conferência de Recebimento", icone: "📦", itens: ["Demais atividades padrão de conferência de recebimento","Tratamento e identificação dos volumes recebidos"] }
+    ]
+  },
+  eduardo: {
+    titulo: "Atribuições — Eduardo Toledo Santana",
+    subtitulo: "Assistente Logística — Faturamento · Apoio ao Processo de Devolução",
+    categorias: [
+      { nome: "Faturamento (Logística)", icone: "🧾", itens: ["Atividades de faturamento da logística","Emissão e conferência de documentos fiscais das cargas","Suporte às demandas de faturamento do carregamento"] },
+      { nome: "Nova Tarefa — Processo de Devolução", icone: "↩️", itens: ["Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), dividido com Geneilda da Silva","Apoio na análise e acompanhamento dos produtos devolvidos","Andamento no sistema da situação das devoluções sob sua responsabilidade"] }
     ]
   },
   mariaDebora: {
@@ -1742,7 +1748,7 @@ function renderTeamPanel(sup) {
         : iconePorNivel(m.nivel);
       const tagDispensa = m.avisoDispensa ? `<span style="display:inline-block;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:7.5px;font-weight:800;letter-spacing:0.8px;padding:2px 6px;border-radius:8px;margin-left:5px;vertical-align:middle;text-transform:uppercase;">aviso</span>` : '';
       const tagAfastado = m.afastado ? `<span class="member-badge-afastado">afastado</span>` : '';
-      const tagObs = m.obs ? `<span class="member-badge-obs">acúmulo</span>` : '';
+      const tagObs = m.obs ? `<span class="member-badge-obs">nova tarefa</span>` : '';
       const obsHtml = m.obs ? `<div class="member-obs"><span class="obs-icone">📌</span><span>${m.obs}</span></div>` : '';
       html += `<div class="team-member${classeVaga}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}</div>`;
     });
