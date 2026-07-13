@@ -216,6 +216,20 @@
     vertical-align: middle;
     text-transform: uppercase;
   }
+  .member-badge-obs {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: var(--gold);
+    font-size: 7.5px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    margin-left: 5px;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
   .tree { position: relative; }
   .tree-row {
     display: flex;
@@ -463,6 +477,21 @@
   .team-member .member-info { min-width: 0; }
   .team-member .member-name { font-size: 12px; color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .team-member .member-role { font-size: 10px; color: var(--muted); }
+  .team-member .member-obs {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    font-size: 9.5px;
+    line-height: 1.4;
+    color: var(--gold);
+    background: var(--gold-soft);
+    border-left: 2px solid rgba(212, 175, 55, 0.5);
+    padding: 5px 8px;
+    border-radius: 5px;
+    margin-top: 5px;
+    white-space: normal;
+  }
+  .team-member .member-obs .obs-icone { flex-shrink: 0; font-size: 10px; line-height: 1.4; }
   .team-member .member-atrib-btn {
     background: rgba(212, 175, 55, 0.12);
     border: 1px solid rgba(212, 175, 55, 0.3);
@@ -1126,7 +1155,7 @@ const ESTRUTURA = {
       equipe: {
         "Liderança e Operação": [
           { nome: "Lucas Ferreira", cargo: "Líder de Carregamento", nivel: "lider", atribuicoesKey: "lideresPadrao" },
-          { nome: "Eduardo Toledo Santana", cargo: "Assistente Logística Faturamento", nivel: "assistente" }
+          { nome: "Eduardo Toledo Santana", cargo: "Assistente Logística Faturamento", nivel: "assistente", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Geneilda da Silva, desde 09/06/2026." }
         ],
         "Operacional": [
           { nome: "ALISSON PEREIRA SANTOS", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
@@ -1134,7 +1163,7 @@ const ESTRUTURA = {
           { nome: "Carlos Eduardo Pedrette", cargo: "Aux. Logística", nivel: "aux" }
         ],
         "Devolução": [
-          { nome: "VAGA EM ABERTO", cargo: "Processo de Devolução — recrutamento ativo", nivel: "assistente", vaga: true, anterior: "Laudiceia de Souza", motivoSaida: "Pediu demissão", dataAbertura: "09/06/2026" }
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Laudiceia de Souza", motivoSaida: "Pediu demissão · Processo de Devolução redistribuído entre Eduardo Toledo Santana e Geneilda da Silva", dataAbertura: "09/06/2026" }
         ]
       }
     },
@@ -1157,7 +1186,7 @@ const ESTRUTURA = {
         ],
         "Conferência (Recebimento)": [
           { nome: "Vinicius dos Santos", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
-          { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente", atribuicoesKey: "geneilda" },
+          { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente", atribuicoesKey: "geneilda", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Eduardo Toledo Santana, desde 09/06/2026." },
           { nome: "Jose Luiz Jr.", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
           { nome: "Leila Cristina Souza", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
           { nome: "Marta Leandro", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
@@ -1713,7 +1742,9 @@ function renderTeamPanel(sup) {
         : iconePorNivel(m.nivel);
       const tagDispensa = m.avisoDispensa ? `<span style="display:inline-block;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:7.5px;font-weight:800;letter-spacing:0.8px;padding:2px 6px;border-radius:8px;margin-left:5px;vertical-align:middle;text-transform:uppercase;">aviso</span>` : '';
       const tagAfastado = m.afastado ? `<span class="member-badge-afastado">afastado</span>` : '';
-      html += `<div class="team-member${classeVaga}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}</div><div class="member-role">${m.cargo}</div></div>${btnAtrib}</div>`;
+      const tagObs = m.obs ? `<span class="member-badge-obs">acúmulo</span>` : '';
+      const obsHtml = m.obs ? `<div class="member-obs"><span class="obs-icone">📌</span><span>${m.obs}</span></div>` : '';
+      html += `<div class="team-member${classeVaga}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}</div>`;
     });
     html += `</div></div>`;
   }
