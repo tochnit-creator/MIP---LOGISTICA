@@ -217,7 +217,9 @@
     text-transform: uppercase;
   }
   .member-badge-obs {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
     background: rgba(212, 175, 55, 0.15);
     border: 1px solid rgba(212, 175, 55, 0.4);
     color: var(--gold);
@@ -229,7 +231,18 @@
     margin-left: 5px;
     vertical-align: middle;
     text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
   }
+  .member-badge-obs:hover {
+    background: var(--gold);
+    color: #0d1117;
+    border-color: var(--gold);
+  }
+  .member-badge-obs .obs-caret { font-size: 7px; transition: transform 0.2s; }
+  .member-badge-obs.ativo { background: var(--gold); color: #0d1117; }
+  .member-badge-obs.ativo .obs-caret { transform: rotate(180deg); }
   .tree { position: relative; }
   .tree-row {
     display: flex;
@@ -478,7 +491,7 @@
   .team-member .member-name { font-size: 12px; color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .team-member .member-role { font-size: 10px; color: var(--muted); }
   .team-member .member-obs {
-    display: flex;
+    display: none;
     align-items: flex-start;
     gap: 5px;
     font-size: 9.5px;
@@ -491,6 +504,7 @@
     margin-top: 5px;
     white-space: normal;
   }
+  .team-member .member-obs.aberto { display: flex; }
   .team-member .member-obs .obs-icone { flex-shrink: 0; font-size: 10px; line-height: 1.4; }
   .team-member .member-atrib-btn {
     background: rgba(212, 175, 55, 0.12);
@@ -1527,14 +1541,12 @@ const ESTRUTURA = {
       ],
       equipe: {
         "Liderança": [
-          { nome: "Rosicleude Silva", cargo: "Líder de Estoque", nivel: "lider", atribuicoesKey: "lideresPadrao", afastado: true }
+          { nome: "Rosicleude Silva", cargo: "Líder de Estoque", nivel: "lider", atribuicoesKey: "lideresPadrao", afastado: true },
+          { nome: "Valdir Gomes da Silva", cargo: "Líder de Recebimento", nivel: "lider", atribuicoesKey: "valdir", obs: "Promovido a Líder de Recebimento — responsável pela conferência de mercadorias, volumes e notas fiscais, identificação de produtos vencidos e pela liderança da equipe (desde 20/07/2026)." }
         ],
         "Conferência (Recebimento)": [
           { nome: "Vinicius dos Santos", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
-          { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente", atribuicoesKey: "geneilda", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Eduardo Toledo Santana, desde 09/06/2026." },
           { nome: "Jose Luiz Jr.", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
-          { nome: "Leila Cristina Souza", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
-          { nome: "Marta Leandro", cargo: "Conf. Recebimento Jr.", nivel: "conferente" },
           { nome: "Valcides da Silva Novaes", cargo: "Op. de Empilhadeira", nivel: "conferente" }
         ],
         "Auxiliares": [
@@ -1543,12 +1555,14 @@ const ESTRUTURA = {
           { nome: "Luis Diego Costa Mendonça", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Marcelo Lopes", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Gustavo Gomes Araujo", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Valdir Gomes da Silva", cargo: "Aux. Estoque", nivel: "aux" },
           { nome: "Jean", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "William Vieira Miranda", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Iury Carvalho", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Matheus Souza", cargo: "Aux. Endereçamento", nivel: "aux" },
-          { nome: "Adilson", cargo: "Aux. Logística", nivel: "aux" }
+          { nome: "Adilson", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Marta Leandro", cargo: "Aux. Estoque", nivel: "aux", obs: "Passou a atuar no Estoque (antes na Conferência de Recebimento), desde 20/07/2026." },
+          { nome: "Leila Cristina Souza", cargo: "Aux. Estoque · Aux. Fiscal de Recebimento", nivel: "aux", obs: "Atua no Estoque e como Auxiliar Fiscal de Recebimento, em conjunto com Vanessa Ribeiro, desde 20/07/2026." },
+          { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente", atribuicoesKey: "geneilda", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Eduardo Toledo Santana, desde 09/06/2026." }
         ],
         "Inventário": [
           { nome: "Renato Alves", cargo: "Aux. Inventário", nivel: "aux", destaque: true },
@@ -1724,6 +1738,10 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "20/07/2026", tipo: "Promoção", descricao: "VALDIR GOMES DA SILVA promovido a Líder de Recebimento (equipe Vanessa Ribeiro — Turno A) · responsável por conferência de mercadorias, volumes e notas fiscais, identificação de produtos vencidos e liderança da equipe" },
+  { data: "20/07/2026", tipo: "Movimentação", descricao: "Marta Leandro passou a atuar no Estoque (equipe Vanessa Ribeiro — Turno A) · antes na Conferência de Recebimento" },
+  { data: "20/07/2026", tipo: "Movimentação", descricao: "Leila Cristina Souza passou a atuar no Estoque e como Aux. Fiscal de Recebimento, em conjunto com Vanessa Ribeiro (Turno A)" },
+  { data: "20/07/2026", tipo: "Movimentação", descricao: "Geneilda da Silva movida para os Auxiliares da equipe Vanessa Ribeiro (Turno A) · mantém o Processo de Devolução" },
   { data: "20/07/2026", tipo: "Desligamento", descricao: "Ana Cristina Andre dos Santos pediu as contas e se desligou da empresa · Vaga em aberto no Inventário (equipe Vanessa Ribeiro — Turno A)" },
   { data: "15/07/2026", tipo: "Contratação", descricao: "FELIPE EDUARDO contratado para a equipe do Carlos Henrique Bailhão (Aux. Logística — Carregamento Turno A) · vaga aberta pela saída de Laudiceia de Souza" },
   { data: "15/07/2026", tipo: "Contratação", descricao: "ANA CRISTINA ANDRE DOS SANTOS contratada para o Inventário (equipe Vanessa Ribeiro — Turno A) · vaga aberta pelo desligamento de Paulo Eduardo da Silva" },
@@ -1785,6 +1803,14 @@ const ATRIBUICOES = {
     subtitulo: "Atribuições padrão da liderança",
     categorias: [
       { nome: "Liderança e Coordenação", icone: "⭐", itens: ["Liderar o setor","Responsável pelo fluxo de trabalho","Delega os trabalhos e fiscaliza","Coordena o processo","Alinhamento da produção"] }
+    ]
+  },
+  valdir: {
+    titulo: "Atribuições — Valdir Gomes da Silva",
+    subtitulo: "Líder de Recebimento",
+    categorias: [
+      { nome: "Conferência e Recebimento", icone: "📦", itens: ["Conferência de mercadorias no recebimento","Conferência de volumes e quantidades recebidas","Conferência de notas fiscais e documentação da carga","Identificação de produtos vencidos, avariados ou fora de especificação","Tratativa de divergências entre pedido, nota fiscal e mercadoria recebida"] },
+      { nome: "Liderança de Equipe", icone: "👥", itens: ["Liderar e orientar a equipe de recebimento","Acompanhar a produtividade e as metas do setor","Distribuir e organizar as tarefas do turno","Apoiar a supervisão nas decisões operacionais do recebimento"] }
     ]
   },
   geneilda: {
@@ -1965,6 +1991,12 @@ function keyMembro(supId, nome) { return `${supId}:${slug(nome)}`; }
 function keyLider(nome) { return `lead:${slug(nome)}`; }
 const NIVEL_LABEL = { diretor: 'Diretor', gerente: 'Gerente', supervisor: 'Supervisor', lider: 'Líder', analista: 'Analista', assistente: 'Assistente', conferente: 'Conferente', aux: 'Auxiliar', motorista: 'Motorista', servicos: 'Serviços Gerais' };
 
+function toggleObs(btn) {
+  const info = btn.closest('.member-info');
+  const obs = info ? info.querySelector('.member-obs') : null;
+  if (obs) { obs.classList.toggle('aberto'); btn.classList.toggle('ativo'); }
+}
+
 const ICONES = {
   diretor: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 V12 C4 16.5 7.5 20.5 12 22 C16.5 20.5 20 16.5 20 12 V6 Z"/><path d="M9 11 L11 13 L15 9"/></svg>`,
   gerente: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.5"/><path d="M5.5 21 C5.5 16.5 8.5 14 12 14 C15.5 14 18.5 16.5 18.5 21"/><path d="M9 18 L12 21 L15 18" opacity="0.5"/></svg>`,
@@ -2081,6 +2113,7 @@ function renderCard(pessoa, expandable = false, count = 0, subtle = false) {
     html += `<button class="btn-atribuicoes" onclick="event.stopPropagation();abrirAtribuicoes('${pessoa.atribuicoesKey}')">📋 Ver atribuições</button>`;
   }
   div.innerHTML = html;
+  div.title = pessoa.nome;
   return div;
 }
 
@@ -2106,13 +2139,13 @@ function renderTeamPanel(sup) {
         : iconePorNivel(m.nivel);
       const tagDispensa = m.avisoDispensa ? `<span style="display:inline-block;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:7.5px;font-weight:800;letter-spacing:0.8px;padding:2px 6px;border-radius:8px;margin-left:5px;vertical-align:middle;text-transform:uppercase;">aviso</span>` : '';
       const tagAfastado = m.afastado ? `<span class="member-badge-afastado">afastado</span>` : '';
-      const tagObs = m.obs ? `<span class="member-badge-obs">nova tarefa</span>` : '';
+      const tagObs = m.obs ? `<button class="member-badge-obs" onclick="event.stopPropagation();toggleObs(this)" title="Ver anotação">nova tarefa <span class="obs-caret">▾</span></button>` : '';
       const obsHtml = m.obs ? `<div class="member-obs"><span class="obs-icone">📌</span><span>${m.obs}</span></div>` : '';
       const btnLink = m.vaga ? '' : `<button class="member-link-btn" title="Gerar ficha / link direto de ${escAttr(m.nome)}" onclick="event.stopPropagation();copiarLink('${escJs(sup.id)}','${escJs(m.nome)}')">🔗</button>`;
       const pkey = m.vaga ? '' : keyMembro(sup.id, m.nome);
       const chk = m.vaga ? '' : `<span class="sel-check"></span>`;
       const dpk = m.vaga ? '' : ` data-pkey="${pkey}"`;
-      html += `<div class="team-member${classeVaga}" data-membro="${escAttr(m.nome)}"${dpk}>${chk}<div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}${btnLink}</div>`;
+      html += `<div class="team-member${classeVaga}" data-membro="${escAttr(m.nome)}"${dpk} title="${escAttr(m.nome)}">${chk}<div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name" title="${escAttr(m.nome)}">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}${btnLink}</div>`;
     });
     html += `</div></div>`;
   }
