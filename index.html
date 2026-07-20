@@ -919,6 +919,184 @@
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast .toast-icon { color: var(--gold); margin-right: 8px; }
 
+  /* ===== Modo seleção ===== */
+  #btnSelecao.active {
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    color: #0d1117; border-color: var(--gold); font-weight: 700;
+  }
+  .sel-check { display: none; }
+  body.select-mode-active .sel-check {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 5px;
+    border: 2px solid var(--line-2); background: rgba(255,255,255,0.05);
+    flex-shrink: 0; transition: all 0.15s;
+  }
+  body.select-mode-active .team-member .sel-check { margin-right: 4px; }
+  body.select-mode-active .exec-card { position: relative; }
+  body.select-mode-active .exec-card .sel-check {
+    position: absolute; top: 10px; left: 10px; z-index: 6;
+  }
+  body.select-mode-active [data-pkey] { cursor: pointer; }
+  .exec-card.sel-on, .team-member.sel-on {
+    outline: 2px solid var(--gold); outline-offset: 1px;
+    background: rgba(212,175,55,0.12) !important; border-radius: 8px;
+  }
+  .sel-on .sel-check {
+    background: var(--gold) !important; border-color: var(--gold) !important;
+  }
+  .sel-on .sel-check::after { content: '✓'; color: #0d1117; font-size: 12px; font-weight: 900; }
+
+  /* ===== Barra de seleção flutuante ===== */
+  .sel-bar {
+    position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 20px;
+    background: linear-gradient(135deg, rgba(28,34,48,0.98), rgba(13,17,23,0.98));
+    border: 1px solid var(--gold); border-radius: 14px;
+    padding: 12px 20px; box-shadow: 0 14px 50px rgba(0,0,0,0.6);
+    z-index: 1500; transition: bottom 0.3s ease; flex-wrap: wrap; justify-content: center;
+    max-width: calc(100vw - 32px);
+  }
+  .sel-bar.show { bottom: 24px; }
+  .sel-bar-count { font-size: 13px; color: var(--ink-2); }
+  .sel-bar-count strong { color: var(--gold); font-size: 16px; }
+  .sel-bar-actions { display: flex; gap: 8px; }
+
+  /* ===== Dossiê ===== */
+  .dossie-overlay {
+    position: fixed; inset: 0; z-index: 3000;
+    background: linear-gradient(180deg, #0d1117 0%, #0a0e16 100%);
+    display: none; overflow-y: auto; padding: 40px 24px 80px;
+  }
+  .dossie-overlay.show { display: block; }
+  .dossie-page { max-width: 900px; margin: 0 auto; }
+  .dossie-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 20px; flex-wrap: wrap;
+    padding-bottom: 22px; margin-bottom: 28px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .dossie-kicker {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--gold); font-weight: 700; margin-bottom: 8px;
+  }
+  .dossie-title {
+    font-size: 26px; font-weight: 600; letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #fff 0%, #d4af37 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+  .dossie-date { font-size: 12px; color: var(--muted); }
+  .dossie-head-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .dossie-cards { display: flex; flex-direction: column; gap: 22px; }
+  .dossie-card {
+    background: var(--paper); backdrop-filter: blur(20px);
+    border: 1px solid var(--line-2); border-radius: 16px;
+    padding: 26px 28px; position: relative; overflow: hidden;
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .dossie-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--gold), transparent);
+  }
+  .dossie-card-top { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+  .dossie-avatar {
+    width: 62px; height: 62px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #f4d574, #d4af37); color: #0d1117;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(212,175,55,0.3);
+  }
+  .dossie-card.level-supervisor .dossie-avatar { background: linear-gradient(135deg,#9ca3af,#6b7280); color:#fff; }
+  .dossie-card.level-lider .dossie-avatar { background: linear-gradient(135deg,#7dd3c0,#4a9080); }
+  .dossie-card.level-analista .dossie-avatar { background: linear-gradient(135deg,#8db5d8,#4b7fa8); }
+  .dossie-card.level-assistente .dossie-avatar { background: linear-gradient(135deg,#c1d870,#8fa844); }
+  .dossie-card.level-conferente .dossie-avatar { background: linear-gradient(135deg,#e8c068,#b8941f); }
+  .dossie-card.level-aux .dossie-avatar { background: linear-gradient(135deg,#8b95a3,#525a67); color:#fff; }
+  .dossie-card.level-motorista .dossie-avatar { background: linear-gradient(135deg,#d68aa8,#a04b6e); color:#fff; }
+  .dossie-card.level-servicos .dossie-avatar { background: linear-gradient(135deg,#b794d4,#7a5099); color:#fff; }
+  .dossie-card.level-gerente .dossie-avatar { background: linear-gradient(135deg,#a88e4c,#6e5a2a); color:#fff; }
+  .dossie-avatar svg { width: 34px; height: 34px; }
+  .dossie-nome { font-size: 21px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+  .dossie-cargo { font-size: 14px; color: var(--gold); margin-top: 3px; font-weight: 500; }
+  .dossie-chips { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .dchip {
+    font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 3px 9px; border-radius: 10px;
+  }
+  .dchip-novo { background: linear-gradient(135deg,#4ade80,#16a34a); color:#052e16; }
+  .dchip-afast { background: rgba(148,163,184,0.2); color:#cbd5e1; border:1px solid rgba(148,163,184,0.4); }
+  .dchip-aviso { background: rgba(239,68,68,0.15); color:#fca5a5; border:1px solid rgba(239,68,68,0.4); }
+  .dossie-meta {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 10px;
+    overflow: hidden; margin-bottom: 22px;
+  }
+  .dmeta { background: var(--paper-solid); padding: 14px 16px; }
+  .dmeta-l { font-size: 9.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted-2); font-weight: 600; margin-bottom: 5px; }
+  .dmeta-v { font-size: 14px; color: var(--ink); font-weight: 500; }
+  .dmeta-sub { color: var(--muted); font-weight: 400; font-size: 12px; }
+  .dobs {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: linear-gradient(135deg, rgba(212,175,55,0.10), rgba(212,175,55,0.02));
+    border: 1px solid rgba(212,175,55,0.25); border-radius: 10px;
+    padding: 12px 15px; margin-bottom: 22px; font-size: 13px; color: var(--ink-2); line-height: 1.5;
+  }
+  .dobs-ic { flex-shrink: 0; }
+  .dossie-sec-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--gold); font-weight: 700; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dossie-sec-title::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+  .datv-fonte { margin-bottom: 18px; }
+  .datv-fonte:last-child { margin-bottom: 0; }
+  .datv-fonte-label {
+    font-size: 12px; font-weight: 700; color: var(--ink-2);
+    padding: 6px 12px; background: rgba(255,255,255,0.03);
+    border-left: 2px solid var(--gold); border-radius: 0 6px 6px 0; margin-bottom: 12px;
+  }
+  .datv-cat { margin-bottom: 14px; padding-left: 4px; }
+  .datv-cat:last-child { margin-bottom: 0; }
+  .datv-cat-head { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .datv-cat-icon { font-size: 14px; }
+  .datv-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 5px 18px; }
+  .datv-list li {
+    font-size: 12.5px; color: var(--ink-2); line-height: 1.45;
+    padding-left: 16px; position: relative;
+  }
+  .datv-list li::before { content: ''; position: absolute; left: 3px; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.7; }
+  .datv-vazio { font-size: 13px; color: var(--muted); font-style: italic; }
+  .dossie-footer {
+    margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--line);
+    text-align: center; font-size: 11px; color: var(--muted-2); letter-spacing: 0.3px;
+  }
+  @media (max-width: 640px) {
+    .datv-list { grid-template-columns: 1fr; }
+    .dossie-title { font-size: 21px; }
+  }
+
+  /* ===== Impressão (dossiê em papel claro) ===== */
+  @media print {
+    body { background: #fff !important; padding: 0 !important; }
+    body > *:not(.dossie-overlay) { display: none !important; }
+    .dossie-overlay { position: static !important; display: block !important; background: #fff !important; padding: 0 !important; overflow: visible !important; }
+    .dossie-no-print { display: none !important; }
+    .dossie-page { max-width: 100%; }
+    .dossie-kicker { color: #b8941f !important; }
+    .dossie-title { color: #1a1a1a !important; -webkit-text-fill-color: #1a1a1a !important; background: none !important; }
+    .dossie-date, .dossie-footer { color: #666 !important; }
+    .dossie-head { border-color: #ccc !important; }
+    .dossie-card { background: #fff !important; border: 1px solid #ddd !important; box-shadow: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .dossie-nome { color: #111 !important; }
+    .dossie-cargo { color: #b8941f !important; }
+    .dmeta { background: #f7f7f5 !important; }
+    .dmeta-l { color: #888 !important; }
+    .dmeta-v { color: #111 !important; }
+    .datv-fonte-label { color: #222 !important; background: #f2f2f0 !important; }
+    .datv-cat-head { color: #111 !important; }
+    .datv-list li { color: #333 !important; }
+    .dossie-meta { border-color: #ddd !important; background: #ddd !important; }
+  }
+
   /* ===== Card de Afastados ===== */
   .afastados-section {
     margin-top: 40px;
@@ -1135,6 +1313,7 @@
       <div class="subtitle" id="reportDate"></div>
     </div>
     <div class="header-right">
+      <button class="btn" onclick="toggleModoSelecao()" id="btnSelecao">&#9745; Selecionar pessoas</button>
       <button class="btn" onclick="toggleFullscreen()" id="btnFullscreen">&#9638; Modo apresentação</button>
       <button class="btn" onclick="exportarExcel()">Exportar Excel</button>
       <button class="btn btn-primary" onclick="baixarPDF()" id="btnPdf">&#128229; Baixar PDF</button>
@@ -1288,6 +1467,19 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="sel-bar" id="selBar">
+  <div class="sel-bar-count"><strong id="selCount">0</strong> pessoa(s) selecionada(s)</div>
+  <div class="sel-bar-actions">
+    <button class="btn" onclick="limparSelecao()">Limpar</button>
+    <button class="btn" onclick="linkDossieSelecao()">&#128279; Copiar link</button>
+    <button class="btn btn-primary" onclick="verDossieSelecao()">&#128065; Ver dossiê</button>
+  </div>
+</div>
+
+<div class="dossie-overlay" id="dossieOverlay">
+  <div class="dossie-page" id="dossieContent"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1768,6 +1960,10 @@ function iniciais(nome) {
 
 function escJs(s) { return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
 function escAttr(s) { return String(s).replace(/"/g, '&quot;'); }
+function slug(s) { return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+function keyMembro(supId, nome) { return `${supId}:${slug(nome)}`; }
+function keyLider(nome) { return `lead:${slug(nome)}`; }
+const NIVEL_LABEL = { diretor: 'Diretor', gerente: 'Gerente', supervisor: 'Supervisor', lider: 'Líder', analista: 'Analista', assistente: 'Assistente', conferente: 'Conferente', aux: 'Auxiliar', motorista: 'Motorista', servicos: 'Serviços Gerais' };
 
 const ICONES = {
   diretor: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 V12 C4 16.5 7.5 20.5 12 22 C16.5 20.5 20 16.5 20 12 V6 Z"/><path d="M9 11 L11 13 L15 9"/></svg>`,
@@ -1912,8 +2108,11 @@ function renderTeamPanel(sup) {
       const tagAfastado = m.afastado ? `<span class="member-badge-afastado">afastado</span>` : '';
       const tagObs = m.obs ? `<span class="member-badge-obs">nova tarefa</span>` : '';
       const obsHtml = m.obs ? `<div class="member-obs"><span class="obs-icone">📌</span><span>${m.obs}</span></div>` : '';
-      const btnLink = m.vaga ? '' : `<button class="member-link-btn" title="Copiar link direto para ${escAttr(m.nome)}" onclick="event.stopPropagation();copiarLink('${escJs(sup.id)}','${escJs(m.nome)}')">🔗</button>`;
-      html += `<div class="team-member${classeVaga}" data-membro="${escAttr(m.nome)}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}${btnLink}</div>`;
+      const btnLink = m.vaga ? '' : `<button class="member-link-btn" title="Gerar ficha / link direto de ${escAttr(m.nome)}" onclick="event.stopPropagation();copiarLink('${escJs(sup.id)}','${escJs(m.nome)}')">🔗</button>`;
+      const pkey = m.vaga ? '' : keyMembro(sup.id, m.nome);
+      const chk = m.vaga ? '' : `<span class="sel-check"></span>`;
+      const dpk = m.vaga ? '' : ` data-pkey="${pkey}"`;
+      html += `<div class="team-member${classeVaga}" data-membro="${escAttr(m.nome)}"${dpk}>${chk}<div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}${btnLink}</div>`;
     });
     html += `</div></div>`;
   }
@@ -1921,15 +2120,25 @@ function renderTeamPanel(sup) {
   return panel;
 }
 
+function prepCardSelecao(card, nome) {
+  card.dataset.pkey = keyLider(nome);
+  const chk = document.createElement('span');
+  chk.className = 'sel-check';
+  card.appendChild(chk);
+}
+
 function montarArvore() {
   const tree = document.getElementById('tree');
   tree.innerHTML = '';
   const rowDir = document.createElement('div');
   rowDir.className = 'tree-row row-supervisors';
-  rowDir.appendChild(renderCard(ESTRUTURA.diretor, false));
+  const cardDir = renderCard(ESTRUTURA.diretor, false);
+  prepCardSelecao(cardDir, ESTRUTURA.diretor.nome);
+  rowDir.appendChild(cardDir);
   ESTRUTURA.areasDir.forEach(area => {
     const card = renderCard(area, true, contarEquipe(area));
     card.dataset.supId = area.id;
+    prepCardSelecao(card, area.nome);
     card.onclick = () => toggleEquipe(area.id);
     rowDir.appendChild(card);
   });
@@ -1940,10 +2149,13 @@ function montarArvore() {
   tree.appendChild(line1);
   const rowGer = document.createElement('div');
   rowGer.className = 'tree-row';
-  rowGer.appendChild(renderCard(ESTRUTURA.gerente, false));
+  const cardGer = renderCard(ESTRUTURA.gerente, false);
+  prepCardSelecao(cardGer, ESTRUTURA.gerente.nome);
+  rowGer.appendChild(cardGer);
   ESTRUTURA.areasGerencia.forEach(area => {
     const card = renderCard(area, true, contarEquipe(area));
     card.dataset.supId = area.id;
+    prepCardSelecao(card, area.nome);
     card.onclick = () => toggleEquipe(area.id);
     rowGer.appendChild(card);
   });
@@ -1956,7 +2168,11 @@ function montarArvore() {
     tree.appendChild(indepTitle);
     const rowIndep = document.createElement('div');
     rowIndep.className = 'tree-row row-supervisors';
-    ESTRUTURA.areasIndep.forEach(area => { rowIndep.appendChild(renderCard(area, false, 0, true)); });
+    ESTRUTURA.areasIndep.forEach(area => {
+      const card = renderCard(area, false, 0, true);
+      prepCardSelecao(card, area.nome);
+      rowIndep.appendChild(card);
+    });
     tree.appendChild(rowIndep);
   }
   const line2 = document.createElement('div');
@@ -1972,6 +2188,7 @@ function montarArvore() {
     const count = contarEquipe(sup);
     const card = renderCard(sup, count > 0, count);
     card.dataset.turno = sup.turno;
+    prepCardSelecao(card, sup.nome);
     if (count > 0) { card.dataset.supId = sup.id; card.onclick = () => toggleEquipe(sup.id); }
     rowSup.appendChild(card);
   });
@@ -2707,6 +2924,44 @@ function irParaColaborador(supId, nome) {
   }
 }
 
+/* ===== Índice de pessoas (chave única) ===== */
+const PESSOAS = {};
+function coletarAtribKeys(p) {
+  if (p.atribuicoes && p.atribuicoes.length) return p.atribuicoes.map(a => ({ key: a.key, label: a.label }));
+  if (p.atribuicoesKey) return [{ key: p.atribuicoesKey, label: '📋 Atribuições' }];
+  return [];
+}
+function membroObj(m, liderNome, liderCargo, grupo, turno) {
+  return { nome: m.nome, cargo: m.cargo, nivel: m.nivel, turno, lider: liderNome, liderCargo, grupo, tag: m.tag || null, afastado: !!m.afastado, avisoDispensa: !!m.avisoDispensa, obs: m.obs || null, atribKeys: coletarAtribKeys(m) };
+}
+function construirIndicePessoas() {
+  for (const k in PESSOAS) delete PESSOAS[k];
+  const d = ESTRUTURA.diretor;
+  PESSOAS[keyLider(d.nome)] = { nome: d.nome, cargo: d.cargo, nivel: d.nivel, turno: '', lider: '—', liderCargo: '', grupo: 'Diretoria', atribKeys: coletarAtribKeys(d) };
+  ESTRUTURA.areasDir.forEach(a => {
+    PESSOAS[keyLider(a.nome)] = { nome: a.nome, cargo: a.cargo, nivel: a.nivel, turno: '', lider: d.nome, liderCargo: d.cargo, grupo: a.cargo, atribKeys: coletarAtribKeys(a) };
+    for (const g in a.equipe) a.equipe[g].forEach(m => { if (!m.vaga) PESSOAS[keyMembro(a.id, m.nome)] = membroObj(m, a.nome, a.cargo, g, ''); });
+  });
+  const ger = ESTRUTURA.gerente;
+  PESSOAS[keyLider(ger.nome)] = { nome: ger.nome, cargo: ger.cargo, nivel: ger.nivel, turno: '', lider: d.nome, liderCargo: d.cargo, grupo: 'Gerência', atribKeys: coletarAtribKeys(ger) };
+  ESTRUTURA.areasGerencia.forEach(a => {
+    PESSOAS[keyLider(a.nome)] = { nome: a.nome, cargo: a.cargo, nivel: a.nivel, turno: '', lider: d.nome, liderCargo: d.cargo, grupo: a.cargo, atribKeys: coletarAtribKeys(a) };
+    for (const g in a.equipe) a.equipe[g].forEach(m => { if (!m.vaga) PESSOAS[keyMembro(a.id, m.nome)] = membroObj(m, a.nome, a.cargo, g, ''); });
+  });
+  (ESTRUTURA.areasIndep || []).forEach(a => {
+    PESSOAS[keyLider(a.nome)] = { nome: a.nome, cargo: a.cargo, nivel: a.nivel, turno: '', lider: ger.nome, liderCargo: ger.cargo, grupo: 'Vinculado à Gerência', atribKeys: coletarAtribKeys(a) };
+  });
+  ESTRUTURA.supervisores.forEach(sup => {
+    PESSOAS[keyLider(sup.nome)] = { nome: sup.nome, cargo: sup.cargo, nivel: sup.nivel, turno: sup.turno, lider: ger.nome, liderCargo: ger.cargo, grupo: `Turno ${sup.turno}`, atribKeys: coletarAtribKeys(sup) };
+    for (const g in sup.equipe) sup.equipe[g].forEach(m => { if (!m.vaga) PESSOAS[keyMembro(sup.id, m.nome)] = membroObj(m, sup.nome, sup.cargo, g, sup.turno); });
+  });
+}
+function resolverChave(supId, nome) {
+  if (supId) { const k = keyMembro(supId, nome); if (PESSOAS[k]) return k; }
+  const kl = keyLider(nome); if (PESSOAS[kl]) return kl;
+  return Object.keys(PESSOAS).find(k => PESSOAS[k].nome === nome) || null;
+}
+
 /* ===== Toast ===== */
 let toastTimer = null;
 function mostrarToast(msg) {
@@ -2717,19 +2972,12 @@ function mostrarToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-/* ===== Link direto ===== */
-function copiarLink(supId, nome) {
-  const url = new URL(location.href);
-  url.search = '';
-  if (supId) url.searchParams.set('sup', supId);
-  url.searchParams.set('p', nome);
-  const link = url.toString();
-  const ok = () => mostrarToast('<span class="toast-icon">🔗</span>Link copiado — envie para abrir direto nesta pessoa');
+/* ===== Link / cópia ===== */
+function copiarTexto(link, msg) {
+  const ok = () => mostrarToast(msg);
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(link).then(ok).catch(() => fallbackCopy(link, ok));
-  } else {
-    fallbackCopy(link, ok);
-  }
+  } else { fallbackCopy(link, ok); }
 }
 function fallbackCopy(text, done) {
   const ta = document.createElement('textarea');
@@ -2738,12 +2986,156 @@ function fallbackCopy(text, done) {
   try { document.execCommand('copy'); done(); } catch (e) { mostrarToast('Não foi possível copiar automaticamente'); }
   document.body.removeChild(ta);
 }
+function linkDossie(keys) {
+  keys = keys.filter(k => PESSOAS[k]);
+  if (!keys.length) { mostrarToast('Nenhuma pessoa válida'); return; }
+  const url = new URL(location.href);
+  url.search = '';
+  url.searchParams.set('dossie', '1');
+  url.searchParams.set('sel', keys.join(','));
+  copiarTexto(url.toString(), '<span class="toast-icon">🔗</span>Link copiado — abre a ficha dessas pessoas');
+}
+function copiarLink(supId, nome) {
+  const k = resolverChave(supId, nome);
+  if (!k) { mostrarToast('Pessoa não encontrada'); return; }
+  linkDossie([k]);
+}
+
+/* ===== Dossiê ===== */
+let dossieKeysAtual = [];
+function renderDossieCard(pk) {
+  const p = PESSOAS[pk];
+  if (!p) return '';
+  const turnoTxt = p.turno ? (TURNO_LABELS[p.turno] || ('Turno ' + p.turno)) : '—';
+  const nivelTxt = NIVEL_LABEL[p.nivel] || p.nivel;
+  let chips = '';
+  if (p.tag) chips += `<span class="dchip dchip-novo">${p.tag}</span>`;
+  if (p.afastado) chips += `<span class="dchip dchip-afast">Afastado</span>`;
+  if (p.avisoDispensa) chips += `<span class="dchip dchip-aviso">Aviso de dispensa</span>`;
+  let atv = '';
+  (p.atribKeys || []).forEach(src => {
+    const dados = ATRIBUICOES[src.key];
+    if (!dados) return;
+    atv += `<div class="datv-fonte"><div class="datv-fonte-label">${src.label}</div>`;
+    dados.categorias.forEach(cat => {
+      atv += `<div class="datv-cat"><div class="datv-cat-head"><span class="datv-cat-icon">${cat.icone || '•'}</span>${cat.nome}</div><ul class="datv-list">`;
+      cat.itens.forEach(it => atv += `<li>${it}</li>`);
+      atv += `</ul></div>`;
+    });
+    atv += `</div>`;
+  });
+  if (!atv) atv = `<div class="datv-vazio">Sem atribuições específicas cadastradas para esta função.</div>`;
+  const obsHtml = p.obs ? `<div class="dobs"><span class="dobs-ic">📌</span><div>${p.obs}</div></div>` : '';
+  return `
+  <article class="dossie-card level-${p.nivel}">
+    <div class="dossie-card-top">
+      <div class="dossie-avatar">${iconePorNivel(p.nivel)}</div>
+      <div class="dossie-id">
+        <div class="dossie-nome">${p.nome}</div>
+        <div class="dossie-cargo">${p.cargo}</div>
+        <div class="dossie-chips">${chips}</div>
+      </div>
+    </div>
+    <div class="dossie-meta">
+      <div class="dmeta"><div class="dmeta-l">Nível</div><div class="dmeta-v">${nivelTxt}</div></div>
+      <div class="dmeta"><div class="dmeta-l">Turno</div><div class="dmeta-v">${turnoTxt}</div></div>
+      <div class="dmeta"><div class="dmeta-l">Liderado por</div><div class="dmeta-v">${p.lider}${p.liderCargo ? ` <span class="dmeta-sub">· ${p.liderCargo}</span>` : ''}</div></div>
+      <div class="dmeta"><div class="dmeta-l">Setor / Grupo</div><div class="dmeta-v">${p.grupo}</div></div>
+    </div>
+    ${obsHtml}
+    <div class="dossie-atv">
+      <div class="dossie-sec-title">Atividades e Atribuições</div>
+      ${atv}
+    </div>
+  </article>`;
+}
+function abrirDossie(keys) {
+  keys = keys.filter(k => PESSOAS[k]);
+  if (!keys.length) { mostrarToast('Nenhuma pessoa válida para exibir'); return; }
+  dossieKeysAtual = keys;
+  const cont = document.getElementById('dossieContent');
+  const dataExt = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+  const titulo = keys.length === 1 ? 'Ficha do Colaborador' : `Dossiê da Equipe · ${keys.length} colaboradores`;
+  cont.innerHTML = `
+    <div class="dossie-head">
+      <div class="dossie-head-left">
+        <div class="dossie-kicker">Estrutura Organizacional — Logística</div>
+        <div class="dossie-title">${titulo}</div>
+        <div class="dossie-date">Emitido em ${dataExt}</div>
+      </div>
+      <div class="dossie-head-actions dossie-no-print">
+        <button class="btn" onclick="imprimirDossie()">🖨️ Imprimir / PDF</button>
+        <button class="btn" onclick="linkDossie(dossieKeysAtual)">🔗 Copiar link</button>
+        <button class="btn btn-primary" onclick="fecharDossie()">✕ Fechar</button>
+      </div>
+    </div>
+    <div class="dossie-cards">${keys.map(renderDossieCard).join('')}</div>
+    <div class="dossie-footer">Confidencial — uso interno · Logística · gerado a partir do organograma</div>
+  `;
+  const ov = document.getElementById('dossieOverlay');
+  ov.classList.add('show');
+  ov.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function imprimirDossie() { window.print(); }
+function fecharDossie() {
+  document.getElementById('dossieOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  if (location.search) history.replaceState(null, '', location.pathname);
+}
+
+/* ===== Modo seleção ===== */
+let modoSelecao = false;
+const selecionados = new Set();
+function toggleModoSelecao() {
+  modoSelecao = !modoSelecao;
+  document.body.classList.toggle('select-mode-active', modoSelecao);
+  const btn = document.getElementById('btnSelecao');
+  btn.classList.toggle('active', modoSelecao);
+  btn.innerHTML = modoSelecao ? '✕ Sair da seleção' : '☑️ Selecionar pessoas';
+  if (!modoSelecao) { limparSelecao(); }
+  else { mostrarToast('Modo seleção — toque nas pessoas para marcá-las'); }
+  atualizarSelBar();
+}
+function toggleSel(pk, host) {
+  if (!pk) return;
+  if (selecionados.has(pk)) { selecionados.delete(pk); host && host.classList.remove('sel-on'); }
+  else { selecionados.add(pk); host && host.classList.add('sel-on'); }
+  atualizarSelBar();
+}
+function limparSelecao() {
+  selecionados.clear();
+  document.querySelectorAll('.sel-on').forEach(el => el.classList.remove('sel-on'));
+  atualizarSelBar();
+}
+function atualizarSelBar() {
+  const bar = document.getElementById('selBar');
+  const cnt = document.getElementById('selCount');
+  if (cnt) cnt.textContent = selecionados.size;
+  if (bar) bar.classList.toggle('show', modoSelecao && selecionados.size > 0);
+}
+function verDossieSelecao() {
+  if (!selecionados.size) return;
+  abrirDossie([...selecionados]);
+}
+function linkDossieSelecao() {
+  if (!selecionados.size) return;
+  linkDossie([...selecionados]);
+}
+
+/* ===== Abertura via URL ===== */
 function abrirPorURL() {
   const params = new URLSearchParams(location.search);
+  if (params.get('dossie') === '1') {
+    const sel = (params.get('sel') || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (sel.length) { setTimeout(() => abrirDossie(sel), 250); return; }
+  }
   const nome = params.get('p');
-  if (!nome) return;
-  const sup = params.get('sup') || '';
-  setTimeout(() => irParaColaborador(sup, nome), 350);
+  if (nome) {
+    const k = resolverChave(params.get('sup') || '', nome);
+    if (k) { setTimeout(() => abrirDossie([k]), 250); return; }
+    setTimeout(() => irParaColaborador(params.get('sup') || '', nome), 350);
+  }
 }
 
 /* ===== Filtro por turno ===== */
@@ -2807,6 +3199,17 @@ document.addEventListener('click', e => {
   }
 });
 
+// Seleção múltipla: no modo seleção, clicar numa pessoa marca/desmarca (fase de captura para não expandir o card)
+document.getElementById('tree').addEventListener('click', e => {
+  if (!modoSelecao) return;
+  const host = e.target.closest('[data-pkey]');
+  if (!host || !host.dataset.pkey) return;
+  e.stopPropagation();
+  e.preventDefault();
+  toggleSel(host.dataset.pkey, host);
+}, true);
+
+construirIndicePessoas();
 montarArvore();
 atualizarKPIs();
 setarData();
