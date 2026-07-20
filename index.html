@@ -772,6 +772,152 @@
     0% { box-shadow: 0 0 0 3px rgba(212,175,55,0.8), 0 0 30px rgba(212,175,55,0.3); }
     100% { box-shadow: none; }
   }
+  .membro-highlight {
+    animation: highlightMembro 2.4s ease;
+    border-radius: 6px;
+  }
+  @keyframes highlightMembro {
+    0% { background: rgba(212,175,55,0.30); box-shadow: 0 0 0 2px rgba(212,175,55,0.7); }
+    100% { background: transparent; box-shadow: none; }
+  }
+
+  /* ===== Filtro por turno ===== */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    margin: 8px 0 28px;
+  }
+  .filter-bar-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--muted-2);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .filter-btn {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line-2);
+    color: var(--ink-2);
+    padding: 7px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 0.3px;
+    transition: all 0.18s;
+  }
+  .filter-btn:hover {
+    border-color: var(--gold);
+    color: #fff;
+  }
+  .filter-btn.active {
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    border-color: var(--gold);
+    color: #0d1117;
+    font-weight: 700;
+  }
+  .filter-btn .fb-count {
+    opacity: 0.7;
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .exec-card.filtro-oculto,
+  .tree-row.filtro-oculto,
+  .shift-section-title.filtro-oculto,
+  .tree-line.filtro-oculto { display: none !important; }
+
+  /* ===== Legenda de níveis ===== */
+  .legenda-wrap {
+    margin-top: 48px;
+    padding: 20px 24px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+  }
+  .legenda-titulo {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .legenda {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 20px;
+  }
+  .legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+  .legenda-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+
+  /* ===== Botão de link direto ===== */
+  .search-result-link, .member-link-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line-2);
+    color: var(--muted);
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+  }
+  .search-result-link:hover, .member-link-btn:hover {
+    background: var(--gold);
+    color: #0d1117;
+    border-color: var(--gold);
+    transform: scale(1.05);
+  }
+  .member-link-btn { width: 26px; height: 26px; font-size: 12px; }
+
+  /* ===== Toast de confirmação ===== */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: linear-gradient(135deg, rgba(28,34,48,0.98), rgba(13,17,23,0.98));
+    border: 1px solid var(--gold);
+    color: var(--ink);
+    padding: 12px 22px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast .toast-icon { color: var(--gold); margin-right: 8px; }
 
   /* ===== Card de Afastados ===== */
   .afastados-section {
@@ -1061,7 +1207,14 @@
     </div>
   </div>
 
+  <div class="filter-bar" id="filterBar"></div>
+
   <div class="tree" id="tree"></div>
+
+  <div class="legenda-wrap">
+    <div class="legenda-titulo">Legenda — níveis hierárquicos</div>
+    <div class="legenda" id="legenda"></div>
+  </div>
 
   <div class="footer">
     <div>Logística · Estrutura vigente em <span id="footerDate"></span></div>
@@ -1137,6 +1290,8 @@
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
 const ESTRUTURA = {
   diretor: { nome: "Eduardo Martins", cargo: "Diretor", nivel: "diretor" },
@@ -1199,7 +1354,6 @@ const ESTRUTURA = {
           { nome: "Valdir Gomes da Silva", cargo: "Aux. Estoque", nivel: "aux" },
           { nome: "Jean", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "William Vieira Miranda", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Iury", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Iury Carvalho", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Matheus Souza", cargo: "Aux. Endereçamento", nivel: "aux" },
           { nome: "Adilson", cargo: "Aux. Logística", nivel: "aux" }
@@ -1207,7 +1361,7 @@ const ESTRUTURA = {
         "Inventário": [
           { nome: "Renato Alves", cargo: "Aux. Inventário", nivel: "aux", destaque: true },
           { nome: "Douglas Faccio", cargo: "Aux. Inventário", nivel: "aux", destaque: true },
-          { nome: "Ana Cristina Andre dos Santos", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO" }
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — recrutamento ativo", nivel: "aux", vaga: true, destaque: true, anterior: "Ana Cristina Andre dos Santos", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "20/07/2026" }
         ]
       }
     },
@@ -1378,6 +1532,7 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "20/07/2026", tipo: "Desligamento", descricao: "Ana Cristina Andre dos Santos pediu as contas e se desligou da empresa · Vaga em aberto no Inventário (equipe Vanessa Ribeiro — Turno A)" },
   { data: "15/07/2026", tipo: "Contratação", descricao: "FELIPE EDUARDO contratado para a equipe do Carlos Henrique Bailhão (Aux. Logística — Carregamento Turno A) · vaga aberta pela saída de Laudiceia de Souza" },
   { data: "15/07/2026", tipo: "Contratação", descricao: "ANA CRISTINA ANDRE DOS SANTOS contratada para o Inventário (equipe Vanessa Ribeiro — Turno A) · vaga aberta pelo desligamento de Paulo Eduardo da Silva" },
   { data: "15/07/2026", tipo: "Contratação", descricao: "LUIZ HENRIQUE contratado como Separador (Aux. Logística) para a equipe do Claudio Barcelos Jr (Turno B) · 1ª das 2 vagas de aumento de quadro · permanece 1 vaga em aberto" },
@@ -1611,6 +1766,9 @@ function iniciais(nome) {
   return nome.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
 }
 
+function escJs(s) { return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
+function escAttr(s) { return String(s).replace(/"/g, '&quot;'); }
+
 const ICONES = {
   diretor: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 V12 C4 16.5 7.5 20.5 12 22 C16.5 20.5 20 16.5 20 12 V6 Z"/><path d="M9 11 L11 13 L15 9"/></svg>`,
   gerente: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.5"/><path d="M5.5 21 C5.5 16.5 8.5 14 12 14 C15.5 14 18.5 16.5 18.5 21"/><path d="M9 18 L12 21 L15 18" opacity="0.5"/></svg>`,
@@ -1754,7 +1912,8 @@ function renderTeamPanel(sup) {
       const tagAfastado = m.afastado ? `<span class="member-badge-afastado">afastado</span>` : '';
       const tagObs = m.obs ? `<span class="member-badge-obs">nova tarefa</span>` : '';
       const obsHtml = m.obs ? `<div class="member-obs"><span class="obs-icone">📌</span><span>${m.obs}</span></div>` : '';
-      html += `<div class="team-member${classeVaga}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}</div>`;
+      const btnLink = m.vaga ? '' : `<button class="member-link-btn" title="Copiar link direto para ${escAttr(m.nome)}" onclick="event.stopPropagation();copiarLink('${escJs(sup.id)}','${escJs(m.nome)}')">🔗</button>`;
+      html += `<div class="team-member${classeVaga}" data-membro="${escAttr(m.nome)}"><div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}${btnLink}</div>`;
     });
     html += `</div></div>`;
   }
@@ -1812,6 +1971,7 @@ function montarArvore() {
   ESTRUTURA.supervisores.forEach(sup => {
     const count = contarEquipe(sup);
     const card = renderCard(sup, count > 0, count);
+    card.dataset.turno = sup.turno;
     if (count > 0) { card.dataset.supId = sup.id; card.onclick = () => toggleEquipe(sup.id); }
     rowSup.appendChild(card);
   });
@@ -2479,7 +2639,7 @@ function buscarColaborador(q) {
   }
 
   results.innerHTML = found.slice(0, 12).map((p, i) => `
-    <div class="search-result-item" onclick="irParaColaborador('${p.supId || ''}', ${i})" data-idx="${i}">
+    <div class="search-result-item" onclick="irParaColaborador('${escJs(p.supId || '')}','${escJs(p.nome)}')" data-idx="${i}">
       <div class="search-result-avatar">${iconePorNivel(p.nivel)}</div>
       <div class="search-result-info">
         <div class="search-result-nome">${highlight(p.nome, q.trim())}${p.tag ? `<span class="member-tag">${p.tag}</span>` : ''}${p.avisoDispensa ? `<span style="display:inline-block;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:7.5px;font-weight:800;letter-spacing:0.8px;padding:2px 6px;border-radius:8px;margin-left:5px;vertical-align:middle;text-transform:uppercase;">aviso</span>` : ''}</div>
@@ -2488,6 +2648,7 @@ function buscarColaborador(q) {
       <div class="search-result-breadcrumb">
         ${p.grupo}<br><span>${p.supNome}</span>
       </div>
+      <button class="search-result-link" title="Copiar link direto" onclick="event.stopPropagation();copiarLink('${escJs(p.supId || '')}','${escJs(p.nome)}')">🔗</button>
     </div>
   `).join('');
 
@@ -2498,31 +2659,138 @@ function buscarColaborador(q) {
   results.classList.add('show');
 }
 
-function irParaColaborador(supId, idx) {
-  // Fecha resultado
+function irParaColaborador(supId, nome) {
+  // Fecha resultado da busca
   document.getElementById('searchResults').classList.remove('show');
+  // Garante que o alvo esteja visível (remove filtro de turno se ativo)
+  if (typeof filtroTurnoAtual !== 'undefined' && filtroTurnoAtual !== 'todos') aplicarFiltroTurno('todos');
 
-  if (!supId) return;
+  // Caso 1: pessoa dentro do painel de um supervisor
+  if (supId) {
+    const panel = document.getElementById(`panel-${supId}`);
+    const card = document.querySelector(`.exec-card[data-sup-id="${supId}"]`);
+    if (panel && card) {
+      document.querySelectorAll('.team-panel.show').forEach(p => p.classList.remove('show'));
+      document.querySelectorAll('.exec-card.expanded').forEach(c => c.classList.remove('expanded'));
+      panel.classList.add('show');
+      card.classList.add('expanded');
+      const rowDoCard = card.closest('.tree-row');
+      rowDoCard.parentElement.insertBefore(panel, rowDoCard.nextSibling);
+      setTimeout(() => {
+        const sel = `.team-member[data-membro="${String(nome).replace(/"/g, '\\"')}"]`;
+        const membro = nome ? panel.querySelector(sel) : null;
+        if (membro) {
+          membro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          membro.classList.add('membro-highlight');
+          setTimeout(() => membro.classList.remove('membro-highlight'), 2400);
+        } else {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('search-highlight');
+          setTimeout(() => card.classList.remove('search-highlight'), 2000);
+        }
+      }, 120);
+      return;
+    }
+  }
 
-  // Abre o painel do supervisor
-  const panel = document.getElementById(`panel-${supId}`);
-  const card = document.querySelector(`.exec-card[data-sup-id="${supId}"]`);
-  if (!panel || !card) return;
+  // Caso 2: a própria pessoa é um card (diretor, gerente, área ou supervisor)
+  const alvo = [...document.querySelectorAll('.exec-card')].find(c => {
+    const n = c.querySelector('.nome');
+    return n && n.textContent.trim() === String(nome).trim();
+  });
+  if (alvo) {
+    setTimeout(() => {
+      alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      alvo.classList.add('search-highlight');
+      setTimeout(() => alvo.classList.remove('search-highlight'), 2000);
+    }, 100);
+  }
+}
 
-  // Fecha todos e abre o certo
+/* ===== Toast ===== */
+let toastTimer = null;
+function mostrarToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ===== Link direto ===== */
+function copiarLink(supId, nome) {
+  const url = new URL(location.href);
+  url.search = '';
+  if (supId) url.searchParams.set('sup', supId);
+  url.searchParams.set('p', nome);
+  const link = url.toString();
+  const ok = () => mostrarToast('<span class="toast-icon">🔗</span>Link copiado — envie para abrir direto nesta pessoa');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link).then(ok).catch(() => fallbackCopy(link, ok));
+  } else {
+    fallbackCopy(link, ok);
+  }
+}
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) { mostrarToast('Não foi possível copiar automaticamente'); }
+  document.body.removeChild(ta);
+}
+function abrirPorURL() {
+  const params = new URLSearchParams(location.search);
+  const nome = params.get('p');
+  if (!nome) return;
+  const sup = params.get('sup') || '';
+  setTimeout(() => irParaColaborador(sup, nome), 350);
+}
+
+/* ===== Filtro por turno ===== */
+let filtroTurnoAtual = 'todos';
+const TURNO_LABELS = { A: 'Turno A', B: 'Turno B', C: 'Turno C', M: 'Motoristas' };
+function montarFiltroTurno() {
+  const bar = document.getElementById('filterBar');
+  if (!bar) return;
+  const ordem = ['A', 'B', 'C', 'M'];
+  const turnos = [...new Set(ESTRUTURA.supervisores.map(s => s.turno))].sort((a, b) => ordem.indexOf(a) - ordem.indexOf(b));
+  const totalOper = ESTRUTURA.supervisores.reduce((n, s) => n + 1 + contarEquipe(s), 0);
+  let html = `<span class="filter-bar-label">Filtrar por turno:</span>`;
+  html += `<button class="filter-btn active" data-turno="todos" onclick="aplicarFiltroTurno('todos')">Todos<span class="fb-count">${totalOper}</span></button>`;
+  turnos.forEach(t => {
+    const cnt = ESTRUTURA.supervisores.filter(s => s.turno === t).reduce((n, s) => n + 1 + contarEquipe(s), 0);
+    html += `<button class="filter-btn" data-turno="${t}" onclick="aplicarFiltroTurno('${t}')">${TURNO_LABELS[t] || ('Turno ' + t)}<span class="fb-count">${cnt}</span></button>`;
+  });
+  bar.innerHTML = html;
+}
+function aplicarFiltroTurno(turno) {
+  filtroTurnoAtual = turno;
+  document.querySelectorAll('#filterBar .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.turno === turno));
   document.querySelectorAll('.team-panel.show').forEach(p => p.classList.remove('show'));
   document.querySelectorAll('.exec-card.expanded').forEach(c => c.classList.remove('expanded'));
-  panel.classList.add('show');
-  card.classList.add('expanded');
-  const rowDoCard = card.closest('.tree-row');
-  rowDoCard.parentElement.insertBefore(panel, rowDoCard.nextSibling);
+  document.querySelectorAll('.exec-card[data-turno]').forEach(card => {
+    const mostra = turno === 'todos' || card.dataset.turno === turno;
+    card.classList.toggle('filtro-oculto', !mostra);
+  });
+}
 
-  // Scroll suave para o card e destaque
-  setTimeout(() => {
-    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    card.classList.add('search-highlight');
-    setTimeout(() => card.classList.remove('search-highlight'), 2000);
-  }, 80);
+/* ===== Legenda de níveis ===== */
+const LEGENDA_NIVEIS = [
+  { label: 'Diretor', grad: 'linear-gradient(135deg,#f4d574,#d4af37)' },
+  { label: 'Gerente', grad: 'linear-gradient(135deg,#a88e4c,#6e5a2a)' },
+  { label: 'Supervisor', grad: 'linear-gradient(135deg,#9ca3af,#6b7280)' },
+  { label: 'Líder', grad: 'linear-gradient(135deg,#7dd3c0,#4a9080)' },
+  { label: 'Analista', grad: 'linear-gradient(135deg,#8db5d8,#4b7fa8)' },
+  { label: 'Assistente', grad: 'linear-gradient(135deg,#c1d870,#8fa844)' },
+  { label: 'Conferente', grad: 'linear-gradient(135deg,#e8c068,#b8941f)' },
+  { label: 'Auxiliar', grad: 'linear-gradient(135deg,#8b95a3,#525a67)' },
+  { label: 'Motorista', grad: 'linear-gradient(135deg,#d68aa8,#a04b6e)' },
+  { label: 'Serviços Gerais', grad: 'linear-gradient(135deg,#b794d4,#7a5099)' }
+];
+function montarLegenda() {
+  const el = document.getElementById('legenda');
+  if (!el) return;
+  el.innerHTML = LEGENDA_NIVEIS.map(n => `<div class="legenda-item"><span class="legenda-dot" style="background:${n.grad}"></span>${n.label}</div>`).join('');
 }
 
 function limparBusca() {
@@ -2543,6 +2811,9 @@ montarArvore();
 atualizarKPIs();
 setarData();
 montarSecaoAtribuicoesPdf();
+montarFiltroTurno();
+montarLegenda();
+abrirPorURL();
 </script>
 </body>
 </html>
