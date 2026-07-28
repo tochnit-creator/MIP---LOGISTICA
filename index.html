@@ -1317,6 +1317,311 @@
   }
   .print-atribuicoes { display: none; }
   @media print { .print-atribuicoes { display: block; } }
+
+  /* ==================================================================
+     ABA FÉRIAS — segue o padrão visual do MIP (glass + dourado)
+     ================================================================== */
+  .fr-tabs { display:flex; gap:2px; margin-bottom:30px; border-bottom:1px solid var(--line); }
+  .fr-tab {
+    background:transparent; border:0; border-bottom:2px solid transparent;
+    color:var(--muted); padding:12px 22px; font-size:12.5px; font-weight:600;
+    letter-spacing:0.5px; cursor:pointer; font-family:inherit; transition:all 0.2s;
+  }
+  .fr-tab:hover { color:var(--ink-2); }
+  .fr-tab.ativo { color:var(--gold); border-bottom-color:var(--gold); }
+  .fr-tab .fr-badge {
+    display:inline-block; background:rgba(248,113,113,0.18); color:#fca5a5;
+    border:1px solid rgba(248,113,113,0.35); border-radius:10px;
+    font-size:9px; font-weight:800; padding:1px 6px; margin-left:7px; vertical-align:middle;
+  }
+
+  #viewFerias { --m:#f0b95c; --t:#e59475; --n:#8db5d8; --tr:#7dd3c0; }
+
+  /* --- blocos --- */
+  .fr-sec { margin-top:38px; }
+  .fr-sec-head { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .fr-sec-head h2 {
+    font-size:11px; text-transform:uppercase; letter-spacing:1.5px;
+    color:var(--muted); font-weight:600; margin:0; white-space:nowrap;
+  }
+  .fr-sec-head .fr-rule { flex:1; height:1px; background:var(--line); }
+  .fr-sec-head .fr-hint { font-size:10.5px; color:var(--muted-2); letter-spacing:0.3px; }
+  .fr-panel {
+    background:var(--paper); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border:1px solid var(--line-2); border-radius:10px; overflow:hidden;
+  }
+
+  /* --- próximas férias por turno --- */
+  .fr-next { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:34px; }
+  .fr-next-card {
+    background:var(--paper); backdrop-filter:blur(20px); border:1px solid var(--line-2);
+    border-radius:10px; padding:16px 18px; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; min-height:128px; transition:all 0.2s;
+  }
+  .fr-next-card::after {
+    content:''; position:absolute; left:0; top:0; width:3px; height:100%;
+    background:linear-gradient(180deg, var(--c), transparent);
+  }
+  .fr-next-card:hover { border-color:var(--line-2); background:rgba(28,34,48,0.85); transform:translateY(-2px); }
+  .fr-next-card .fr-turno {
+    font-size:9.5px; text-transform:uppercase; letter-spacing:1.2px;
+    color:var(--muted); font-weight:600; margin-bottom:12px;
+  }
+  .fr-next-card .fr-quem { font-size:14.5px; font-weight:600; color:var(--ink); line-height:1.25; }
+  .fr-next-card .fr-quem small { font-weight:500; color:var(--muted); font-size:11px; }
+  .fr-next-card .fr-quando { font-size:11.5px; color:var(--ink-2); margin-top:5px; font-variant-numeric:tabular-nums; }
+  .fr-next-card .fr-conta { margin-top:auto; padding-top:12px; font-size:10.5px; font-weight:600; letter-spacing:0.4px; color:var(--c); }
+  .fr-next-card .fr-conta.fr-now { color:#86efac; }
+  .fr-next-card.fr-vazio .fr-quem { color:var(--muted); font-weight:500; font-size:13px; }
+
+  /* --- tabela de prazos --- */
+  .fr-table { width:100%; border-collapse:collapse; }
+  .fr-table th {
+    text-align:left; font-size:9.5px; text-transform:uppercase; letter-spacing:1.1px;
+    color:var(--muted); font-weight:700; padding:13px 16px; border-bottom:1px solid var(--line-2);
+    white-space:nowrap;
+  }
+  .fr-table td { padding:12px 16px; border-bottom:1px solid var(--line); font-size:12.5px; color:var(--ink-2); }
+  .fr-table tbody tr { cursor:pointer; transition:background 0.15s; }
+  .fr-table tbody tr:hover { background:var(--gold-soft); }
+  .fr-table tbody tr:last-child td { border-bottom:none; }
+  .fr-table .fr-nome { display:flex; align-items:center; gap:9px; color:var(--ink); font-weight:500; white-space:nowrap; }
+  .fr-table .fr-nome i { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .fr-table td.fr-num { font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .fr-sit { font-size:10.5px; font-weight:700; letter-spacing:0.3px; white-space:nowrap; }
+  .fr-sit.fr-s1 { color:#fca5a5; }
+  .fr-sit.fr-s2 { color:#fbbf24; }
+  .fr-sit.fr-s3 { color:var(--muted); }
+
+  /* --- pendências --- */
+  .fr-alerts { display:flex; flex-direction:column; }
+  .fr-alert {
+    display:grid; grid-template-columns:104px 1fr auto; gap:16px; align-items:center;
+    padding:13px 18px; border-bottom:1px solid var(--line);
+  }
+  .fr-alert:last-child { border-bottom:none; }
+  .fr-alert .fr-tag {
+    font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px;
+    padding:4px 8px; border-radius:10px; text-align:center;
+  }
+  .fr-l1 .fr-tag { background:rgba(248,113,113,0.15); color:#fca5a5; border:1px solid rgba(248,113,113,0.3); }
+  .fr-l2 .fr-tag { background:rgba(251,191,36,0.14); color:#fbbf24; border:1px solid rgba(251,191,36,0.3); }
+  .fr-l3 .fr-tag { background:rgba(139,181,216,0.14); color:#8db5d8; border:1px solid rgba(139,181,216,0.3); }
+  .fr-alert p { margin:0; font-size:12.5px; color:var(--ink-2); line-height:1.5; }
+  .fr-alert p b { color:var(--ink); font-weight:600; }
+  .fr-alert .fr-when { font-size:10.5px; color:var(--muted-2); white-space:nowrap; font-variant-numeric:tabular-nums; }
+
+  /* --- controles --- */
+  .fr-ctl { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; margin-top:34px; }
+  .fr-chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .fr-chip {
+    background:rgba(255,255,255,0.03); border:1px solid var(--line); color:var(--muted);
+    padding:7px 13px; border-radius:16px; font-size:10.5px; font-weight:600; letter-spacing:0.4px;
+    cursor:pointer; font-family:inherit; transition:all 0.18s; display:inline-flex; align-items:center; gap:7px;
+  }
+  .fr-chip .fr-dot { width:6px; height:6px; border-radius:50%; opacity:0.5; }
+  .fr-chip:hover { color:var(--ink-2); border-color:var(--line-2); }
+  .fr-chip[aria-pressed="true"] { background:var(--gold-soft); border-color:rgba(212,175,55,0.4); color:var(--gold); }
+  .fr-chip[aria-pressed="true"] .fr-dot { opacity:1; }
+  .fr-tools { display:flex; align-items:center; gap:8px; }
+  .fr-input {
+    background:rgba(255,255,255,0.03); border:1px solid var(--line-2); color:var(--ink);
+    padding:8px 13px; border-radius:6px; font-size:12px; font-family:inherit; width:180px;
+  }
+  .fr-input::placeholder { color:var(--muted-2); }
+  .fr-input:focus { outline:none; border-color:var(--gold); }
+
+  /* --- linha do tempo --- */
+  .fr-scroll { overflow-x:auto; }
+  .fr-tl { min-width:940px; }
+  .fr-tl-head { display:flex; border-bottom:1px solid var(--line-2); }
+  .fr-tl-head .fr-lbl { width:230px; flex:none; border-right:1px solid var(--line); }
+  .fr-tl-months { flex:1; display:flex; position:relative; }
+  .fr-tl-month {
+    border-right:1px solid var(--line); padding:12px 10px;
+    font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:var(--muted-2);
+  }
+  .fr-tl-month:last-child { border-right:none; }
+  .fr-tl-month b { display:block; color:var(--ink-2); font-size:11px; font-weight:600; letter-spacing:0.8px; margin-bottom:2px; }
+  .fr-tl-row { display:flex; border-bottom:1px solid var(--line); min-height:50px; }
+  .fr-tl-row:last-child { border-bottom:none; }
+  .fr-tl-row:hover { background:rgba(255,255,255,0.02); }
+  .fr-tl-name {
+    width:230px; flex:none; border-right:1px solid var(--line); padding:8px 16px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .fr-tl-name b { font-size:12px; font-weight:500; color:var(--ink); line-height:1.25; }
+  .fr-tl-name small { font-size:9.5px; color:var(--muted-2); margin-top:3px; display:flex; align-items:center; gap:6px; letter-spacing:0.4px; }
+  .fr-tl-name small i { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .fr-tl-track { flex:1; position:relative; }
+  .fr-grid { position:absolute; top:0; bottom:0; width:1px; background:var(--line); }
+  .fr-hol { position:absolute; top:0; bottom:0; width:1px; background:rgba(248,113,113,0.20); }
+  .fr-bar {
+    position:absolute; top:50%; transform:translateY(-50%); height:22px; border-radius:4px; border:none;
+    display:flex; align-items:center; padding:0 9px; color:#0d1117; cursor:pointer;
+    font-size:10px; font-weight:700; letter-spacing:0.2px; white-space:nowrap; overflow:hidden;
+    font-family:inherit; font-variant-numeric:tabular-nums; transition:all 0.15s;
+  }
+  .fr-bar:hover { filter:brightness(1.15); box-shadow:0 4px 14px rgba(0,0,0,0.4); }
+  .fr-bar.fr-past { opacity:0.35; }
+  .fr-bar.fr-cur { box-shadow:0 0 0 2px var(--bg-1), 0 0 0 3px #86efac; }
+  .fr-lim {
+    position:absolute; top:50%; transform:translate(-50%,-50%) rotate(45deg);
+    width:8px; height:8px; background:var(--bg-1); border:1.5px solid #fca5a5;
+  }
+  .fr-limoff { position:absolute; top:50%; transform:translateY(-50%); right:6px; font-size:9.5px; color:var(--muted-2); }
+  .fr-nosched {
+    position:absolute; top:50%; transform:translateY(-50%); left:12px; background:transparent;
+    border:1px dashed rgba(248,113,113,0.4); color:#fca5a5; padding:4px 10px; border-radius:6px;
+    font-size:10px; font-weight:600; cursor:pointer; font-family:inherit;
+  }
+  .fr-nosched:hover { background:rgba(248,113,113,0.1); }
+  .fr-today { position:absolute; top:0; bottom:0; width:1.5px; background:#4ade80; z-index:2; }
+  .fr-todayflag {
+    position:absolute; top:0; transform:translateX(-50%); background:#4ade80; color:#052e16;
+    font-size:8.5px; font-weight:800; letter-spacing:1px; padding:3px 7px; border-radius:0 0 4px 4px; z-index:4;
+  }
+  .fr-legend { display:flex; flex-wrap:wrap; gap:8px 24px; padding:13px 18px; border-top:1px solid var(--line); }
+  .fr-legend span { font-size:10.5px; color:var(--muted-2); display:flex; align-items:center; gap:8px; letter-spacing:0.3px; }
+  .fr-legend .fr-sw { width:16px; height:7px; border-radius:2px; background:var(--muted); }
+  .fr-legend .fr-dm { width:8px; height:8px; transform:rotate(45deg); border:1.5px solid #fca5a5; }
+
+  /* --- calendário --- */
+  .fr-calnav { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid var(--line-2); }
+  .fr-calnav h3 { font-size:15px; font-weight:600; color:var(--ink); letter-spacing:0.3px; }
+  .fr-cal { display:grid; grid-template-columns:repeat(7,1fr); }
+  .fr-dow { padding:10px 8px; text-align:center; font-size:9.5px; letter-spacing:1.2px; color:var(--muted-2); font-weight:600; border-bottom:1px solid var(--line-2); }
+  .fr-day { min-height:100px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:7px 8px; display:flex; flex-direction:column; gap:3px; }
+  .fr-day:nth-child(7n) { border-right:none; }
+  .fr-day.fr-out { background:rgba(0,0,0,0.15); }
+  .fr-day.fr-out .fr-daynum { color:var(--muted-2); opacity:0.4; }
+  .fr-day.fr-wknd { background:rgba(0,0,0,0.12); }
+  .fr-day.fr-fer { background:rgba(248,113,113,0.05); }
+  .fr-day.fr-hoje { box-shadow:inset 0 0 0 1px #4ade80; }
+  .fr-daynum { font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .fr-day.fr-hoje .fr-daynum { color:#4ade80; font-weight:700; }
+  .fr-fername { font-size:8.5px; text-transform:uppercase; letter-spacing:0.4px; color:#fca5a5; line-height:1.3; font-weight:600; }
+  .fr-chiptag {
+    font-size:10px; font-weight:600; padding:3px 6px; border-radius:4px; color:#0d1117;
+    border:none; cursor:pointer; text-align:left; font-family:inherit;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .fr-chiptag:hover { filter:brightness(1.15); }
+  .fr-calfoot { display:flex; flex-wrap:wrap; gap:9px 24px; padding:14px 18px; border-top:1px solid var(--line-2); }
+  .fr-calfoot div { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink-2); }
+  .fr-calfoot i { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+  .fr-calfoot span { font-size:10.5px; color:var(--muted-2); font-variant-numeric:tabular-nums; }
+
+  /* --- fichas por mês --- */
+  .fr-mes { margin-top:30px; }
+  .fr-mes-tit { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .fr-mes-tit h3 { font-size:14px; font-weight:600; color:var(--ink); letter-spacing:0.3px; }
+  .fr-mes-tit .fr-cnt { font-size:10.5px; color:var(--muted-2); letter-spacing:0.4px; }
+  .fr-mes-tit .fr-rule { flex:1; height:1px; background:var(--line); }
+  .fr-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:12px; }
+  .fr-card {
+    background:var(--paper); backdrop-filter:blur(20px); border:1px solid var(--line-2);
+    border-radius:10px; padding:15px 17px; cursor:pointer; text-align:left; width:100%;
+    font-family:inherit; position:relative; overflow:hidden; transition:all 0.2s;
+  }
+  .fr-card::after { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--c); }
+  .fr-card:hover { border-color:var(--gold); background:rgba(28,34,48,0.85); transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,0.4); }
+  .fr-card h4 { font-size:13px; font-weight:600; color:var(--ink); margin-bottom:2px; line-height:1.3; }
+  .fr-card .fr-role { font-size:10px; color:var(--muted); letter-spacing:0.3px; display:block; margin-bottom:12px; }
+  .fr-badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px; }
+  .fr-b {
+    font-size:8.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px;
+    padding:3px 7px; border-radius:10px; background:rgba(148,163,184,0.12); color:var(--muted);
+    border:1px solid var(--line);
+  }
+  .fr-b.fr-bg { background:rgba(74,222,128,0.14); color:#86efac; border-color:rgba(74,222,128,0.3); }
+  .fr-b.fr-br { background:rgba(248,113,113,0.15); color:#fca5a5; border-color:rgba(248,113,113,0.3); }
+  .fr-b.fr-by { background:rgba(251,191,36,0.14); color:#fbbf24; border-color:rgba(251,191,36,0.3); }
+  .fr-saldo-bar { display:flex; height:5px; border-radius:99px; overflow:hidden; background:rgba(148,163,184,0.15); }
+  .fr-saldo-bar i { display:block; height:100%; }
+  .fr-saldo-txt { display:flex; flex-wrap:wrap; gap:3px 12px; margin-top:7px; font-size:9.5px; color:var(--muted-2); letter-spacing:0.3px; }
+  .fr-saldo-txt em { font-style:normal; color:var(--ink-2); font-weight:700; }
+  .fr-kv { display:grid; grid-template-columns:1fr auto; gap:5px 12px; font-size:11.5px; padding-top:12px; margin-top:12px; border-top:1px solid var(--line); }
+  .fr-kv dt { color:var(--muted); }
+  .fr-kv dd { margin:0; text-align:right; color:var(--ink-2); font-variant-numeric:tabular-nums; }
+  .fr-kv dd.fr-red { color:#fca5a5; }
+  .fr-kv dd.fr-yel { color:#fbbf24; }
+  .fr-note {
+    margin-top:12px; padding:9px 11px; background:rgba(251,191,36,0.07);
+    border-left:2px solid rgba(251,191,36,0.5); border-radius:0 4px 4px 0;
+    font-size:11.5px; color:var(--ink-2); line-height:1.5;
+  }
+
+  /* --- ficha (usa o modal do MIP) --- */
+  .fr-dsec { margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+  .fr-dsec:last-child { margin-bottom:0; padding-bottom:0; border-bottom:none; }
+  .fr-dtit {
+    font-size:10px; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold);
+    font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px;
+  }
+  .fr-dtit::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold); }
+  .fr-dkv { display:grid; grid-template-columns:1fr auto; gap:8px 16px; font-size:12.5px; }
+  .fr-dkv dt { color:var(--muted); }
+  .fr-dkv dd { margin:0; text-align:right; color:var(--ink-2); font-variant-numeric:tabular-nums; }
+  .fr-drow { display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:var(--ink-2); }
+  .fr-drow:last-child { border-bottom:none; }
+  .fr-dpz {
+    display:grid; grid-template-columns:1fr auto; gap:5px 14px; padding:11px 13px;
+    background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:7px; margin-bottom:7px; font-size:12.5px;
+  }
+  .fr-dpz.fr-urg { background:rgba(248,113,113,0.07); border-color:rgba(248,113,113,0.28); }
+  .fr-dpz b { color:var(--ink); font-weight:600; }
+  .fr-dpz span { color:var(--ink-2); font-variant-numeric:tabular-nums; }
+  .fr-dpz small { grid-column:1/-1; font-size:11px; color:var(--muted); }
+
+  @media (max-width:1100px) { .fr-next { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:720px) {
+    .fr-next { grid-template-columns:1fr; }
+    .fr-day { min-height:64px; }
+    .fr-chiptag { font-size:0; padding:0; height:6px; border-radius:99px; }
+    .fr-fername { font-size:0; height:3px; background:rgba(248,113,113,0.4); border-radius:99px; }
+    .fr-hide { display:none; }
+    .fr-alert { grid-template-columns:1fr; gap:8px; }
+  }
+  @media print {
+    .fr-tabs { display:none !important; }
+    .fr-scroll { overflow:visible !important; }
+    .fr-tl { min-width:0 !important; }
+    .fr-card, .fr-panel, .fr-next-card { break-inside:avoid; }
+  }
+
+
+  /* --- KPIs clicáveis da aba Férias --- */
+  #frKpis .kpi { cursor:pointer; transition:background 0.18s, box-shadow 0.18s; position:relative; }
+  #frKpis .kpi:hover { background:rgba(212,175,55,0.08); }
+  #frKpis .kpi::after {
+    content:'\2192'; position:absolute; top:16px; right:16px; color:var(--gold);
+    font-size:13px; opacity:0; transform:translateX(-4px); transition:all 0.18s;
+  }
+  #frKpis .kpi:hover::after { opacity:0.9; transform:translateX(0); }
+  #frKpis .kpi.fr-vazio { cursor:default; opacity:0.65; }
+  #frKpis .kpi.fr-vazio:hover { background:var(--paper); }
+  #frKpis .kpi.fr-vazio::after { display:none; }
+
+  /* --- lista de nomes dentro do modal --- */
+  .fr-li {
+    display:flex; align-items:center; gap:12px; padding:11px 13px; border-radius:8px;
+    border:1px solid var(--line); background:rgba(255,255,255,0.02); margin-bottom:7px;
+    cursor:pointer; transition:all 0.15s;
+  }
+  .fr-li:hover { background:var(--gold-soft); border-color:rgba(212,175,55,0.3); }
+  .fr-li-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .fr-li-info { flex:1; min-width:0; }
+  .fr-li-nome { font-size:13px; font-weight:600; color:var(--ink); line-height:1.3; }
+  .fr-li-cargo { font-size:10.5px; color:var(--muted); margin-top:2px; }
+  .fr-li-det { font-size:11px; color:var(--ink-2); text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .fr-li-det.fr-al { color:#fbbf24; }
+  .fr-li-det.fr-er { color:#fca5a5; }
+  .fr-li-vazio {
+    display:flex; align-items:center; gap:14px; padding:18px;
+    background:rgba(74,222,128,0.07); border:1px solid rgba(74,222,128,0.28);
+    border-radius:10px; font-size:13px; color:#86efac;
+  }
 </style>
 </head>
 <body>
@@ -1328,13 +1633,20 @@
       <div class="subtitle" id="reportDate"></div>
     </div>
     <div class="header-right">
-      <a class="btn" href="ferias.html">&#127796; Férias</a>
       <button class="btn" onclick="toggleModoSelecao()" id="btnSelecao">&#9745; Selecionar pessoas</button>
       <button class="btn" onclick="toggleFullscreen()" id="btnFullscreen">&#9638; Modo apresentação</button>
       <button class="btn" onclick="exportarExcel()">Exportar Excel</button>
       <button class="btn btn-primary" onclick="baixarPDF()" id="btnPdf">&#128229; Baixar PDF</button>
     </div>
   </div>
+
+  <!-- ===== Navegação por abas ===== -->
+  <div class="fr-tabs" role="tablist">
+    <button class="fr-tab ativo" id="tabOrg" role="tab" aria-selected="true" onclick="abrirAba('org')">Organograma</button>
+    <button class="fr-tab" id="tabFerias" role="tab" aria-selected="false" onclick="abrirAba('ferias')">Férias<span class="fr-badge" id="tabFeriasBadge" style="display:none">0</span></button>
+  </div>
+
+  <div id="viewOrg">
 
   <!-- Barra de busca de colaboradores -->
   <div class="search-bar-wrap">
@@ -1410,6 +1722,73 @@
     <div class="legenda-titulo">Legenda — níveis hierárquicos</div>
     <div class="legenda" id="legenda"></div>
   </div>
+
+  </div><!-- /viewOrg -->
+
+  <!-- ===== ABA FÉRIAS ===== -->
+  <div id="viewFerias" hidden>
+
+    <div class="fr-next" id="frProximas"></div>
+
+    <div class="kpi-grid" id="frKpis"></div>
+
+    <div class="fr-sec" style="margin-top:0">
+      <div class="fr-sec-head">
+        <h2>Prazos a cumprir</h2><div class="fr-rule"></div>
+        <span class="fr-hint">comunicação 30 dias antes · pagamento até 2 dias antes</span>
+      </div>
+      <div class="fr-panel fr-scroll"><table class="fr-table" id="frPrazos"></table></div>
+    </div>
+
+    <div class="fr-sec">
+      <div class="fr-sec-head"><h2>Pendências</h2><div class="fr-rule"></div></div>
+      <div class="fr-panel"><div class="fr-alerts" id="frAlerts"></div></div>
+    </div>
+
+    <div class="fr-ctl">
+      <div class="fr-chips" id="frChips"></div>
+      <div class="fr-tools">
+        <input class="fr-input" id="frBusca" type="search" placeholder="Buscar colaborador…" aria-label="Buscar colaborador">
+        <button class="btn" id="frBtnTl" onclick="frTrocaVista('tl')">Linha do tempo</button>
+        <button class="btn" id="frBtnCal" onclick="frTrocaVista('cal')">Calendário</button>
+      </div>
+    </div>
+
+    <div class="fr-sec" id="frViewTl">
+      <div class="fr-sec-head"><h2>Linha do tempo</h2><div class="fr-rule"></div>
+        <span class="fr-hint">clique numa barra para abrir a ficha</span></div>
+      <div class="fr-panel">
+        <div class="fr-scroll"><div class="fr-tl" id="frTl"></div></div>
+        <div class="fr-legend">
+          <span><i class="fr-sw"></i>período programado</span>
+          <span><i class="fr-dm"></i>limite legal para gozo</span>
+          <span style="color:#86efac">│ hoje</span>
+          <span style="color:#fca5a5">│ feriado nacional</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fr-sec" id="frViewCal" hidden>
+      <div class="fr-sec-head"><h2>Calendário</h2><div class="fr-rule"></div>
+        <span class="fr-hint">ausências e feriados nacionais</span></div>
+      <div class="fr-panel">
+        <div class="fr-calnav">
+          <button class="btn" onclick="frMes(-1)">&#8592; anterior</button>
+          <h3 id="frCalTit">—</h3>
+          <button class="btn" onclick="frMes(1)">próximo &#8594;</button>
+        </div>
+        <div class="fr-cal" id="frCalGrid"></div>
+        <div class="fr-calfoot" id="frCalFoot"></div>
+      </div>
+    </div>
+
+    <div class="fr-sec">
+      <div class="fr-sec-head"><h2>Programação por mês</h2><div class="fr-rule"></div>
+        <span class="fr-hint" id="frContador">—</span></div>
+      <div id="frFichas"></div>
+    </div>
+
+  </div><!-- /viewFerias -->
 
   <div class="footer">
     <div>Logística · Estrutura vigente em <span id="footerDate"></span></div>
@@ -3254,5 +3633,681 @@ montarFiltroTurno();
 montarLegenda();
 abrirPorURL();
 </script>
+
+<!-- ===== Modal da ficha de férias ===== -->
+
+<div class="modal-overlay" id="frKpiModal" onclick="if(event.target===this)frFecharKpi()">
+  <div class="modal-content" style="max-width:600px">
+    <div class="modal-header">
+      <div>
+        <h2 id="frKpiTitulo">—</h2>
+        <div class="modal-sub" id="frKpiSub">—</div>
+      </div>
+      <button class="modal-close" onclick="frFecharKpi()" aria-label="Fechar">&#10005;</button>
+    </div>
+    <div class="modal-body" id="frKpiBody"></div>
+    <div class="modal-footer">
+      <div class="modal-footer-info">Clique num nome para abrir a ficha completa</div>
+      <div class="modal-footer-actions">
+        <button class="btn btn-primary" onclick="frFecharKpi()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="frModal" onclick="if(event.target===this)frFecharFicha()">
+  <div class="modal-content" style="max-width:620px">
+    <div class="modal-header">
+      <div>
+        <h2 id="frModalNome">—</h2>
+        <div class="modal-sub" id="frModalSub">—</div>
+      </div>
+      <button class="modal-close" onclick="frFecharFicha()" aria-label="Fechar">&#10005;</button>
+    </div>
+    <div class="modal-body" id="frModalBody"></div>
+    <div class="modal-footer">
+      <div class="modal-footer-info" id="frModalFoot"></div>
+      <div class="modal-footer-actions">
+        <button class="btn btn-primary" onclick="frFecharFicha()">Entendi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==================================================================
+   MÓDULO FÉRIAS — isolado em IIFE para não colidir com o organograma
+   ================================================================== */
+(function(){
+'use strict';
+
+const TURNOS = {
+  'Manhã':      { cor:'#f0b95c', label:'Logística Manhã' },
+  'Tarde':      { cor:'#e59475', label:'Logística Tarde' },
+  'Noite':      { cor:'#8db5d8', label:'Logística Noite' },
+  'Transporte': { cor:'#7dd3c0', label:'Transporte' }
+};
+const AVISO_DIAS = 30;   // art. 135 CLT — comunicação por escrito
+const PAGTO_DIAS = 2;    // art. 145 CLT — pagamento antecipado
+
+/* Feriados nacionais. Acrescente aqui os municipais e estaduais da unidade. */
+const FERIADOS = {
+  '2026-09-07':'Independência', '2026-10-12':'N. Sra. Aparecida',
+  '2026-11-02':'Finados', '2026-11-15':'Proclamação da República',
+  '2026-11-20':'Consciência Negra', '2026-12-25':'Natal',
+  '2027-01-01':'Confraternização', '2027-02-08':'Carnaval', '2027-02-09':'Carnaval',
+  '2027-03-26':'Sexta-feira Santa', '2027-04-21':'Tiradentes', '2027-05-01':'Dia do Trabalho',
+  '2027-05-27':'Corpus Christi', '2027-09-07':'Independência', '2027-10-12':'N. Sra. Aparecida',
+  '2027-11-02':'Finados', '2027-11-15':'Proclamação da República',
+  '2027-11-20':'Consciência Negra', '2027-12-25':'Natal'
+};
+
+/* ------------------------------------------------------------------
+   BASE DE FÉRIAS
+   direito  = dias de direito do período aquisitivo
+   abono    = dias vendidos (abono pecuniário)
+   periodos = blocos de gozo programados
+   decimo   = adiantamento da 1ª parcela do 13º (true / false / null)
+   mip      = nome exato no organograma (null = não localizado)
+   ------------------------------------------------------------------ */
+const PESSOAS = [
+  { nome:'Rogério de Ana Machado', turno:'Transporte', mip:'Rogério de Ana Machado',
+    adm:'2025-02-26', paIni:'2025-02-26', paFim:'2026-02-25', limite:'2027-01-26',
+    direito:30, abono:0, decimo:null, periodos:[{ini:'2026-07-06', fim:'2026-07-20'}],
+    obs:'Férias fracionadas. Saldo restante previsto para janeiro/2027 — data ainda não formalizada.' },
+
+  { nome:'Erivancleide da Silva Rodrigues', turno:'Manhã', mip:'Erivancleide da Silva',
+    adm:'2018-11-13', paIni:'2024-11-13', paFim:'2025-11-12', limite:'2026-10-13',
+    direito:30, abono:0, decimo:null, periodos:[{ini:'2026-09-01', fim:'2026-09-30'}] },
+
+  { nome:'Jefferson Alves da Silva', turno:'Manhã', mip:null,
+    adm:'2024-05-23', paIni:'2025-05-23', paFim:'2026-05-22', limite:'2027-04-22',
+    direito:30, abono:0, decimo:null, periodos:[{ini:'2026-09-01', fim:'2026-09-30'}],
+    obs:'Verificar faltas do período aquisitivo antes de fechar os 30 dias (art. 130 CLT).' },
+
+  { nome:'Lucas Souza dos Santos', turno:'Noite', mip:'Lucas Souza',
+    adm:'2019-01-15', paIni:'2025-01-15', paFim:'2026-01-14', limite:'2026-12-15',
+    direito:30, abono:10, decimo:null, periodos:[{ini:'2026-10-05', fim:'2026-10-24'}] },
+
+  { nome:'Jéssica de Souza Ribeiro', turno:'Tarde', mip:'Jessica de Souza',
+    adm:'2023-01-16', paIni:'2025-01-16', paFim:'2026-01-15', limite:'2026-12-16',
+    direito:30, abono:10, decimo:null, periodos:[{ini:'2026-07-06', fim:'2026-07-25'}] },
+
+  { nome:'Silvio Gomes da Silva Filho', turno:'Noite', mip:'Silvio Gomes',
+    adm:'2025-07-31', paIni:'2025-07-31', paFim:'2026-07-30', limite:'2027-06-30',
+    direito:30, abono:10, decimo:null, periodos:[{ini:'2026-08-31', fim:'2026-09-19'}] },
+
+  { nome:'Everaldo da Silva Vieira', turno:'Noite', mip:'Everaldo da Silva',
+    adm:'2016-01-04', paIni:'2025-01-04', paFim:'2026-01-03', limite:'2026-12-04',
+    direito:30, abono:10, decimo:null, periodos:[{ini:'2026-11-09', fim:'2026-11-28'}] },
+
+  { nome:'Geneilda da Silva Gomes', turno:'Manhã', mip:'Geneilda da Silva',
+    adm:'2023-05-08', paIni:'2025-05-08', paFim:'2026-05-07', limite:'2027-04-07',
+    direito:30, abono:0, decimo:null, periodos:[{ini:'2026-12-09', fim:'2027-01-07'}] },
+
+  { nome:'Maria Debora Alves Ferreira Ramos', turno:'Tarde', mip:'Maria Debora Alves',
+    adm:'2023-05-08', paIni:'2025-05-08', paFim:'2026-05-07', limite:'2027-04-07',
+    direito:30, abono:0, decimo:null, periodos:[{ini:'2026-12-28', fim:'2027-01-26'}] },
+
+  { nome:'Cleiton Aparecido Lourenço Centurion', turno:'Noite', mip:'Cleiton Aparecido',
+    adm:'2010-06-01', paIni:'2025-06-01', paFim:'2026-05-31', limite:'2027-05-01',
+    direito:30, abono:0, decimo:null, periodos:[] },
+
+  { nome:'Edgar Claro de Almeida', turno:'Noite', mip:'Edgar Claro',
+    adm:'2020-03-05', paIni:'2024-03-05', paFim:'2025-03-04', limite:'2026-02-02',
+    direito:30, abono:0, decimo:null, periodos:[],
+    obs:'Afastado pelo INSS até 30/09. Reprogramar o gozo no retorno e revisar o período aquisitivo, pois afastamentos longos podem alterá-lo.' },
+
+  { nome:'Eduardo Toledo Santana', turno:'Manhã', mip:'Eduardo Toledo Santana',
+    adm:'2025-04-14', paIni:'2025-04-14', paFim:'2026-04-13', limite:'2027-03-14',
+    direito:30, abono:0, decimo:null, periodos:[{ini:'2026-08-03', fim:'2026-09-01'}] },
+
+  { nome:'Valdir Gomes da Silva', turno:'Manhã', mip:'Valdir Gomes da Silva',
+    adm:'2020-02-10', paIni:'2025-02-10', paFim:'2026-02-09', limite:'2027-01-10',
+    direito:30, abono:0, decimo:null, periodos:[{ini:'2026-08-03', fim:'2026-09-01'}] },
+
+  { nome:'Carlos Alberto Arruda de Matos', turno:'Noite', mip:'Carlos Alberto Arruda',
+    adm:'2019-10-15', paIni:'2024-10-15', paFim:'2025-10-14', limite:'2026-09-14',
+    direito:30, abono:10, decimo:null, periodos:[{ini:'2026-08-31', fim:'2026-09-19'}] },
+
+  { nome:'Michel Silva', turno:'Noite', mip:'Michel Silva',
+    adm:'2021-01-14', paIni:'2025-01-14', paFim:'2026-01-13', limite:'2026-12-14',
+    direito:30, abono:10, decimo:null, periodos:[{ini:'2026-08-03', fim:'2026-08-22'}] },
+
+  { nome:'Rubenildo Silva Cerqueira', turno:'Noite', mip:'Rubenildo Silva Cerqueira',
+    adm:'2024-07-04', paIni:'2025-07-04', paFim:'2026-07-03', limite:'2027-06-03',
+    direito:30, abono:10, decimo:null, periodos:[{ini:'2026-08-03', fim:'2026-08-22'}] }
+];
+
+/* ==================== UTIL ==================== */
+const MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MES3=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const DOW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+const d=s=>{const[y,m,dd]=s.split('-').map(Number);return new Date(y,m-1,dd);};
+const iso=x=>x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
+const fmt=x=>x?String(x.getDate()).padStart(2,'0')+'/'+String(x.getMonth()+1).padStart(2,'0')+'/'+x.getFullYear():'—';
+const curto=x=>String(x.getDate()).padStart(2,'0')+'/'+MES3[x.getMonth()];
+const zera=x=>new Date(x.getFullYear(),x.getMonth(),x.getDate());
+const dif=(a,b)=>Math.round((zera(b)-zera(a))/86400000);
+const soma=(x,n)=>{const r=new Date(x);r.setDate(r.getDate()+n);return r;};
+const pn=n=>n.split(' ')[0];
+const cn=n=>{const p=n.split(' ');return p.length>1?p[0]+' '+p[p.length-1]:p[0];};
+const pl=(n,s,p)=>n+' '+(n===1?s:p);
+
+const HOJE=zera(new Date());
+const RANGE_INI=d('2026-07-01');
+const RANGE_FIM=d('2027-01-31');
+
+/* início não pode cair nos 2 dias que antecedem feriado ou repouso semanal */
+function irregular(x){
+  const w=x.getDay();
+  if(w===5) return 'inicia numa sexta-feira';
+  if(w===6) return 'inicia num sábado';
+  if(w===0) return 'inicia num domingo';
+  for(let i=1;i<=2;i++){ const f=FERIADOS[iso(soma(x,i))]; if(f) return 'inicia a menos de 2 dias do feriado de '+f; }
+  return null;
+}
+
+/* ==================== CRUZAMENTO COM O ORGANOGRAMA ==================== */
+function buscarNoMip(nome){
+  if(!nome || typeof ESTRUTURA==='undefined') return null;
+  const grupos=[];
+  const push=(p,ctx)=>{ if(p&&p.nome) grupos.push({p,ctx}); };
+  push(ESTRUTURA.diretor,'Diretoria');
+  push(ESTRUTURA.gerente,'Gerência');
+  (ESTRUTURA.areasIndep||[]).forEach(p=>push(p,'Área independente'));
+  [].concat(ESTRUTURA.supervisores||[],ESTRUTURA.areasDir||[],ESTRUTURA.areasGerencia||[]).forEach(sup=>{
+    push(sup,sup.cargo||'Liderança');
+    Object.entries(sup.equipe||{}).forEach(([secao,lista])=>
+      (lista||[]).forEach(m=>push(m, sup.nome+' · '+secao)));
+  });
+  const achado=grupos.find(g=>g.p.nome===nome);
+  if(!achado) return null;
+  return { cargo:achado.p.cargo, nivel:achado.p.nivel, afastado:!!achado.p.afastado, equipe:achado.ctx, nome:achado.p.nome };
+}
+
+/* ==================== MODELO ==================== */
+const REG=PESSOAS.map(p=>{
+  const r=Object.assign({},p);
+  r.cor=TURNOS[p.turno].cor;
+  r.dLim=d(p.limite);
+  r.diasLimite=dif(HOJE,r.dLim);
+  r.vencido=r.diasLimite<0;
+  r.org=buscarNoMip(p.mip);
+  r.per=p.periodos.map(x=>{
+    const ini=d(x.ini), fim=d(x.fim);
+    return { ini, fim, dias:dif(ini,fim)+1,
+      avisoAte:soma(ini,-AVISO_DIAS), pagtoAte:soma(ini,-PAGTO_DIAS),
+      passado:fim<HOJE, corrente:ini<=HOJE&&fim>=HOJE, irr:irregular(ini) };
+  }).sort((a,b)=>a.ini-b.ini);
+  r.gozados=r.per.filter(x=>x.passado).reduce((s,x)=>s+x.dias,0);
+  r.prog=r.per.filter(x=>!x.passado).reduce((s,x)=>s+x.dias,0);
+  r.saldo=Math.max(0,r.direito-r.abono-r.gozados-r.prog);
+  r.proximo=r.per.find(x=>!x.passado)||null;
+  if(r.per.some(x=>x.corrente)) r.sit='agora';
+  else if(!r.per.length) r.sit='sem';
+  else if(r.proximo) r.sit='agendada';
+  else r.sit=r.saldo>0?'parcial':'concluida';
+  r.ordem=r.proximo?+r.proximo.ini:(r.per.length?+r.per[0].ini:Infinity);
+  return r;
+}).sort((a,b)=>a.ordem-b.ordem||a.nome.localeCompare(b.nome));
+
+const idxDe=n=>REG.findIndex(r=>r.nome===n);
+const noDia=(r,x)=>r.per.some(p=>x>=p.ini&&x<=p.fim);
+
+/* ==================== ESTADO ==================== */
+let filtro=new Set(Object.keys(TURNOS)), busca='', vista='tl';
+let calRef=new Date(Math.min(Math.max(+HOJE,+RANGE_INI),+RANGE_FIM));
+calRef=new Date(calRef.getFullYear(),calRef.getMonth(),1);
+const vis=()=>REG.filter(r=>filtro.has(r.turno)&&r.nome.toLowerCase().includes(busca.toLowerCase()));
+
+/* ==================== PRÓXIMAS FÉRIAS ==================== */
+function renderProximas(){
+  document.getElementById('frProximas').innerHTML=Object.entries(TURNOS).map(([k,v])=>{
+    const t=REG.filter(r=>r.turno===k);
+    const agora=t.find(r=>r.sit==='agora');
+    if(agora){
+      const p=agora.per.find(x=>x.corrente);
+      return `<div class="fr-next-card" style="--c:${v.cor}">
+        <span class="fr-turno">${v.label}</span>
+        <span class="fr-quem">${cn(agora.nome)}</span>
+        <span class="fr-quando">${fmt(p.ini)} — ${fmt(p.fim)}</span>
+        <span class="fr-conta fr-now">de férias · retorna em ${pl(dif(HOJE,p.fim)+1,'dia','dias')}</span></div>`;
+    }
+    const c=t.filter(r=>r.proximo).sort((a,b)=>a.proximo.ini-b.proximo.ini)[0];
+    if(!c){
+      const pend=t.filter(r=>r.saldo>0);
+      return `<div class="fr-next-card fr-vazio" style="--c:${v.cor}">
+        <span class="fr-turno">${v.label}</span>
+        <span class="fr-quem">Sem programação</span>
+        <span class="fr-quando">${pend.length?pl(pend.reduce((s,r)=>s+r.saldo,0),'dia','dias')+' de saldo em aberto':'nenhum saldo pendente'}</span>
+        <span class="fr-conta">${pend.length?'definir data':'—'}</span></div>`;
+    }
+    const p=c.proximo, juntos=t.filter(r=>r.proximo&&+r.proximo.ini===+p.ini).length-1;
+    return `<div class="fr-next-card" style="--c:${v.cor}">
+      <span class="fr-turno">${v.label}</span>
+      <span class="fr-quem">${cn(c.nome)}${juntos?` <small>+${juntos}</small>`:''}</span>
+      <span class="fr-quando">${fmt(p.ini)} — ${fmt(p.fim)} · ${p.dias}d</span>
+      <span class="fr-conta">inicia em ${pl(dif(HOJE,p.ini),'dia','dias')}</span></div>`;
+  }).join('');
+}
+
+/* ==================== KPIs CLICÁVEIS ==================== */
+const KPIS=[
+  { k:'todos', l:'Colaboradores no ciclo', s:()=>'Base de férias 2026/27',
+    tit:'Todos os colaboradores do ciclo',
+    f:()=>REG,
+    det:r=> r.proximo ? {t:'gozo em '+fmt(r.proximo.ini)}
+          : r.saldo   ? {t:pl(r.saldo,'dia','dias')+' a programar', c:'fr-al'}
+                      : {t:'ciclo encerrado'} },
+
+  { k:'hoje', l:'De férias hoje', s:()=>fmt(HOJE),
+    tit:'Ausentes nesta data',
+    f:()=>REG.filter(r=>r.sit==='agora'),
+    det:r=>{const p=r.per.find(x=>x.corrente); return {t:'retorna em '+fmt(soma(p.fim,1))};},
+    vazio:'Ninguém de férias hoje. Toda a equipe está em operação.' },
+
+  { k:'saldo', l:'Com saldo a programar', s:()=>REG.reduce((s,r)=>s+r.saldo,0)+' dias em aberto',
+    tit:'Dias ainda sem data definida',
+    f:()=>REG.filter(r=>r.saldo>0),
+    det:r=>({t:pl(r.saldo,'dia','dias')+' · limite '+fmt(r.dLim), c:'fr-al'}),
+    vazio:'Todo o saldo de férias já está programado.', alerta:true },
+
+  { k:'aviso', l:'Comunicações urgentes', s:()=>'Aviso em até 15 dias',
+    tit:'Avisos de férias a entregar',
+    f:()=>REG.filter(r=>r.proximo&&dif(HOJE,r.proximo.avisoAte)<=15)
+             .sort((a,b)=>a.proximo.avisoAte-b.proximo.avisoAte),
+    det:r=>{const dA=dif(HOJE,r.proximo.avisoAte);
+      return {t:(dA<0?'atrasado '+Math.abs(dA)+'d':'faltam '+dA+'d')+' · até '+fmt(r.proximo.avisoAte), c:dA<0?'fr-er':'fr-al'};},
+    vazio:'Nenhuma comunicação vencendo nos próximos 15 dias.', alerta:true },
+
+  { k:'vencidos', l:'Prazos vencidos', s:()=>'Limite para gozo',
+    tit:'Limite legal já expirado',
+    f:()=>REG.filter(r=>r.vencido),
+    det:r=>({t:'venceu em '+fmt(r.dLim)+' · há '+Math.abs(r.diasLimite)+'d', c:'fr-er'}),
+    vazio:'Nenhum prazo de gozo vencido.', alerta:true },
+
+  { k:'afastados', l:'Conflito com afastados', s:()=>'Férias marcadas p/ afastado',
+    tit:'Afastados no organograma com férias marcadas',
+    f:()=>REG.filter(r=>r.org&&r.org.afastado&&r.proximo),
+    det:r=>({t:'afastado · férias em '+fmt(r.proximo.ini), c:'fr-er'}),
+    vazio:'Nenhum conflito entre afastamentos e férias programadas.', alerta:true },
+
+  { k:'semvinc', l:'Sem vínculo no MIP', s:()=>'Nome não localizado',
+    tit:'Não localizados no organograma',
+    f:()=>REG.filter(r=>!r.org),
+    det:()=>({t:'conferir grafia do nome', c:'fr-al'}),
+    vazio:'Todos os colaboradores estão vinculados ao organograma.', alerta:true }
+];
+
+function renderKpis(){
+  document.getElementById('frKpis').innerHTML=KPIS.map(c=>{
+    const n=c.f().length;
+    const destaca=c.alerta&&n>0;
+    return `<div class="kpi ${n?'':'fr-vazio'}" ${n?`onclick="frKpi('${c.k}')"`:''}
+        ${n?'role="button" tabindex="0"':''} title="${n?'Ver os nomes':'Nada a listar'}">
+      <div class="kpi-label">${c.l}</div>
+      <div class="kpi-value" ${destaca?'style="color:#fbbf24"':''}>${String(n).padStart(2,'0')}</div>
+      <div class="kpi-sub">${c.s()}</div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('#frKpis .kpi[role="button"]').forEach((el,i)=>{
+    el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+  });
+  const criticos=REG.filter(r=>r.vencido).length+REG.filter(r=>r.proximo&&dif(HOJE,r.proximo.avisoAte)<=15).length;
+  const b=document.getElementById('tabFeriasBadge');
+  if(b){ if(criticos>0){b.textContent=criticos;b.style.display='';} else b.style.display='none'; }
+}
+
+window.frKpi=function(k){
+  const c=KPIS.find(x=>x.k===k); if(!c) return;
+  const lista=c.f();
+  document.getElementById('frKpiTitulo').textContent=c.tit;
+  document.getElementById('frKpiSub').textContent=
+    lista.length ? pl(lista.length,'colaborador','colaboradores') : 'nenhum registro';
+  document.getElementById('frKpiBody').innerHTML = lista.length
+    ? lista.map(r=>{
+        const dt=c.det(r);
+        return `<div class="fr-li" onclick="frFecharKpi();frFicha('${r.nome.replace(/'/g,"\\'")}')">
+          <span class="fr-li-dot" style="background:${r.cor}"></span>
+          <div class="fr-li-info">
+            <div class="fr-li-nome">${r.nome}</div>
+            <div class="fr-li-cargo">${TURNOS[r.turno].label}${r.org?' · '+r.org.cargo:' · sem vínculo no organograma'}</div>
+          </div>
+          <div class="fr-li-det ${dt.c||''}">${dt.t}</div>
+        </div>`;
+      }).join('')
+    : `<div class="fr-li-vazio">&#10003;&nbsp; ${c.vazio||'Nada a listar.'}</div>`;
+  document.getElementById('frKpiModal').classList.add('show');
+};
+window.frFecharKpi=function(){ document.getElementById('frKpiModal').classList.remove('show'); };
+
+/* ==================== PRAZOS ==================== */
+function renderPrazos(){
+  const linhas=[];
+  REG.forEach(r=>r.per.filter(p=>!p.passado).forEach(p=>linhas.push({r,p})));
+  linhas.sort((a,b)=>a.p.ini-b.p.ini);
+  const corpo=linhas.map(({r,p})=>{
+    const dA=dif(HOJE,p.avisoAte);
+    let sit,cls;
+    if(p.corrente){sit='em gozo';cls='fr-s3';}
+    else if(dA<0){sit='comunicação em atraso';cls='fr-s1';}
+    else if(dA<=15){sit='comunicar em '+dA+'d';cls='fr-s1';}
+    else if(dA<=45){sit='comunicar em '+dA+'d';cls='fr-s2';}
+    else {sit='inicia em '+dif(HOJE,p.ini)+'d';cls='fr-s3';}
+    return `<tr onclick="frFicha('${r.nome.replace(/'/g,"\\'")}')">
+      <td><span class="fr-nome"><i style="background:${r.cor}"></i>${r.nome}</span></td>
+      <td class="fr-hide">${TURNOS[r.turno].label}</td>
+      <td class="fr-num">${fmt(p.ini)} → ${fmt(p.fim)}</td>
+      <td class="fr-num">${p.dias}</td>
+      <td class="fr-num">${fmt(p.avisoAte)}</td>
+      <td class="fr-num fr-hide">${fmt(p.pagtoAte)}</td>
+      <td><span class="fr-sit ${cls}">${sit}</span></td></tr>`;
+  }).join('');
+  document.getElementById('frPrazos').innerHTML=`
+    <thead><tr><th>Colaborador</th><th class="fr-hide">Turno</th><th>Período de gozo</th>
+    <th>Dias</th><th>Comunicar até</th><th class="fr-hide">Pagar até</th><th>Situação</th></tr></thead>
+    <tbody>${corpo||'<tr><td colspan="7" style="padding:22px 16px;color:var(--muted-2)">Nenhum período futuro programado.</td></tr>'}</tbody>`;
+}
+
+/* ==================== PENDÊNCIAS ==================== */
+function renderAlerts(){
+  const it=[];
+  REG.forEach(r=>{
+    r.per.filter(p=>!p.passado).forEach(p=>{
+      const dA=dif(HOJE,p.avisoAte);
+      if(dA<0&&!p.corrente) it.push({lv:1,tag:'Comunicação',o:0,
+        h:`<b>${r.nome}</b> — o aviso de férias deveria ter sido entregue até ${fmt(p.avisoAte)}, 30 dias antes do início em ${fmt(p.ini)}.`,w:`atrasado ${Math.abs(dA)}d`});
+      else if(dA<=15) it.push({lv:1,tag:'Comunicação',o:1,
+        h:`<b>${r.nome}</b> — entregar o aviso de férias até ${fmt(p.avisoAte)}; início em ${fmt(p.ini)}.`,w:`faltam ${dA}d`});
+      if(p.fim>r.dLim) it.push({lv:1,tag:'Prazo legal',o:0,
+        h:`<b>${r.nome}</b> — o gozo termina em ${fmt(p.fim)}, depois do limite de ${fmt(r.dLim)}. Antecipar o início para encerrar dentro do prazo.`,w:`${dif(r.dLim,p.fim)}d além`});
+      if(p.irr) it.push({lv:2,tag:'Data de início',o:3,
+        h:`<b>${r.nome}</b> — o período ${p.irr} (art. 134, §3º). Avaliar deslocar o início.`,w:fmt(p.ini)});
+    });
+    if(r.vencido) it.push({lv:1,tag:'Prazo legal',o:0,
+      h:`<b>${r.nome}</b> — limite para gozo expirou em ${fmt(r.dLim)} e o período segue sem agendamento. Risco de pagamento em dobro.`,w:`há ${Math.abs(r.diasLimite)}d`});
+    else if(r.saldo>0&&!r.proximo) it.push({lv:2,tag:'Saldo aberto',o:2,
+      h:`<b>${r.nome}</b> — ${pl(r.saldo,'dia','dias')} sem data definida. Limite para gozo em ${fmt(r.dLim)}.`,w:`faltam ${r.diasLimite}d`});
+    else if(r.saldo>0) it.push({lv:2,tag:'Saldo aberto',o:2,
+      h:`<b>${r.nome}</b> — restam ${pl(r.saldo,'dia','dias')} a programar além do período já marcado.`,w:`limite ${fmt(r.dLim)}`});
+    /* cruzamentos com o organograma */
+    if(r.org&&r.org.afastado&&r.proximo) it.push({lv:1,tag:'Afastado',o:1,
+      h:`<b>${r.nome}</b> consta como afastado no organograma (${r.org.cargo}) e tem férias marcadas para ${fmt(r.proximo.ini)}. Regularizar antes de comunicar.`,w:'conflito'});
+    if(!r.org) it.push({lv:3,tag:'Cadastro',o:6,
+      h:`<b>${r.nome}</b> não foi localizado no organograma. Conferir a grafia do nome ou incluir o colaborador na estrutura.`,w:'sem vínculo'});
+  });
+  /* cobertura: janelas com 2+ do mesmo turno fora ao mesmo tempo */
+  Object.keys(TURNOS).forEach(t=>{
+    const g=REG.filter(r=>r.turno===t&&r.per.length);
+    if(g.length<2) return;
+    const fecha=run=>{ if(run.fim<HOJE) return;
+      it.push({lv:3,tag:'Cobertura',o:5,
+        h:`<b>${TURNOS[t].label}</b> — ${run.nomes.size} colaboradores fora na mesma janela (${[...run.nomes].join(', ')}); pico de ${run.pico} ausentes em ${fmt(run.diaPico)}.`,
+        w:`${fmt(run.ini)} a ${fmt(run.fim)}`}); };
+    let run=null;
+    for(let x=new Date(RANGE_INI);x<=RANGE_FIM;x=soma(x,1)){
+      const fora=g.filter(r=>noDia(r,x));
+      if(fora.length>=2){
+        if(!run) run={ini:new Date(x),fim:new Date(x),pico:0,diaPico:new Date(x),nomes:new Set()};
+        run.fim=new Date(x);
+        if(fora.length>run.pico){run.pico=fora.length;run.diaPico=new Date(x);}
+        fora.forEach(r=>run.nomes.add(pn(r.nome)));
+      } else if(run){fecha(run);run=null;}
+    }
+    if(run) fecha(run);
+  });
+  it.sort((a,b)=>a.o-b.o);
+  document.getElementById('frAlerts').innerHTML=it.length
+    ? it.map(i=>`<div class="fr-alert fr-l${i.lv}"><span class="fr-tag">${i.tag}</span><p>${i.h}</p><span class="fr-when">${i.w}</span></div>`).join('')
+    : `<div class="fr-alert fr-l3"><span class="fr-tag">OK</span><p>Nenhuma pendência aberta.</p><span class="fr-when"></span></div>`;
+}
+
+/* ==================== FILTROS ==================== */
+function renderChips(){
+  const el=document.getElementById('frChips');
+  el.innerHTML=`<button class="fr-chip" data-t="__all" aria-pressed="${filtro.size===4}">Todos</button>`+
+    Object.entries(TURNOS).map(([k,v])=>`<button class="fr-chip" data-t="${k}" aria-pressed="${filtro.has(k)}">
+      <span class="fr-dot" style="background:${v.cor}"></span>${v.label}</button>`).join('');
+  el.querySelectorAll('.fr-chip').forEach(b=>b.onclick=()=>{
+    const t=b.dataset.t;
+    if(t==='__all') filtro=new Set(Object.keys(TURNOS));
+    else if(filtro.size===4) filtro=new Set([t]);
+    else if(filtro.has(t)){filtro.delete(t); if(!filtro.size) filtro=new Set(Object.keys(TURNOS));}
+    else filtro.add(t);
+    renderChips();renderTl();renderCal();renderFichas();
+  });
+}
+
+/* ==================== LINHA DO TEMPO ==================== */
+const TOTAL=dif(RANGE_INI,RANGE_FIM)+1;
+const pos=x=>(dif(RANGE_INI,x)/TOTAL)*100;
+function meses(){
+  const o=[];let c=new Date(RANGE_INI);
+  while(c<=RANGE_FIM){
+    const f=new Date(c.getFullYear(),c.getMonth()+1,0);
+    o.push({ini:new Date(c),fim:f>RANGE_FIM?RANGE_FIM:f,mes:c.getMonth(),ano:c.getFullYear()});
+    c=new Date(c.getFullYear(),c.getMonth()+1,1);
+  } return o;
+}
+function renderTl(){
+  const lista=vis(), ms=meses();
+  const base=ms.map(m=>`<div class="fr-grid" style="left:${pos(m.ini)}%"></div>`).join('')
+    +Object.keys(FERIADOS).filter(k=>{const x=d(k);return x>=RANGE_INI&&x<=RANGE_FIM;})
+      .map(k=>`<div class="fr-hol" style="left:${pos(d(k))}%" title="${FERIADOS[k]}"></div>`).join('');
+  const dentro=HOJE>=RANGE_INI&&HOJE<=RANGE_FIM, ph=pos(HOJE);
+  let html=`<div class="fr-tl-head"><div class="fr-lbl"></div><div class="fr-tl-months">
+    ${ms.map(m=>`<div class="fr-tl-month" style="flex:${dif(m.ini,m.fim)+1}"><b>${MESES[m.mes]}</b>${m.ano}</div>`).join('')}
+    ${dentro?`<div class="fr-todayflag" style="left:${ph}%">HOJE</div>`:''}</div></div>`;
+  html+=lista.map(r=>{
+    let c=base;
+    if(dentro) c+=`<div class="fr-today" style="left:${ph}%"></div>`;
+    if(r.per.length){
+      r.per.forEach(p=>{
+        if(p.fim<RANGE_INI||p.ini>RANGE_FIM) return;
+        const i=p.ini<RANGE_INI?RANGE_INI:p.ini, f=p.fim>RANGE_FIM?RANGE_FIM:p.fim;
+        c+=`<button class="fr-bar ${p.passado?'fr-past':(p.corrente?'fr-cur':'')}" onclick="frFicha('${r.nome.replace(/'/g,"\\'")}')"
+          style="left:${pos(i)}%;width:${((dif(i,f)+1)/TOTAL)*100}%;background:${r.cor}"
+          title="${r.nome} · ${fmt(p.ini)} a ${fmt(p.fim)} · ${p.dias} dias">${curto(p.ini)} – ${curto(p.fim)} · ${p.dias}d</button>`;
+      });
+      if(r.saldo>0) c+=`<span class="fr-limoff" style="right:auto;left:${Math.min(94,pos(r.per[r.per.length-1].fim)+1)}%;color:#fbbf24">+${r.saldo}d a programar</span>`;
+    } else {
+      c+=`<button class="fr-nosched" onclick="frFicha('${r.nome.replace(/'/g,"\\'")}')">${r.saldo} dias sem data definida</button>`;
+    }
+    if(r.dLim>=RANGE_INI&&r.dLim<=RANGE_FIM) c+=`<div class="fr-lim" style="left:${pos(r.dLim)}%" title="Limite para gozo: ${fmt(r.dLim)}"></div>`;
+    else if(r.dLim>RANGE_FIM) c+=`<span class="fr-limoff" title="Limite para gozo">limite ${fmt(r.dLim)} ›</span>`;
+    return `<div class="fr-tl-row"><div class="fr-tl-name"><b>${r.nome}</b>
+      <small><i style="background:${r.cor}"></i>${TURNOS[r.turno].label}</small></div>
+      <div class="fr-tl-track">${c}</div></div>`;
+  }).join('');
+  document.getElementById('frTl').innerHTML=html;
+}
+
+/* ==================== CALENDÁRIO ==================== */
+function renderCal(){
+  const ano=calRef.getFullYear(), mes=calRef.getMonth();
+  document.getElementById('frCalTit').textContent=MESES[mes]+' '+ano;
+  const ini=new Date(ano,mes,1-new Date(ano,mes,1).getDay());
+  const lista=vis();
+  let html=DOW.map(x=>`<div class="fr-dow">${x}</div>`).join('');
+  for(let i=0;i<42;i++){
+    const dia=new Date(ini.getFullYear(),ini.getMonth(),ini.getDate()+i);
+    const fora=dia.getMonth()!==mes, fds=dia.getDay()===0||dia.getDay()===6, fer=FERIADOS[iso(dia)];
+    const gente=fora?[]:lista.filter(r=>noDia(r,dia));
+    html+=`<div class="fr-day ${fora?'fr-out':''} ${fds&&!fora?'fr-wknd':''} ${fer&&!fora?'fr-fer':''} ${+dia===+HOJE?'fr-hoje':''}">
+      <span class="fr-daynum">${dia.getDate()}</span>
+      ${fer&&!fora?`<span class="fr-fername" title="${fer}">${fer}</span>`:''}
+      ${gente.map(r=>`<button class="fr-chiptag" style="background:${r.cor}" title="${r.nome} · ${TURNOS[r.turno].label}"
+        onclick="frFicha('${r.nome.replace(/'/g,"\\'")}')">${pn(r.nome)}</button>`).join('')}</div>`;
+  }
+  document.getElementById('frCalGrid').innerHTML=html;
+  const a=new Date(ano,mes,1), b=new Date(ano,mes+1,0), noMes=[];
+  lista.forEach(r=>r.per.forEach(p=>{ if(p.ini<=b&&p.fim>=a) noMes.push({r,p}); }));
+  document.getElementById('frCalFoot').innerHTML=noMes.length
+    ? noMes.map(({r,p})=>`<div><i style="background:${r.cor}"></i>${r.nome} <span>${fmt(p.ini)} → ${fmt(p.fim)} · ${p.dias}d</span></div>`).join('')
+    : `<div style="color:var(--muted-2);font-size:12px">Nenhuma ausência programada neste mês.</div>`;
+}
+
+/* ==================== FICHAS ==================== */
+function barraSaldo(r){
+  const seg=[[r.gozados,'rgba(148,163,184,0.45)'],[r.prog,r.cor],[r.abono,'rgba(148,163,184,0.22)']];
+  const bar=seg.filter(s=>s[0]>0).map(s=>`<i style="width:${(s[0]/r.direito)*100}%;background:${s[1]}"></i>`).join('');
+  const txt=[
+    r.gozados?`<span><em>${r.gozados}</em> gozados</span>`:'',
+    r.prog?`<span><em>${r.prog}</em> programados</span>`:'',
+    r.abono?`<span><em>${r.abono}</em> abono</span>`:'',
+    `<span${r.saldo?' style="color:#fbbf24"':''}><em${r.saldo?' style="color:#fbbf24"':''}>${r.saldo}</em> saldo</span>`
+  ].filter(Boolean).join('');
+  return `<div class="fr-saldo-bar">${bar}</div><div class="fr-saldo-txt">${txt}</div>`;
+}
+
+function renderFichas(){
+  const lista=vis(), g=new Map();
+  lista.forEach(r=>{
+    const ref=r.proximo?r.proximo.ini:(r.per.length?r.per[r.per.length-1].ini:null);
+    const k=ref?ref.getFullYear()+'-'+String(ref.getMonth()).padStart(2,'0'):'sem';
+    if(!g.has(k)) g.set(k,[]); g.get(k).push(r);
+  });
+  const ord=[...g.keys()].sort((a,b)=>a==='sem'?1:b==='sem'?-1:a.localeCompare(b));
+  document.getElementById('frContador').textContent=lista.length+' de '+REG.length+' colaboradores';
+  document.getElementById('frFichas').innerHTML=ord.length?ord.map(k=>{
+    const arr=g.get(k);
+    const t=k==='sem'?'Sem agendamento':MESES[Number(k.split('-')[1])]+' '+k.split('-')[0];
+    return `<div class="fr-mes"><div class="fr-mes-tit"><h3>${t}</h3>
+      <span class="fr-cnt">${pl(arr.length,'colaborador','colaboradores')}</span><div class="fr-rule"></div></div>
+      <div class="fr-cards">${arr.map(cardFicha).join('')}</div></div>`;
+  }).join(''):`<div class="fr-panel" style="padding:22px;color:var(--muted-2);font-size:12.5px">Nenhum colaborador encontrado com este filtro.</div>`;
+}
+
+function cardFicha(r){
+  const b=[];
+  if(r.sit==='agora') b.push(['fr-bg','de férias agora']);
+  if(r.sit==='concluida') b.push(['','gozo concluído']);
+  if(r.sit==='agendada') b.push(['','agendada']);
+  if(r.sit==='parcial') b.push(['fr-by','saldo em aberto']);
+  if(r.sit==='sem') b.push(['fr-br','sem data']);
+  if(r.vencido) b.push(['fr-br','vencido há '+Math.abs(r.diasLimite)+'d']);
+  else if(r.diasLimite<=120&&r.saldo>0) b.push(['fr-by','limite em '+r.diasLimite+'d']);
+  if(r.proximo&&dif(HOJE,r.proximo.avisoAte)<=15) b.push(['fr-br','avisar em '+dif(HOJE,r.proximo.avisoAte)+'d']);
+  if(r.per.some(p=>p.fim>r.dLim)) b.push(['fr-br','gozo excede o limite']);
+  if(r.org&&r.org.afastado) b.push(['fr-br','afastado no MIP']);
+  if(!r.org) b.push(['fr-by','sem vínculo']);
+  if(r.per.length>1||(r.gozados>0&&r.saldo>0)) b.push(['','fracionada']);
+  const linhas=r.per.length?r.per.map(p=>fmt(p.ini)+' → '+fmt(p.fim)).join('<br>'):'—';
+  return `<div class="fr-card" style="--c:${r.cor}" onclick="frFicha('${r.nome.replace(/'/g,"\\'")}')">
+    <h4>${r.nome}</h4>
+    <span class="fr-role">${TURNOS[r.turno].label}${r.org?' · '+r.org.cargo:''}</span>
+    <div class="fr-badges">${b.map(x=>`<span class="fr-b ${x[0]}">${x[1]}</span>`).join('')}</div>
+    ${barraSaldo(r)}
+    <dl class="fr-kv">
+      <dt>Período aquisitivo</dt><dd>${fmt(d(r.paIni))} → ${fmt(d(r.paFim))}</dd>
+      <dt>Limite para gozo</dt><dd class="${r.vencido?'fr-red':(r.diasLimite<=120&&r.saldo>0?'fr-yel':'')}">${fmt(r.dLim)}</dd>
+      <dt>Gozo programado</dt><dd>${linhas}</dd>
+      <dt>Comunicar até</dt><dd class="${r.proximo&&dif(HOJE,r.proximo.avisoAte)<=15?'fr-red':''}">${r.proximo?fmt(r.proximo.avisoAte):'—'}</dd>
+    </dl>
+    ${r.obs?`<p class="fr-note">${r.obs}</p>`:''}</div>`;
+}
+
+/* ==================== MODAL DA FICHA ==================== */
+window.frFicha=function(nome){
+  const r=REG[idxDe(nome)]; if(!r) return;
+  document.getElementById('frModalNome').textContent=r.nome;
+  document.getElementById('frModalSub').textContent=
+    TURNOS[r.turno].label + (r.org?' · '+r.org.cargo+' · '+r.org.equipe:' · não localizado no organograma');
+  document.getElementById('frModalFoot').textContent='Ciclo aquisitivo '+fmt(d(r.paIni))+' a '+fmt(d(r.paFim));
+
+  const prazos=r.per.filter(p=>!p.passado).map(p=>{
+    const dA=dif(HOJE,p.avisoAte), dP=dif(HOJE,p.pagtoAte);
+    return `<div class="fr-dpz ${dA<=15?'fr-urg':''}"><b>Comunicação por escrito</b><span>${fmt(p.avisoAte)}</span>
+      <small>${dA<0?'prazo vencido há '+Math.abs(dA)+' dias':'faltam '+dA+' dias'} · 30 dias antes do início em ${fmt(p.ini)}</small></div>
+      <div class="fr-dpz ${dP<=5?'fr-urg':''}"><b>Pagamento das férias + 1/3</b><span>${fmt(p.pagtoAte)}</span>
+      <small>${dP<0?'prazo vencido há '+Math.abs(dP)+' dias':'faltam '+dP+' dias'} · até 2 dias antes do início</small></div>`;
+  }).join('')||`<div style="color:var(--muted);font-size:12.5px">Nenhum período futuro programado — sem prazos em curso.</div>`;
+
+  const periodos=r.per.length?r.per.map(p=>`<div class="fr-drow">
+      <span>${p.passado?'Gozado':p.corrente?'Em gozo':'Programado'}${p.irr?' ⚠':''}${p.fim>r.dLim?' · excede o limite':''}</span>
+      <span>${fmt(p.ini)} → ${fmt(p.fim)} · ${p.dias}d</span></div>`).join('')
+    :`<div style="color:var(--muted);font-size:12.5px">Nenhum período programado.</div>`;
+
+  const avisos=[];
+  r.per.filter(p=>p.irr).forEach(p=>avisos.push(`Início em ${fmt(p.ini)} ${p.irr}. O art. 134, §3º da CLT veda o início nos 2 dias que antecedem feriado ou dia de repouso semanal remunerado.`));
+  r.per.filter(p=>p.fim>r.dLim).forEach(p=>avisos.push(`O gozo termina em ${fmt(p.fim)}, ${dif(r.dLim,p.fim)} dias depois do limite legal de ${fmt(r.dLim)}.`));
+  if(r.org&&r.org.afastado) avisos.push(`No organograma este colaborador está marcado como afastado (${r.org.cargo} · ${r.org.equipe}).`);
+  if(!r.org) avisos.push('Nome não localizado no organograma. Verifique a grafia ou inclua o colaborador na estrutura.');
+  if(r.obs) avisos.push(r.obs);
+
+  document.getElementById('frModalBody').innerHTML=`
+    <div class="fr-dsec"><div class="fr-dtit">Saldo do período</div>${barraSaldo(r)}
+      <dl class="fr-dkv" style="margin-top:14px">
+        <dt>Direito do período</dt><dd>${r.direito} dias</dd>
+        <dt>Abono pecuniário</dt><dd>${r.abono?r.abono+' dias':'não solicitado'}</dd>
+        <dt>Já gozados</dt><dd>${r.gozados} dias</dd>
+        <dt>Programados</dt><dd>${r.prog} dias</dd>
+        <dt>Saldo a programar</dt><dd style="color:${r.saldo?'#fbbf24':'#86efac'}">${r.saldo} dias</dd>
+        <dt>Adiantamento do 13º</dt><dd>${r.decimo===null?'a definir':(r.decimo?'sim':'não')}</dd>
+      </dl></div>
+    <div class="fr-dsec"><div class="fr-dtit">Prazos legais</div>${prazos}</div>
+    <div class="fr-dsec"><div class="fr-dtit">Períodos de gozo</div>${periodos}</div>
+    <div class="fr-dsec"><div class="fr-dtit">Cadastro</div>
+      <dl class="fr-dkv">
+        <dt>Admissão</dt><dd>${fmt(d(r.adm))}</dd>
+        <dt>Período aquisitivo</dt><dd>${fmt(d(r.paIni))} → ${fmt(d(r.paFim))}</dd>
+        <dt>Limite para gozo</dt><dd style="color:${r.vencido?'#fca5a5':'inherit'}">${fmt(r.dLim)}</dd>
+        <dt>Situação do limite</dt><dd style="color:${r.vencido?'#fca5a5':r.diasLimite<=120?'#fbbf24':'inherit'}">${r.vencido?'vencido há '+Math.abs(r.diasLimite)+'d':'faltam '+r.diasLimite+'d'}</dd>
+        <dt>Posição no organograma</dt><dd>${r.org?r.org.cargo:'não localizado'}</dd>
+        <dt>Equipe</dt><dd>${r.org?r.org.equipe:'—'}</dd>
+      </dl></div>
+    ${avisos.length?`<div class="fr-dsec"><div class="fr-dtit">Observações</div>${avisos.map(a=>`<p class="fr-note" style="margin-top:0;margin-bottom:8px">${a}</p>`).join('')}</div>`:''}`;
+
+  document.getElementById('frModal').classList.add('show');
+};
+window.frFecharFicha=function(){ document.getElementById('frModal').classList.remove('show'); };
+
+/* ==================== NAVEGAÇÃO ==================== */
+window.abrirAba=function(qual){
+  const org=qual!=='ferias';
+  document.getElementById('viewOrg').hidden=!org;
+  document.getElementById('viewFerias').hidden=org;
+  document.getElementById('tabOrg').classList.toggle('ativo',org);
+  document.getElementById('tabFerias').classList.toggle('ativo',!org);
+  document.getElementById('tabOrg').setAttribute('aria-selected',org);
+  document.getElementById('tabFerias').setAttribute('aria-selected',!org);
+  const bar=document.querySelector('.search-bar-wrap');
+  if(bar) bar.style.display=org?'':'none';
+  /* seleção de pessoas é recurso do organograma: sai do modo e esconde a barra */
+  if(!org){
+    try{ if(typeof modoSelecao!=='undefined' && modoSelecao && typeof toggleModoSelecao==='function') toggleModoSelecao(); }catch(e){}
+    const sb=document.getElementById('selBar'); if(sb) sb.classList.remove('show');
+  }
+  const bs=document.getElementById('btnSelecao'); if(bs) bs.style.display=org?'':'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+  try{ history.replaceState(null,'',qual==='ferias'?'#ferias':location.pathname); }catch(e){}
+};
+window.frTrocaVista=function(v){
+  vista=v;
+  document.getElementById('frViewTl').hidden=v!=='tl';
+  document.getElementById('frViewCal').hidden=v!=='cal';
+  document.getElementById('frBtnTl').classList.toggle('btn-primary',v==='tl');
+  document.getElementById('frBtnCal').classList.toggle('btn-primary',v==='cal');
+};
+window.frMes=function(n){ calRef=new Date(calRef.getFullYear(),calRef.getMonth()+n,1); renderCal(); };
+
+document.getElementById('frBusca').addEventListener('input',e=>{
+  busca=e.target.value; renderTl(); renderCal(); renderFichas();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape') return;
+  if(document.getElementById('frKpiModal').classList.contains('show')) frFecharKpi();
+  else if(document.getElementById('frModal').classList.contains('show')) frFecharFicha();
+});
+
+/* ==================== INÍCIO ==================== */
+renderProximas(); renderKpis(); renderPrazos(); renderAlerts();
+renderChips(); renderTl(); renderCal(); renderFichas(); frTrocaVista('tl');
+if(location.hash==='#ferias') abrirAba('ferias');
+})();
+</script>
+
 </body>
 </html>
