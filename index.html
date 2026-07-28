@@ -962,15 +962,16 @@
 
   /* ===== Barra de seleção flutuante ===== */
   .sel-bar {
-    position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%);
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translate(-50%, calc(100% + 48px)); visibility: hidden;
     display: flex; align-items: center; gap: 20px;
     background: linear-gradient(135deg, rgba(28,34,48,0.98), rgba(13,17,23,0.98));
     border: 1px solid var(--gold); border-radius: 14px;
     padding: 12px 20px; box-shadow: 0 14px 50px rgba(0,0,0,0.6);
-    z-index: 1500; transition: bottom 0.3s ease; flex-wrap: wrap; justify-content: center;
+    z-index: 1500; transition: transform 0.3s ease, visibility 0.3s; flex-wrap: wrap; justify-content: center;
     max-width: calc(100vw - 32px);
   }
-  .sel-bar.show { bottom: 24px; }
+  .sel-bar.show { transform: translate(-50%, 0); visibility: visible; }
   .sel-bar-count { font-size: 13px; color: var(--ink-2); }
   .sel-bar-count strong { color: var(--gold); font-size: 16px; }
   .sel-bar-actions { display: flex; gap: 8px; }
@@ -1327,6 +1328,7 @@
       <div class="subtitle" id="reportDate"></div>
     </div>
     <div class="header-right">
+      <a class="btn" href="ferias.html">&#127796; Férias</a>
       <button class="btn" onclick="toggleModoSelecao()" id="btnSelecao">&#9745; Selecionar pessoas</button>
       <button class="btn" onclick="toggleFullscreen()" id="btnFullscreen">&#9638; Modo apresentação</button>
       <button class="btn" onclick="exportarExcel()">Exportar Excel</button>
