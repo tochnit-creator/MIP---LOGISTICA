@@ -1521,10 +1521,10 @@ const ESTRUTURA = {
           { nome: "Eduardo Toledo Santana", cargo: "Assistente Logística Faturamento", nivel: "assistente", atribuicoesKey: "eduardo", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Geneilda da Silva, desde 09/06/2026." }
         ],
         "Operacional": [
-          { nome: "ALISSON PEREIRA SANTOS", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
           { nome: "Jefferson Alves S. Miranda", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Carlos Eduardo Pedrette", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Felipe Eduardo", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" }
+          { nome: "Felipe Eduardo", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Alisson Pereira Santos", motivoSaida: "Desligado por comportamento inadequado (faltas recorrentes)", dataAbertura: "13/08/2026" }
         ]
       }
     },
@@ -1565,15 +1565,14 @@ const ESTRUTURA = {
           { nome: "Marta Leandro", cargo: "Aux. Estoque", nivel: "aux", obs: "Passou a atuar no Estoque (antes na Conferência de Recebimento), desde 20/07/2026." },
           { nome: "Leila Cristina Souza", cargo: "Aux. Estoque · Aux. Fiscal de Recebimento", nivel: "aux", obs: "Atua no Estoque e como Auxiliar Fiscal de Recebimento, em conjunto com Vanessa Ribeiro, desde 20/07/2026." },
           { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente", atribuicoesKey: "geneilda", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Eduardo Toledo Santana, desde 09/06/2026." },
-          { nome: "Fernando Silva", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" }
+          { nome: "Fernando Silva", cargo: "Aux. Logística", nivel: "aux" }
         ],
         "Inventário": [
           { nome: "Renato Alves", cargo: "Aux. Inventário", nivel: "aux", destaque: true },
           { nome: "Miguel Santos Belzunces", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir a vaga aberta pela saída de Douglas Faccio (Inventário — equipe Vanessa Ribeiro, Turno A), desde 12/08/2026." },
+          { nome: "Artur Cavalcante Lima", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir vaga de aumento de quadro do Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã), desde 13/08/2026." },
+          { nome: "Gabriel Cardoso Moura Santos", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir vaga de aumento de quadro do Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã), desde 13/08/2026." },
           { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — recrutamento ativo", nivel: "aux", vaga: true, destaque: true, anterior: "Ana Cristina Andre dos Santos", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "20/07/2026" },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — aumento de quadro", nivel: "aux", vaga: true, destaque: true, dataAbertura: "10/08/2026" },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — aumento de quadro", nivel: "aux", vaga: true, destaque: true, dataAbertura: "10/08/2026" },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — aumento de quadro", nivel: "aux", vaga: true, destaque: true, dataAbertura: "10/08/2026" },
           { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — aumento de quadro", nivel: "aux", vaga: true, destaque: true, dataAbertura: "10/08/2026" },
           { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — aumento de quadro", nivel: "aux", vaga: true, destaque: true, dataAbertura: "10/08/2026" },
           { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — aumento de quadro", nivel: "aux", vaga: true, destaque: true, dataAbertura: "10/08/2026" },
@@ -1749,6 +1748,9 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "13/08/2026", tipo: "Desligamento", descricao: "Alisson Pereira Santos desligado por comportamento inadequado relacionado a faltas recorrentes (equipe Carlos Henrique Bailhão — Carregamento, Turno A) · Vaga em aberto no Operacional" },
+  { data: "13/08/2026", tipo: "Contratação", descricao: "ARTUR CAVALCANTE LIMA contratado para o Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã) · cobre uma das vagas de aumento de quadro (Aux. Inventário/Logística)" },
+  { data: "13/08/2026", tipo: "Contratação", descricao: "GABRIEL CARDOSO MOURA SANTOS contratado para o Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã) · cobre uma das vagas de aumento de quadro (Aux. Inventário/Logística)" },
   { data: "12/08/2026", tipo: "Contratação", descricao: "MIGUEL SANTOS BELZUNCES contratado para o Inventário (equipe Vanessa Ribeiro — Turno A) · vaga aberta pela saída de Douglas Faccio" },
   { data: "12/08/2026", tipo: "Desligamento", descricao: "Douglas Faccio pediu as contas (demissão voluntária) · Vaga em aberto no Inventário (equipe Vanessa Ribeiro — Turno A) · vaga coberta no mesmo dia por Miguel Santos Belzunces" },
   { data: "10/08/2026", tipo: "Reestruturação", descricao: "Abertura de 8 novas vagas de Aux. Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã) · aumento de quadro aprovado" },
