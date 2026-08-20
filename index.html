@@ -1674,9 +1674,8 @@ const ESTRUTURA = {
           { nome: "Vinicius Inacio da Silva", cargo: "Aux. Logística - Pesado", nivel: "aux" },
           { nome: "Josue Vitor Manzi da Silva", cargo: "Aux. Logística - Pesado", nivel: "aux" },
           { nome: "Junior Luiz de Oliveira", cargo: "Aux. Logística - Pesado", nivel: "aux" },
-          { nome: "Mauricio", cargo: "Aux. Logística - Pesado", nivel: "aux", avisoDispensa: true, obs: "Isaac Rafael Brito em avaliação para cobrir sua vaga · após avaliação, Mauricio será dispensado." },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística - Pesado — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Mauricio", motivoSaida: "Aviso de dispensa em andamento", dataAbertura: "25/06/2026" },
-          { nome: "Isaac Rafael Brito", cargo: "Aux. Logística - Pesado", nivel: "aux", tag: "NOVO", obs: "Em avaliação para cobrir a vaga do Mauricio (Turno C, noturno), equipe Cleiton Aparecido, desde 19/08/2026 · após avaliação, Mauricio será dispensado." }
+          { nome: "Mauricio", cargo: "Aux. Logística - Pesado", nivel: "aux", avisoDispensa: true, obs: "Aviso de dispensa em andamento · vaga em recrutamento (Isaac Rafael Brito, que estava em avaliação para a vaga, foi dispensado por abandono em 20/08/2026)." },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística - Pesado — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Mauricio", motivoSaida: "Aviso de dispensa em andamento", dataAbertura: "25/06/2026" }
         ]
       }
     },
@@ -1697,7 +1696,8 @@ const ESTRUTURA = {
           { nome: "George Barbosa", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Jose Aparecido", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Reginaldo Firmino", cargo: "M. Entregador Master", nivel: "motorista" },
-          { nome: "LEONARDO AVILA XAVIER", cargo: "M. Entregador", nivel: "motorista", tag: "NOVO" },
+          { nome: "LEONARDO AVILA XAVIER", cargo: "M. Entregador", nivel: "motorista", avisoDispensa: true, obs: "Não se adequou aos processos da empresa · será dispensado em 21/08/2026." },
+          { nome: "VAGA EM ABERTO", cargo: "M. Entregador — recrutamento ativo", nivel: "motorista", vaga: true, anterior: "LEONARDO AVILA XAVIER", motivoSaida: "Não adequação aos processos da empresa", dataAbertura: "21/08/2026" },
           { nome: "Guilherme Augusto Firmino", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Mayllon dos Santos Oliveira", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Isaias Justino Bulhoes", cargo: "M. Entregador Master", nivel: "motorista" },
@@ -1749,6 +1749,8 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "20/08/2026", tipo: "Desligamento", descricao: "LEONARDO AVILA XAVIER receberá aviso de dispensa, efetivo em 21/08/2026, por não adequação aos processos da empresa (Frota de Motoristas, equipe Rogério) · Vaga em aberto na Frota de Motoristas" },
+  { data: "20/08/2026", tipo: "Desligamento", descricao: "ISAAC RAFAEL BRITO dispensado por abandono de emprego (parou de comparecer) · estava em avaliação para a vaga do Mauricio (Aux. Logística - Pesado, equipe Cleiton Aparecido, Turno C) · vaga permanece em recrutamento" },
   { data: "19/08/2026", tipo: "Movimentação", descricao: "ISAAC RAFAEL BRITO realocado da equipe Jefferson Virissimo & Edgar Claro para a equipe do Cleiton Aparecido, para cobrir a vaga do Mauricio (Aux. Logística - Pesado — Turno C, noturno) · em avaliação. Mauricio permanece na equipe e na listagem de vaga em aberto até a conclusão da avaliação; após avaliação, será dispensado." },
   { data: "19/08/2026", tipo: "Contratação", descricao: "GUILHERME INACIO contratado para a equipe do Jefferson Virissimo & Edgar Claro (Aux. Logística — Turno C, noturno) · vaga aberta pela saída de Alex Sander do Nascimento Silva" },
   { data: "18/08/2026", tipo: "Desligamento", descricao: "Lourival Ribeiro Freire pediu rescisão indireta (equipe Claudio Barcelos Jr — Aux. Logística, Turno B) · Vaga em aberto no setor de Auxiliares" },
