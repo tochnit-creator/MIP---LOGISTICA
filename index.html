@@ -1598,7 +1598,7 @@ const ESTRUTURA = {
           { nome: "Mauricio Novaes Nascimento", cargo: "Líder · Promovido", nivel: "lider", atribuicoesKey: "lideresPadrao", tag: "PROMOVIDO" }
         ],
         "Conferência": [
-          { nome: "Lucas", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "VAGA EM ABERTO", cargo: "Conf. Expedição Jr. — recrutamento ativo", nivel: "conferente", vaga: true, anterior: "Lucas", motivoSaida: "Solicitou desligamento", dataAbertura: "24/08/2026" },
           { nome: "Jessica de Souza", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Marcos Fernande", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Maria Debora Alves", cargo: "Análise de Ocorrências", nivel: "analista", atribuicoesKey: "mariaDebora" },
@@ -1749,6 +1749,7 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "24/08/2026", tipo: "Desligamento", descricao: "LUCAS (Conf. Expedição Jr.) solicitou desligamento (equipe Claudio Barcelos Jr — Conferência, Turno B, tarde) · Vaga em aberto na Conferência" },
   { data: "20/08/2026", tipo: "Desligamento", descricao: "LEONARDO AVILA XAVIER receberá aviso de dispensa, efetivo em 21/08/2026, por não adequação aos processos da empresa (Frota de Motoristas, equipe Rogério) · Vaga em aberto na Frota de Motoristas" },
   { data: "20/08/2026", tipo: "Desligamento", descricao: "ISAAC RAFAEL BRITO dispensado por abandono de emprego (parou de comparecer) · estava em avaliação para a vaga do Mauricio (Aux. Logística - Pesado, equipe Cleiton Aparecido, Turno C) · vaga permanece em recrutamento" },
   { data: "19/08/2026", tipo: "Movimentação", descricao: "ISAAC RAFAEL BRITO realocado da equipe Jefferson Virissimo & Edgar Claro para a equipe do Cleiton Aparecido, para cobrir a vaga do Mauricio (Aux. Logística - Pesado — Turno C, noturno) · em avaliação. Mauricio permanece na equipe e na listagem de vaga em aberto até a conclusão da avaliação; após avaliação, será dispensado." },
