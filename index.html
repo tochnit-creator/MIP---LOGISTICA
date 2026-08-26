@@ -485,7 +485,24 @@
   .team-panel-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; }
   .team-member { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 6px; transition: background 0.15s; }
   .team-member:hover { background: var(--gold-soft); }
-  .team-member .mini-avatar { width: 28px; height: 28px; border-radius: 50%; background: rgba(148, 163, 184, 0.15); color: var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--line); }
+  .team-member .mini-avatar { width: 28px; height: 28px; border-radius: 50%; background: rgba(148, 163, 184, 0.15); color: var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--line); position: relative; }
+  .team-member .avatar-ear {
+    position: absolute;
+    top: -5px;
+    right: -7px;
+    display: inline-block;
+    background: linear-gradient(135deg, #4ade80, #16a34a);
+    color: #052e16;
+    font-size: 7px; font-weight: 800; letter-spacing: 0.4px;
+    padding: 1.5px 4px; border-radius: 6px;
+    line-height: 1.4;
+    white-space: nowrap;
+    border: 1px solid rgba(5, 46, 22, 0.35);
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.55);
+    animation: pulseTag 2s ease-in-out infinite;
+    z-index: 2;
+    pointer-events: none;
+  }
   .team-member .mini-avatar svg { width: 15px; height: 15px; display: block; }
   .team-member .member-info { min-width: 0; }
   .team-member .member-name { font-size: 12px; color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1523,7 +1540,6 @@ const ESTRUTURA = {
         "Operacional": [
           { nome: "Jefferson Alves S. Miranda", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Carlos Eduardo Pedrette", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Felipe Eduardo", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
           { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Alisson Pereira Santos", motivoSaida: "Desligado por comportamento inadequado (faltas recorrentes)", dataAbertura: "13/08/2026" }
         ]
       }
@@ -1558,26 +1574,27 @@ const ESTRUTURA = {
           { nome: "Marcelo Lopes", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Gustavo Gomes Araujo", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Jean", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "William Vieira Miranda", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Iury Carvalho", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Matheus Souza", cargo: "Aux. Endereçamento", nivel: "aux" },
-          { nome: "Adilson", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Marta Leandro", cargo: "Aux. Estoque", nivel: "aux", obs: "Passou a atuar no Estoque (antes na Conferência de Recebimento), desde 20/07/2026." },
-          { nome: "Leila Cristina Souza", cargo: "Aux. Estoque · Aux. Fiscal de Recebimento", nivel: "aux", obs: "Atua no Estoque e como Auxiliar Fiscal de Recebimento, em conjunto com Vanessa Ribeiro, desde 20/07/2026." },
           { nome: "Geneilda da Silva", cargo: "Conf. Recebimento Jr.", nivel: "conferente", atribuicoesKey: "geneilda", obs: "Assumiu parte do Processo de Devolução (função anterior de Laudiceia de Souza), em conjunto com Eduardo Toledo Santana, desde 09/06/2026." },
-          { nome: "Fernando Silva", cargo: "Aux. Logística", nivel: "aux" }
+          { nome: "Fernando Silva", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Artur Cavalcante Lima", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
+          { nome: "Gabriel Cardoso Moura Santos", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
+          { nome: "Renan Oliveira", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
+          { nome: "Rikelme Souza Pires", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
+          { nome: "Adrielly Ribeiro Lima", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para a equipe Vanessa Ribeiro (Turno A) · realocada dos Auxiliares (equipe reorganizada em 26/08/2026)." },
+          { nome: "Rayla Silva Pereira", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para a equipe Vanessa Ribeiro (Turno A) · realocada dos Auxiliares (equipe reorganizada em 26/08/2026)." },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Ana Cristina Andre dos Santos", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "20/07/2026" },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Joao Pedro Galindo", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "20/08/2026" }
         ],
         "Inventário": [
-          { nome: "Renato Alves", cargo: "Aux. Inventário", nivel: "aux", destaque: true },
-          { nome: "Miguel Santos Belzunces", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir a vaga aberta pela saída de Douglas Faccio (Inventário — equipe Vanessa Ribeiro, Turno A), desde 12/08/2026." },
-          { nome: "Artur Cavalcante Lima", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir vaga de aumento de quadro do Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã), desde 13/08/2026." },
-          { nome: "Gabriel Cardoso Moura Santos", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir vaga de aumento de quadro do Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã), desde 13/08/2026." },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — recrutamento ativo", nivel: "aux", vaga: true, destaque: true, anterior: "Ana Cristina Andre dos Santos", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "20/07/2026" },
-          { nome: "Renan Oliveira", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir vaga de aumento de quadro do Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã), desde 14/08/2026." },
-          { nome: "Rikelme Souza Pires", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir vaga de aumento de quadro do Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã), desde 14/08/2026." },
-          { nome: "Joao Pedro Galindo", cargo: "Aux. Inventário", nivel: "aux", destaque: true, tag: "NOVO", obs: "Contratado para cobrir vaga de aumento de quadro do Inventário (equipe Vanessa Ribeiro — Turno A, período da manhã), desde 14/08/2026." },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — aumento de quadro", nivel: "aux", vaga: true, destaque: true, dataAbertura: "10/08/2026" },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Inventário — aumento de quadro", nivel: "aux", vaga: true, destaque: true, dataAbertura: "10/08/2026" }
+          { nome: "Miguel Santos Belzunces", cargo: "Aux. Inventário", nivel: "aux", tag: "NOVO", obs: "Contratado para cobrir a vaga aberta pela saída de Douglas Faccio (Inventário — equipe Vanessa Ribeiro, Turno A), desde 12/08/2026." },
+          { nome: "Adilson", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Renato Alves", cargo: "Aux. Inventário", nivel: "aux" },
+          { nome: "Iury Carvalho", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Leila Cristina Souza", cargo: "Aux. Estoque · Aux. Fiscal de Recebimento", nivel: "aux", obs: "Atua no Estoque e como Auxiliar Fiscal de Recebimento, em conjunto com Vanessa Ribeiro, desde 20/07/2026." },
+          { nome: "William Vieira Miranda", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "Felipe Eduardo", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado da equipe Carlos Henrique Bailhão (Carregamento, Turno A) para o Inventário da equipe Vanessa Ribeiro, desde 26/08/2026." }
         ]
       }
     },
@@ -1613,7 +1630,7 @@ const ESTRUTURA = {
           { nome: "Allan Soares", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Lucas das Graças Costa Braga", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
           { nome: "Luiz Henrique", cargo: "Aux. Logística · Separador", nivel: "aux", tag: "NOVO" },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — aumento de quadro", nivel: "aux", vaga: true, dataAbertura: "25/06/2026" }
+          { nome: "Jessica Aline Santos Alves", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para cobrir vaga de aumento de quadro (equipe Claudio Barcelos Jr — Turno B), desde 26/08/2026." }
         ]
       }
     },
@@ -1749,9 +1766,14 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "26/08/2026", tipo: "Reestruturação", descricao: "Equipe do Inventário (equipe Vanessa Ribeiro — Turno A) redefinida para: Miguel Santos Belzunces, Adilson, Renato Alves, Iury Carvalho, Leila Cristina Souza, William Vieira Miranda e Felipe Eduardo (realocado da equipe Carlos Henrique Bailhão) · demais colaboradores que estavam no Inventário passaram para os Auxiliares" },
+  { data: "26/08/2026", tipo: "Contratação", descricao: "ADRIELLY RIBEIRO LIMA contratada para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre uma das vagas de aumento de quadro" },
+  { data: "26/08/2026", tipo: "Contratação", descricao: "RAYLA SILVA PEREIRA contratada para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre uma das vagas de aumento de quadro" },
+  { data: "26/08/2026", tipo: "Contratação", descricao: "JESSICA ALINE SANTOS ALVES contratada para a equipe Claudio Barcelos Jr (Aux. Logística — Turno B) · cobre a vaga de aumento de quadro no setor de Auxiliares" },
   { data: "24/08/2026", tipo: "Desligamento", descricao: "LUCAS (Conf. Expedição Jr.) solicitou desligamento (equipe Claudio Barcelos Jr — Conferência, Turno B, tarde) · Vaga em aberto na Conferência" },
   { data: "20/08/2026", tipo: "Desligamento", descricao: "LEONARDO AVILA XAVIER receberá aviso de dispensa, efetivo em 21/08/2026, por não adequação aos processos da empresa (Frota de Motoristas, equipe Rogério) · Vaga em aberto na Frota de Motoristas" },
   { data: "20/08/2026", tipo: "Desligamento", descricao: "ISAAC RAFAEL BRITO dispensado por abandono de emprego (parou de comparecer) · estava em avaliação para a vaga do Mauricio (Aux. Logística - Pesado, equipe Cleiton Aparecido, Turno C) · vaga permanece em recrutamento" },
+  { data: "20/08/2026", tipo: "Desligamento", descricao: "JOAO PEDRO GALINDO pediu as contas (demissão voluntária) · Vaga em aberto na equipe Vanessa Ribeiro — Turno A (Auxiliares, após reestruturação do Inventário em 26/08/2026)" },
   { data: "19/08/2026", tipo: "Movimentação", descricao: "ISAAC RAFAEL BRITO realocado da equipe Jefferson Virissimo & Edgar Claro para a equipe do Cleiton Aparecido, para cobrir a vaga do Mauricio (Aux. Logística - Pesado — Turno C, noturno) · em avaliação. Mauricio permanece na equipe e na listagem de vaga em aberto até a conclusão da avaliação; após avaliação, será dispensado." },
   { data: "19/08/2026", tipo: "Contratação", descricao: "GUILHERME INACIO contratado para a equipe do Jefferson Virissimo & Edgar Claro (Aux. Logística — Turno C, noturno) · vaga aberta pela saída de Alex Sander do Nascimento Silva" },
   { data: "18/08/2026", tipo: "Desligamento", descricao: "Lourival Ribeiro Freire pediu rescisão indireta (equipe Claudio Barcelos Jr — Aux. Logística, Turno B) · Vaga em aberto no setor de Auxiliares" },
@@ -2174,7 +2196,8 @@ function renderTeamPanel(sup) {
       const pkey = m.vaga ? '' : keyMembro(sup.id, m.nome);
       const chk = m.vaga ? '' : `<span class="sel-check"></span>`;
       const dpk = m.vaga ? '' : ` data-pkey="${pkey}"`;
-      html += `<div class="team-member${classeVaga}" data-membro="${escAttr(m.nome)}"${dpk} title="${escAttr(m.nome)}">${chk}<div class="mini-avatar">${iconeMembro}</div><div class="member-info"><div class="member-name" title="${escAttr(m.nome)}">${m.nome}${m.tag ? `<span class="member-tag">${m.tag}</span>` : ''}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}${btnLink}</div>`;
+      const avatarEar = m.tag ? `<span class="avatar-ear" title="${escAttr(m.tag)}">${m.tag}</span>` : '';
+      html += `<div class="team-member${classeVaga}" data-membro="${escAttr(m.nome)}"${dpk} title="${escAttr(m.nome)}">${chk}<div class="mini-avatar">${iconeMembro}${avatarEar}</div><div class="member-info"><div class="member-name" title="${escAttr(m.nome)}">${m.nome}${tagDispensa}${tagAfastado}${tagObs}</div><div class="member-role">${m.cargo}</div>${obsHtml}</div>${btnAtrib}${btnLink}</div>`;
     });
     html += `</div></div>`;
   }
