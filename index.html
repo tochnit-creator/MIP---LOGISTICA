@@ -482,6 +482,20 @@
   .team-panel-section.highlighted .team-panel-section-title::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); }
   .team-panel-section.highlighted .team-member .mini-avatar { background: rgba(212, 175, 55, 0.15); color: var(--gold); border-color: rgba(212, 175, 55, 0.4); }
   .team-panel-section-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+  .team-panel-section-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: rgba(212, 175, 55, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 7px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 11.5px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .team-panel-section-note .obs-icone { flex-shrink: 0; opacity: 0.85; }
   .team-panel-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; }
   .team-member { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 6px; transition: background 0.15s; }
   .team-member:hover { background: var(--gold-soft); }
@@ -1581,7 +1595,7 @@ const ESTRUTURA = {
           { nome: "Artur Cavalcante Lima", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
           { nome: "Gabriel Cardoso Moura Santos", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
           { nome: "Renan Oliveira", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
-          { nome: "Rikelme Souza Pires", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Rikelme Souza Pires", motivoSaida: "Abandono de emprego (parou de comparecer e não deu satisfação)", dataAbertura: "27/08/2026" },
           { nome: "Adrielly Ribeiro Lima", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para a equipe Vanessa Ribeiro (Turno A) · realocada dos Auxiliares (equipe reorganizada em 26/08/2026)." },
           { nome: "Rayla Silva Pereira", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para a equipe Vanessa Ribeiro (Turno A) · realocada dos Auxiliares (equipe reorganizada em 26/08/2026)." },
           { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Ana Cristina Andre dos Santos", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "20/07/2026" },
@@ -1707,21 +1721,24 @@ const ESTRUTURA = {
         { key: "rogerio", label: "👔 Minhas atribuições" },
         { key: "motoristas", label: "🚚 Atribuições da equipe" }
       ],
+      notasEquipe: {
+        "Frota": "Marcelo Severiano Ramos está afastado. Reginaldo Firmino tem desligamento previsto para novembro/2026."
+      },
       equipe: {
         "Frota": [
           { nome: "Eduardo Araujo", cargo: "M. Entregador Pleno", nivel: "motorista" },
           { nome: "George Barbosa", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Jose Aparecido", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Reginaldo Firmino", cargo: "M. Entregador Master", nivel: "motorista" },
-          { nome: "LEONARDO AVILA XAVIER", cargo: "M. Entregador", nivel: "motorista", avisoDispensa: true, obs: "Não se adequou aos processos da empresa · será dispensado em 21/08/2026." },
-          { nome: "VAGA EM ABERTO", cargo: "M. Entregador — recrutamento ativo", nivel: "motorista", vaga: true, anterior: "LEONARDO AVILA XAVIER", motivoSaida: "Não adequação aos processos da empresa", dataAbertura: "21/08/2026" },
+          { nome: "Gilson Afonso", cargo: "M. Entregador", nivel: "motorista", tag: "NOVO", obs: "Contratado para cobrir a vaga aberta pela saída de Leonardo Avila Xavier (Frota de Motoristas, equipe Rogério), desde 27/08/2026." },
           { nome: "Guilherme Augusto Firmino", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Mayllon dos Santos Oliveira", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Isaias Justino Bulhoes", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Jefferson Luis Torres", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Marcelo Severiano Ramos", cargo: "M. Entregador Master", nivel: "motorista", afastado: true },
           { nome: "Jose Luis Mantovani", cargo: "M. Entregador Master", nivel: "motorista" },
-          { nome: "Alexandre Lopes", cargo: "M. Entregador Master", nivel: "motorista", tag: "NOVO" }
+          { nome: "Alexandre Lopes", cargo: "M. Entregador Master", nivel: "motorista", tag: "NOVO" },
+          { nome: "Jefferson Mariano", cargo: "M. Entregador", nivel: "motorista", tag: "NOVO", obs: "Contratado para a Frota de Motoristas (equipe Rogério) · cobre vaga de aumento de quadro, desde 27/08/2026." }
         ]
       }
     }
@@ -1766,6 +1783,9 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "27/08/2026", tipo: "Contratação", descricao: "GILSON AFONSO contratado para a Frota de Motoristas (equipe Rogério) · cobre a vaga aberta pela saída de Leonardo Avila Xavier, desde 27/08/2026" },
+  { data: "27/08/2026", tipo: "Contratação", descricao: "JEFFERSON MARIANO contratado para a Frota de Motoristas (equipe Rogério) · cobre vaga de aumento de quadro, desde 27/08/2026" },
+  { data: "27/08/2026", tipo: "Desligamento", descricao: "RIKELME SOUZA PIRES dispensado por abandono de emprego (parou de comparecer e não deu satisfação) (equipe Vanessa Ribeiro — Auxiliares, Turno A) · Vaga em aberto no setor de Auxiliares" },
   { data: "26/08/2026", tipo: "Reestruturação", descricao: "Equipe do Inventário (equipe Vanessa Ribeiro — Turno A) redefinida para: Miguel Santos Belzunces, Adilson, Renato Alves, Iury Carvalho, Leila Cristina Souza, William Vieira Miranda e Felipe Eduardo (realocado da equipe Carlos Henrique Bailhão) · demais colaboradores que estavam no Inventário passaram para os Auxiliares" },
   { data: "26/08/2026", tipo: "Contratação", descricao: "ADRIELLY RIBEIRO LIMA contratada para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre uma das vagas de aumento de quadro" },
   { data: "26/08/2026", tipo: "Contratação", descricao: "RAYLA SILVA PEREIRA contratada para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre uma das vagas de aumento de quadro" },
@@ -2180,6 +2200,9 @@ function renderTeamPanel(sup) {
     const destaque = SECOES_DESTACADAS.includes(grupo);
     html += `<div class="team-panel-section${destaque ? ' highlighted' : ''}">`;
     html += `<div class="team-panel-section-title">${grupo} · ${membros.length}</div>`;
+    if (sup.notasEquipe && sup.notasEquipe[grupo]) {
+      html += `<div class="team-panel-section-note"><span class="obs-icone">📌</span><span>${sup.notasEquipe[grupo]}</span></div>`;
+    }
     html += `<div class="team-panel-list">`;
     membros.forEach(m => {
       const temAtrib = m.atribuicoesKey || (m.atribuicoes && m.atribuicoes.length);
