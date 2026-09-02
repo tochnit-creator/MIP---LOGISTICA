@@ -1684,7 +1684,7 @@ const ESTRUTURA = {
           { nome: "John Mike Rodrigues da Silva", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Silvio Gomes", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Rodrigo Sousa Santos", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Guilherme Inacio", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratado para o Turno C (noturno), equipe Jefferson Virissimo & Edgar Claro · vaga aberta pela saída de Alex Sander do Nascimento Silva, desde 19/08/2026." }
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Guilherme Inacio", motivoSaida: "Abandono de emprego (parou de comparecer desde 27/08/2026, quinta-feira)", dataAbertura: "27/08/2026" }
         ]
       }
     },
@@ -1738,7 +1738,7 @@ const ESTRUTURA = {
           { nome: "Marcelo Severiano Ramos", cargo: "M. Entregador Master", nivel: "motorista", afastado: true },
           { nome: "Jose Luis Mantovani", cargo: "M. Entregador Master", nivel: "motorista" },
           { nome: "Alexandre Lopes", cargo: "M. Entregador Master", nivel: "motorista", tag: "NOVO" },
-          { nome: "Jefferson Mariano", cargo: "M. Entregador", nivel: "motorista", tag: "NOVO", obs: "Contratado para a Frota de Motoristas (equipe Rogério) · cobre vaga de aumento de quadro, desde 27/08/2026." }
+          { nome: "Jefferson Mariano", cargo: "M. Entregador", nivel: "motorista", avisoDispensa: true, obs: "Contratado para a Frota de Motoristas (equipe Rogério) desde 27/08/2026 · aviso de dispensa em andamento, desligamento previsto para 04/09/2026." }
         ]
       }
     }
@@ -1783,9 +1783,11 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "02/09/2026", tipo: "Desligamento", descricao: "JEFFERSON MARIANO receberá aviso de dispensa, efetivo em 04/09/2026 (Frota de Motoristas, equipe Rogério)" },
   { data: "27/08/2026", tipo: "Contratação", descricao: "GILSON AFONSO contratado para a Frota de Motoristas (equipe Rogério) · cobre a vaga aberta pela saída de Leonardo Avila Xavier, desde 27/08/2026" },
   { data: "27/08/2026", tipo: "Contratação", descricao: "JEFFERSON MARIANO contratado para a Frota de Motoristas (equipe Rogério) · cobre vaga de aumento de quadro, desde 27/08/2026" },
   { data: "27/08/2026", tipo: "Desligamento", descricao: "RIKELME SOUZA PIRES dispensado por abandono de emprego (parou de comparecer e não deu satisfação) (equipe Vanessa Ribeiro — Auxiliares, Turno A) · Vaga em aberto no setor de Auxiliares" },
+  { data: "27/08/2026", tipo: "Desligamento", descricao: "GUILHERME INACIO dispensado por abandono de emprego (parou de comparecer desde 27/08/2026, quinta-feira) (equipe Jefferson Virissimo & Edgar Claro — Auxiliares, Turno C, noturno) · Vaga em aberto no setor de Auxiliares" },
   { data: "26/08/2026", tipo: "Reestruturação", descricao: "Equipe do Inventário (equipe Vanessa Ribeiro — Turno A) redefinida para: Miguel Santos Belzunces, Adilson, Renato Alves, Iury Carvalho, Leila Cristina Souza, William Vieira Miranda e Felipe Eduardo (realocado da equipe Carlos Henrique Bailhão) · demais colaboradores que estavam no Inventário passaram para os Auxiliares" },
   { data: "26/08/2026", tipo: "Contratação", descricao: "ADRIELLY RIBEIRO LIMA contratada para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre uma das vagas de aumento de quadro" },
   { data: "26/08/2026", tipo: "Contratação", descricao: "RAYLA SILVA PEREIRA contratada para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre uma das vagas de aumento de quadro" },
