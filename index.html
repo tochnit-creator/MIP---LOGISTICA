@@ -1595,11 +1595,11 @@ const ESTRUTURA = {
           { nome: "Artur Cavalcante Lima", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
           { nome: "Gabriel Cardoso Moura Santos", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
           { nome: "Renan Oliveira", cargo: "Aux. Logística", nivel: "aux", obs: "Realocado do Inventário para os Auxiliares (equipe Vanessa Ribeiro), desde 26/08/2026." },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Rikelme Souza Pires", motivoSaida: "Abandono de emprego (parou de comparecer e não deu satisfação)", dataAbertura: "27/08/2026" },
+          { nome: "Paulo Henrique da Costa", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratado para a equipe Vanessa Ribeiro (Turno A) · cobre a vaga aberta pela saída de Rikelme Souza Pires, desde 15/09/2026." },
           { nome: "Adrielly Ribeiro Lima", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para a equipe Vanessa Ribeiro (Turno A) · realocada dos Auxiliares (equipe reorganizada em 26/08/2026)." },
           { nome: "Rayla Silva Pereira", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para a equipe Vanessa Ribeiro (Turno A) · realocada dos Auxiliares (equipe reorganizada em 26/08/2026)." },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Ana Cristina Andre dos Santos", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "20/07/2026" },
-          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Joao Pedro Galindo", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "20/08/2026" }
+          { nome: "Thiago Amaro Ramalho", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratado para a equipe Vanessa Ribeiro (Turno A) · cobre a vaga aberta pela saída de Ana Cristina Andre dos Santos, desde 15/09/2026." },
+          { nome: "Eduardo da Silva Valença", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratado para a equipe Vanessa Ribeiro (Turno A) · cobre a vaga aberta pela saída de Joao Pedro Galindo, desde 15/09/2026." }
         ],
         "Inventário": [
           { nome: "Miguel Santos Belzunces", cargo: "Aux. Inventário", nivel: "aux", tag: "NOVO", obs: "Contratado para cobrir a vaga aberta pela saída de Douglas Faccio (Inventário — equipe Vanessa Ribeiro, Turno A), desde 12/08/2026." },
@@ -1679,7 +1679,7 @@ const ESTRUTURA = {
           { nome: "Matheus Coelho", cargo: "Aux. Logística - G1", nivel: "aux" },
           { nome: "Carlos Alberto Arruda", cargo: "Op. de Empilhadeira", nivel: "aux" },
           { nome: "Leonidas", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Josemar", cargo: "Aux. Logística", nivel: "aux" },
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Josemar", motivoSaida: "Pediu as contas (demissão voluntária)", dataAbertura: "04/09/2026" },
           { nome: "Wesley Fioravan", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "John Mike Rodrigues da Silva", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Silvio Gomes", cargo: "Aux. Logística", nivel: "aux" },
@@ -1783,6 +1783,10 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "15/09/2026", tipo: "Contratação", descricao: "PAULO HENRIQUE DA COSTA contratado para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre a vaga aberta pela saída de Rikelme Souza Pires" },
+  { data: "15/09/2026", tipo: "Contratação", descricao: "THIAGO AMARO RAMALHO contratado para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre a vaga aberta pela saída de Ana Cristina Andre dos Santos" },
+  { data: "15/09/2026", tipo: "Contratação", descricao: "EDUARDO DA SILVA VALENÇA contratado para a equipe Vanessa Ribeiro — Turno A (Aux. Logística) · cobre a vaga aberta pela saída de Joao Pedro Galindo" },
+  { data: "04/09/2026", tipo: "Desligamento", descricao: "JOSEMAR pediu as contas (demissão voluntária) (equipe Jefferson Virissimo & Edgar Claro — Auxiliares, Turno C, noturno) · Vaga em aberto no setor de Auxiliares" },
   { data: "04/09/2026", tipo: "Desligamento", descricao: "JEFFERSON LUIS TORRES dispensado (Frota de Motoristas, equipe Rogério) · Vaga em aberto na Frota de Motoristas" },
   { data: "02/09/2026", tipo: "Desligamento", descricao: "JEFFERSON MARIANO receberá aviso de dispensa, efetivo em 04/09/2026 (Frota de Motoristas, equipe Rogério)" },
   { data: "27/08/2026", tipo: "Contratação", descricao: "GILSON AFONSO contratado para a Frota de Motoristas (equipe Rogério) · cobre a vaga aberta pela saída de Leonardo Avila Xavier, desde 27/08/2026" },
