@@ -1629,22 +1629,21 @@ const ESTRUTURA = {
           { nome: "Mauricio Novaes Nascimento", cargo: "Líder · Promovido", nivel: "lider", atribuicoesKey: "lideresPadrao", tag: "PROMOVIDO" }
         ],
         "Conferência": [
-          { nome: "VAGA EM ABERTO", cargo: "Conf. Expedição Jr. — recrutamento ativo", nivel: "conferente", vaga: true, anterior: "Lucas", motivoSaida: "Solicitou desligamento", dataAbertura: "24/08/2026" },
+          { nome: "Dayane Da Silva", cargo: "Conf. Expedição Jr.", nivel: "conferente", tag: "NOVO", obs: "Contratada para a equipe Claudio Barcelos Jr (Conf. Expedição Jr. — Turno B) · cobre a vaga aberta em 24/08/2026 · headcount realocado da dispensa de Allan Soares (Aux. Logística), desde 21/09/2026." },
           { nome: "Jessica de Souza", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Marcos Fernande", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
           { nome: "Maria Debora Alves", cargo: "Análise de Ocorrências", nivel: "analista", atribuicoesKey: "mariaDebora" },
-          { nome: "Vanessa Gomes", cargo: "Conf. Expedição Jr.", nivel: "conferente" }
+          { nome: "Vanessa Gomes", cargo: "Conf. Expedição Jr.", nivel: "conferente" },
+          { nome: "Luciano Pereira", cargo: "Conf. Expedição Jr. · Promovido", nivel: "conferente", tag: "PROMOVIDO", obs: "Promovido de Aux. Logística para Conf. Expedição Jr. (equipe Claudio Barcelos Jr — Turno B), desde 21/09/2026." }
         ],
         "Auxiliares": [
           { nome: "Beatriz dos Santos", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Gustavo Fernando", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratado para a equipe Claudio Barcelos Jr (Aux. Logística — Turno B) · cobre a vaga aberta pela saída de Lourival Ribeiro Freire, desde 16/09/2026." },
           { nome: "Fabiane dos Santos Cruz", cargo: "Aux. Logística", nivel: "aux" },
           { nome: "Gabriel Figueredo", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Luciano Pereira", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Allan Soares", cargo: "Aux. Logística", nivel: "aux" },
-          { nome: "Lucas das Graças Costa Braga", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO" },
+          { nome: "Isabella Francisco", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para a equipe Claudio Barcelos Jr (Aux. Logística — Turno B) · substitui Lucas das Graças Costa Braga, dispensado em 21/09/2026." },
           { nome: "Luiz Henrique", cargo: "Aux. Logística · Separador", nivel: "aux", tag: "NOVO" },
-          { nome: "Jessica Aline Santos Alves", cargo: "Aux. Logística", nivel: "aux", tag: "NOVO", obs: "Contratada para cobrir vaga de aumento de quadro (equipe Claudio Barcelos Jr — Turno B), desde 26/08/2026." }
+          { nome: "VAGA EM ABERTO", cargo: "Aux. Logística — recrutamento ativo", nivel: "aux", vaga: true, anterior: "Jessica Aline Santos Alves", motivoSaida: "Dispensada", dataAbertura: "21/09/2026" }
         ]
       }
     },
@@ -1783,6 +1782,12 @@ const ESTRUTURA = {
 };
 
 const HISTORICO = [
+  { data: "21/09/2026", tipo: "Promoção", descricao: "LUCIANO PEREIRA promovido de Aux. Logística para Conf. Expedição Jr. (equipe Claudio Barcelos Jr — Conferência, Turno B)" },
+  { data: "21/09/2026", tipo: "Desligamento", descricao: "JESSICA ALINE SANTOS ALVES dispensada (equipe Claudio Barcelos Jr — Auxiliares, Turno B) · Vaga em aberto no setor de Auxiliares" },
+  { data: "21/09/2026", tipo: "Desligamento", descricao: "ALLAN SOARES dispensado (equipe Claudio Barcelos Jr — Auxiliares, Turno B) · headcount realocado para cobrir a vaga de Conf. Expedição Jr. na Conferência" },
+  { data: "21/09/2026", tipo: "Contratação", descricao: "DAYANE DA SILVA contratada para a equipe Claudio Barcelos Jr (Conf. Expedição Jr. — Turno B) · cobre a vaga aberta em 24/08/2026, com headcount realocado da dispensa de Allan Soares" },
+  { data: "21/09/2026", tipo: "Desligamento", descricao: "LUCAS DAS GRAÇAS COSTA BRAGA dispensado (equipe Claudio Barcelos Jr — Auxiliares, Turno B)" },
+  { data: "21/09/2026", tipo: "Contratação", descricao: "ISABELLA FRANCISCO contratada para a equipe Claudio Barcelos Jr (Aux. Logística — Turno B) · substitui Lucas das Graças Costa Braga" },
   { data: "16/09/2026", tipo: "Movimentação", descricao: "VINICIUS INACIO DA SILVA realocado da equipe Cleiton Aparecido (Aux. Logística - Pesado, Turno C) para a equipe Jefferson Virissimo & Edgar Claro (Aux. Logística, Turno C)" },
   { data: "16/09/2026", tipo: "Contratação", descricao: "VICTOR DE SOUZA RICARDO contratado para a equipe Cleiton Aparecido (Aux. Logística — Turno C) · cobre a vaga aberta pela saída de Josemar (equipe Jefferson Virissimo & Edgar Claro, Auxiliares), com a vaga realocada para a equipe Cleiton Aparecido" },
   { data: "16/09/2026", tipo: "Contratação", descricao: "GUSTAVO FERNANDO contratado para a equipe Claudio Barcelos Jr (Aux. Logística — Turno B) · cobre a vaga aberta pela saída de Lourival Ribeiro Freire" },
