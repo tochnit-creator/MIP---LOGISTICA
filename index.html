@@ -617,6 +617,11 @@
   .atrib-cat-count strong { color: var(--gold); }
   .atrib-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .atrib-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 7px; transition: background 0.15s, border-color 0.15s; }
+  .datv-destaque { margin-top: 6px; padding: 7px 10px; border-left: 3px solid var(--gold); background: rgba(212,175,55,0.14); border-radius: 5px; font-size: 11.5px; line-height: 1.45; color: var(--ink); }
+  .datv-destaque strong { color: var(--gold); }
+  .atrib-destaque { display: flex; align-items: flex-start; gap: 10px; margin-top: 8px; padding: 11px 14px; background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.05)); border: 1px solid var(--gold); border-left: 4px solid var(--gold); border-radius: 7px; font-size: 12px; line-height: 1.5; color: var(--ink); }
+  .atrib-destaque strong { color: var(--gold); }
+  .atrib-destaque-ic { flex-shrink: 0; }
   .atrib-item:hover { background: rgba(212, 175, 55, 0.06); border-color: rgba(212, 175, 55, 0.25); }
   .atrib-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px rgba(212, 175, 55, 0.5); flex-shrink: 0; margin-top: 7px; }
   .atrib-text { font-size: 12px; color: var(--ink-2); line-height: 1.4; }
@@ -1343,6 +1348,8 @@
     .print-atrib-cat-titulo { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #d4af37; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
     .print-atrib-cat-titulo::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #d4af37; }
     .print-atrib-itens { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 12px; }
+    .print-atrib-destaque { margin-top: 4px; padding: 5px 8px; border-left: 3px solid #d4af37; background: rgba(212,175,55,0.14); font-size: 10px; line-height: 1.4; color: #e2e8f0; }
+    .print-atrib-destaque strong { color: #d4af37; }
     .print-atrib-item { display: flex; gap: 6px; padding: 2px 0; font-size: 10.5px; color: #e2e8f0; line-height: 1.4; }
     .print-atrib-item::before { content: '\25C6'; color: #d4af37; flex-shrink: 0; font-size: 7px; margin-top: 4px; }
   }
@@ -1950,7 +1957,7 @@ const ATRIBUICOES = {
     categorias: [
       { nome: "Gestão da Armazenagem", icone: "🏭", itens: ["Coordenação do recebimento, tratamento e armazenagem dos produtos","Gestão do endereçamento e organização do pulmão","Acompanhamento do líder de estoque (Rosicleude)","Acompanhamento do operador de empilhadeira (Valcides)"] },
       { nome: "Inventário e Estoque", icone: "📑", itens: ["Coordenação dos processos de inventário (Renato e Miguel)","Acompanhamento do prazo de vencimento e validade dos produtos","Análise de controle de desperdícios e avarias"] },
-      { nome: "Gestão da Equipe", icone: "👥", itens: ["Gestão das equipes de conferência e auxiliares","Avaliação de produtividade","Desenvolvimento do líder","Estabelece comunicação com o controle comercial"] }
+      { nome: "Gestão da Equipe", icone: "👥", itens: ["Gestão da equipe de inventário","Gestão da equipe de logística reversa","Gestão da equipe de recebimento","Avaliação de produtividade","Desenvolvimento do líder","Estabelece comunicação com o controle comercial"], destaque: "<strong>Auxiliares: responsabilidade do Gabriel.</strong> Definido em reunião com a diretoria em 28/09." }
     ]
   },
   carlosHenrique: {
@@ -2551,7 +2558,7 @@ function abrirAtribuicoes(chave) {
   dados.categorias.forEach(cat => {
     const cat_el = document.createElement('div');
     cat_el.className = 'atrib-categoria';
-    cat_el.innerHTML = `<div class="atrib-cat-header"><div class="atrib-cat-icon">${cat.icone}</div><div class="atrib-cat-title">${cat.nome}</div><div class="atrib-cat-count"><strong>${cat.itens.length}</strong> atividades</div></div><div class="atrib-list">${cat.itens.map(item => `<div class="atrib-item"><div class="atrib-bullet"></div><div class="atrib-text">${item}</div></div>`).join('')}</div>`;
+    cat_el.innerHTML = `<div class="atrib-cat-header"><div class="atrib-cat-icon">${cat.icone}</div><div class="atrib-cat-title">${cat.nome}</div><div class="atrib-cat-count"><strong>${cat.itens.length}</strong> atividades</div></div><div class="atrib-list">${cat.itens.map(item => `<div class="atrib-item"><div class="atrib-bullet"></div><div class="atrib-text">${item}</div></div>`).join('')}</div>${cat.destaque ? `<div class="atrib-destaque"><span class="atrib-destaque-ic">📌</span><span>${cat.destaque}</span></div>` : ''}`;
     content.appendChild(cat_el);
   });
   document.getElementById('modalAtribuicoes').classList.add('show');
@@ -2573,7 +2580,9 @@ function renderBlocoAtribuicaoPrint(nome, cargo, chaveAtrib, nivel = 'supervisor
   dados.categorias.forEach(cat => {
     html += `<div class="print-atrib-categoria"><div class="print-atrib-cat-titulo">${cat.nome}</div><div class="print-atrib-itens">`;
     cat.itens.forEach(item => { html += `<div class="print-atrib-item">${item}</div>`; });
-    html += `</div></div>`;
+    html += `</div>`;
+    if (cat.destaque) html += `<div class="print-atrib-destaque">${cat.destaque}</div>`;
+    html += `</div>`;
   });
   html += `</div>`;
   return html;
@@ -2784,7 +2793,7 @@ async function baixarPDF() {
     function desenharAtribuicao(nome, cargo, chave) {
       const dados = ATRIBUICOES[chave]; if (!dados) return;
       let alt = 44;
-      dados.categorias.forEach(cat => { alt += 14; alt += Math.ceil(cat.itens.length/2)*14; alt += 4; });
+      dados.categorias.forEach(cat => { alt += 14; alt += Math.ceil(cat.itens.length/2)*14; alt += 4; if (cat.destaque) alt += 30; });
       alt += 12;
       garantirEspaco(alt);
       const cardX = MARGIN; const cardW = CONTENT_W; const startY = y;
@@ -2795,7 +2804,7 @@ async function baixarPDF() {
       pdf.setFont('helvetica','normal'); pdf.setFontSize(8.5); setText(COR.textDim); pdf.text(cargo, cardX+44, y+28);
       y += 38; setStroke(COR.gold); pdf.setLineWidth(0.3); pdf.line(cardX+12, y, cardX+cardW-12, y); y += 8;
       dados.categorias.forEach(cat => {
-        const altCat = 14+Math.ceil(cat.itens.length/2)*14+4;
+        const altCat = 14+Math.ceil(cat.itens.length/2)*14+4+(cat.destaque ? 30 : 0);
         if (y+altCat > FOOTER_Y-12) { setStroke(COR.gold); pdf.setLineWidth(0.4); pdf.roundedRect(cardX, startY-4, cardW, y-startY+4, 4, 4, 'S'); novaPagina(); y = MARGIN+16; }
         pdf.setFont('helvetica','bold'); pdf.setFontSize(8); setText(COR.gold); pdf.text(cat.nome.toUpperCase(), cardX+12, y+8); y += 12;
         const colW = (cardW-24)/2;
@@ -2805,7 +2814,15 @@ async function baixarPDF() {
           pdf.setFont('helvetica','normal'); pdf.setFontSize(8); setText(COR.textDim);
           const t = pdf.splitTextToSize(item, colW-12); pdf.text(t[0], xI+8, yI+5); if (t[1]) pdf.text(t[1], xI+8, yI+13);
         });
-        y += Math.ceil(cat.itens.length/2)*14+4;
+        y += Math.ceil(cat.itens.length/2)*14;
+        if (cat.destaque) {
+          const txtD = pdf.splitTextToSize(cat.destaque.replace(/<[^>]+>/g,''), cardW-40);
+          const hD = txtD.length*10+8;
+          setStroke(COR.gold); pdf.setLineWidth(1.5); pdf.line(cardX+12, y+2, cardX+12, y+2+hD);
+          pdf.setFont('helvetica','bold'); pdf.setFontSize(8); setText(COR.gold); pdf.text(txtD, cardX+18, y+10);
+          y += hD+4;
+        }
+        y += 4;
       });
       y += 4; setStroke(COR.gold); pdf.setLineWidth(0.4); pdf.roundedRect(cardX, startY-4, cardW, y-startY+4, 4, 4, 'S'); y += 14;
     }
@@ -3146,7 +3163,9 @@ function renderDossieCard(pk) {
     dados.categorias.forEach(cat => {
       atv += `<div class="datv-cat"><div class="datv-cat-head"><span class="datv-cat-icon">${cat.icone || '•'}</span>${cat.nome}</div><ul class="datv-list">`;
       cat.itens.forEach(it => atv += `<li>${it}</li>`);
-      atv += `</ul></div>`;
+      atv += `</ul>`;
+      if (cat.destaque) atv += `<div class="datv-destaque">📌 ${cat.destaque}</div>`;
+      atv += `</div>`;
     });
     atv += `</div>`;
   });
